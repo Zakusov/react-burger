@@ -7,8 +7,8 @@ function App() {
     return (
         <>
             <AppHeader/>
-            <BurgerConstructor/>
             <BurgerIngredients/>
+            <BurgerConstructor/>
         </>
     );
 }
