@@ -1,0 +1,15 @@
+.navPanel {
+    width: 100%;
+    background: #1C1C21;
+}
+
+.navList {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style-type: none;
+}
+
+.navItem {
+    text-decoration: none;
+}
