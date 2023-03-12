@@ -1,0 +1,48 @@
+.container {
+    height: 912px;
+    width: 600px;
+    left: 380px;
+    top: 128px;
+    border-radius: 0;
+}
+
+.listContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.scrollList {
+    height: 464px;
+    width: 600px;
+    overflow: auto;
+}
+
+.scrollList::-webkit-scrollbar {
+    width: 8px;
+    background-color: #2f2f37;
+}
+
+.scrollList::-webkit-scrollbar-thumb {
+    background-color: #8585ad;
+}
+
+li {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+li:last-child {
+    margin-bottom: 0;
+}
+
+.borderEdge {
+    width: 527px;
+}
+
+.bottomBoxContainer {
+    display: flex;
+    align-items: center;
+    margin-left: 210px;
+}
