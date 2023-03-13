@@ -46,7 +46,7 @@ const BurgerIngredients = ({data}) => {
                         </Tab>
                     </div>
                 </div>
-                <section className={styles.scrollingSection}>
+                <section className={styles.scrollList}>
                     <div>
                         <p className="text text_type_main-medium">Булки</p>
                         <BigCard data={data} type='bun' onClick={setModalVisible} setSelected={setSelected}/>

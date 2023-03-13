@@ -13,9 +13,11 @@
 }
 
 .scrollList {
+    composes: custom-scroll from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+
     height: 464px;
     width: 600px;
-    overflow: auto;
+    overflow-y: auto;
 }
 
 .scrollList::-webkit-scrollbar {
