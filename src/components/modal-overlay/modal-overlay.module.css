@@ -1,11 +1,12 @@
-.modal_container {
+.popup {
+    background-color: rgba(0, 0, 0, 0.6);
     position: fixed;
-    top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.4);
-    display: flex;
+    right: 0;
+    top: 0;
+    bottom: 0;
     justify-content: center;
     align-items: center;
+    display: flex;
+    z-index: 2;
 }

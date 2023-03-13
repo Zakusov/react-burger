@@ -13,12 +13,17 @@ const tab3 = 'Начинки';
 const BurgerIngredients = (props) => {
 
     const [current, setCurrent] = React.useState(tab1);
-    const [modalAct, setModalAct] = React.useState(false);
+    const [modalVisible, setModalVisible] = React.useState(false);
     const [dataIngredients, setDataIngredients] = React.useState([])
+
+    const closeModal = () => {
+        setModalVisible(false);
+    };
+
     return (
         <>
-            {modalAct &&
-                <Modal active={modalAct} setActive={setModalAct} title='Детали ингредиента'>
+            {modalVisible &&
+                <Modal onClose={closeModal} title="Детали заказа">
                     <IngredientDetails data={dataIngredients}/>
                 </Modal>}
 
@@ -46,19 +51,20 @@ const BurgerIngredients = (props) => {
                         <p className="text text_type_main-medium">
                             Булки
                         </p>
-                        <BigCard arr={props.data} type='bun' modal={setModalAct} lookDetails={setDataIngredients}/>
+                        <BigCard arr={props.data} type='bun' modal={setModalVisible} lookDetails={setDataIngredients}/>
                     </div>
                     <div>
                         <p className="text text_type_main-medium">
                             Соусы
                         </p>
-                        <BigCard arr={props.data} type='sauce' modal={setModalAct} lookDetails={setDataIngredients}/>
+                        <BigCard arr={props.data} type='sauce' modal={setModalVisible}
+                                 lookDetails={setDataIngredients}/>
                     </div>
                     <div>
                         <p className="text text_type_main-medium">
                             Начинки
                         </p>
-                        <BigCard arr={props.data} type='main' modal={setModalAct} lookDetails={setDataIngredients}/>
+                        <BigCard arr={props.data} type='main' modal={setModalVisible} lookDetails={setDataIngredients}/>
                     </div>
                 </section>
             </section>

@@ -6,12 +6,17 @@ import Modal from '../modal/modal.js';
 import OrderDetails from '../order-details/order-details.js'
 
 const BurgerConstructor = (props) => {
-    const [modalActive, setModalActive] = React.useState(false);
+
+    const [modalVisible, setModalVisible] = React.useState(false);
+
+    const closeModal = () => {
+        setModalVisible(false);
+    };
 
     return (
         <>
-            {modalActive &&
-                <Modal active={modalActive} setActive={setModalActive} title=''>
+            {modalVisible &&
+                <Modal onClose={closeModal} title=''>
                     <OrderDetails/>
                 </Modal>
             }
@@ -58,7 +63,7 @@ const BurgerConstructor = (props) => {
                     <p className="text text_type_digits-medium">610</p>
                     <CurrencyIcon type="primary"/>
                     <div className='ml-10'>
-                        <Button type="primary" size="large" onClick={() => setModalActive(!modalActive)}>
+                        <Button type="primary" size="large" onClick={() => setModalVisible(!modalVisible)}>
                             Оформить заказ
                         </Button>
                     </div>
