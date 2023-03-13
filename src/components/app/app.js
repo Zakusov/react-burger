@@ -24,7 +24,7 @@ function App() {
             <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
                 <BurgerIngredients data={ingredients}/>
                 <div className='pt-25'>
-                    <BurgerConstructor arr={ingredients}/>
+                    <BurgerConstructor data={ingredients}/>
                 </div>
             </div>
         </ >

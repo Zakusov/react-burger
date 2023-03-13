@@ -1,15 +1,14 @@
 import Card from '../card/card';
 import {ingredientArray} from "../../utils/prop-types";
+import PropTypes from "prop-types";
 
-const BigCard = ({lookDetails, arr, type, modal}) => {
-
+const BigCard = ({data, type, onClick, setSelected}) => {
     return (
         <div className='pt-6 pr-1 pb-10 pl-4' style={{display: 'flex', flexWrap: 'wrap'}}>
-            {arr.map((elem) => {
+            {data.map((elem) => {
                 if (elem.type === type) {
                     return (
-                        <Card image={elem.image} price={elem.price} name={elem.name} key={elem._id}
-                              onClick={modal} onDetails={lookDetails} info={elem}/>
+                        <Card key={elem._id} item={elem} onClick={onClick} setSelected={setSelected}/>
                     )
                 }
             })}
@@ -18,7 +17,10 @@ const BigCard = ({lookDetails, arr, type, modal}) => {
 }
 
 BigCard.propTypes = {
-    arr: ingredientArray
+    data: ingredientArray.isRequired,
+    type: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
+    setSelected: PropTypes.func.isRequired
 };
 
 export default BigCard;

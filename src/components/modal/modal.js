@@ -7,10 +7,10 @@ import styles from './modal.module.css';
 
 const modalRoot = document.getElementById("root");
 
-function Modal(props) {
+function Modal({onClose, title, children}) {
     const onKeyDown = (event) => {
         if (event.key === "Escape") {
-            props.onClose();
+            onClose();
         }
     };
 
@@ -22,13 +22,13 @@ function Modal(props) {
     }, []);
 
     return ReactDOM.createPortal(
-        <ModalOverlay onClose={props.onClose}>
+        <ModalOverlay onClose={onClose}>
             <div className={styles.modal}>
                 <div className={`${styles.header} pt-10 pr-10 pl-10`}>
-                    <p className="text text_type_main-large">{props.title}</p>
-                    <CloseIcon type="primary" onClick={props.onClose}/>
+                    <p className="text text_type_main-large">{title}</p>
+                    <CloseIcon type="primary" onClick={onClose}/>
                 </div>
-                {props.children}
+                {children}
             </div>
         </ModalOverlay>,
         modalRoot

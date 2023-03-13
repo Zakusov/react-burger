@@ -10,11 +10,11 @@ const tab1 = 'Булки';
 const tab2 = 'Соусы';
 const tab3 = 'Начинки';
 
-const BurgerIngredients = (props) => {
+const BurgerIngredients = ({data}) => {
 
     const [current, setCurrent] = React.useState(tab1);
     const [modalVisible, setModalVisible] = React.useState(false);
-    const [dataIngredients, setDataIngredients] = React.useState([])
+    const [selected, setSelected] = React.useState([])
 
     const closeModal = () => {
         setModalVisible(false);
@@ -24,7 +24,7 @@ const BurgerIngredients = (props) => {
         <>
             {modalVisible &&
                 <Modal onClose={closeModal} title="Детали заказа">
-                    <IngredientDetails data={dataIngredients}/>
+                    <IngredientDetails item={selected}/>
                 </Modal>}
 
             <section style={{width: '600px'}}>
@@ -48,23 +48,16 @@ const BurgerIngredients = (props) => {
                 </div>
                 <section className={styles.scrollingSection}>
                     <div>
-                        <p className="text text_type_main-medium">
-                            Булки
-                        </p>
-                        <BigCard arr={props.data} type='bun' modal={setModalVisible} lookDetails={setDataIngredients}/>
+                        <p className="text text_type_main-medium">Булки</p>
+                        <BigCard data={data} type='bun' onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                     <div>
-                        <p className="text text_type_main-medium">
-                            Соусы
-                        </p>
-                        <BigCard arr={props.data} type='sauce' modal={setModalVisible}
-                                 lookDetails={setDataIngredients}/>
+                        <p className="text text_type_main-medium">Соусы</p>
+                        <BigCard data={data} type='sauce' onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                     <div>
-                        <p className="text text_type_main-medium">
-                            Начинки
-                        </p>
-                        <BigCard arr={props.data} type='main' modal={setModalVisible} lookDetails={setDataIngredients}/>
+                        <p className="text text_type_main-medium">Начинки</p>
+                        <BigCard data={data} type='main' onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                 </section>
             </section>
@@ -73,7 +66,7 @@ const BurgerIngredients = (props) => {
 }
 
 BurgerIngredients.propTypes = {
-    data: ingredientArray
+    data: ingredientArray.isRequired
 };
 
 export default BurgerIngredients;

@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 import styles from './modal-overlay.module.css';
 
-function ModalOverlay(props) {
+function ModalOverlay({onClose, children}) {
 	const onPopupClick = (e) => {
 		if (e.target === e.currentTarget) {
-			props.onClose();
+			onClose();
 		}
 	};
 
 	return (
 		<div className={styles.popup} onClick={onPopupClick}>
-			{props.children}
+			{children}
 		</div>
 	);
 }

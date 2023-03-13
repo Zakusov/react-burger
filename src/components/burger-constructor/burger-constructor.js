@@ -5,7 +5,7 @@ import Modal from '../modal/modal.js';
 import OrderDetails from '../order-details/order-details.js'
 import {ingredientArray} from "../../utils/prop-types";
 
-const BurgerConstructor = (props) => {
+const BurgerConstructor = ({data}) => {
 
     const [modalVisible, setModalVisible] = React.useState(false);
 
@@ -35,7 +35,7 @@ const BurgerConstructor = (props) => {
                     </li>
                     <li className='mb-4'>
                         <ul className={styles.scrollList}>
-                            {props.arr.map((elem) => {
+                            {data.map((elem) => {
                                 if (elem.type !== 'bun') {
                                     return (
                                         <li className='mb-4 ml-2' key={elem._id}>
@@ -63,7 +63,8 @@ const BurgerConstructor = (props) => {
                     <p className="text text_type_digits-medium">610</p>
                     <CurrencyIcon type="primary"/>
                     <div className='ml-10'>
-                        <Button type="primary" size="large" onClick={() => setModalVisible(!modalVisible)}>
+                        <Button htmlType="button" type="primary" size="large"
+                                onClick={() => setModalVisible(!modalVisible)}>
                             Оформить заказ
                         </Button>
                     </div>
@@ -74,7 +75,7 @@ const BurgerConstructor = (props) => {
 }
 
 BurgerConstructor.propTypes = {
-    arr: ingredientArray
+    data: ingredientArray.isRequired
 };
 
 export default BurgerConstructor;

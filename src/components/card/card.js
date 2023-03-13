@@ -2,14 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './card.module.css';
+import {ingredientType} from "../../utils/prop-types";
 
-const Card = ({onClick, image, price, name, onDetails, info}) => {
+const Card = ({item, onClick, setSelected}) => {
 
     const [count, setCount] = React.useState(0);
 
     const onCardClick = () => {
         onClick(true);
-        onDetails(info)
+        setSelected(item);
     }
 
     return (
@@ -19,15 +20,15 @@ const Card = ({onClick, image, price, name, onDetails, info}) => {
                     <Counter count={count} size="default"/>
                 </div>
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                    <img className='mb-1' src={image}/>
+                    <img className='mb-1' src={item.image} alt={item.name}/>
                     <div className='mb-1' style={{display: 'flex'}}>
-                        <p className="text text_type_digits-default">{price}</p><CurrencyIcon type="primary"/>
+                        <p className="text text_type_digits-default">{item.price}</p><CurrencyIcon type="primary"/>
                     </div>
                 </div>
 
                 <div className={styles.textCont}>
                     <p className="text text_type_main-default" style={{textAlign: "center"}}>
-                        {name}
+                        {item.name}
                     </p>
                 </div>
             </div>
@@ -35,9 +36,9 @@ const Card = ({onClick, image, price, name, onDetails, info}) => {
     )
 }
 Card.propTypes = {
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
+    item: ingredientType.isRequired,
+    onClick: PropTypes.func.isRequired,
+    setSelected: PropTypes.func.isRequired,
 }
 
 export default Card;
