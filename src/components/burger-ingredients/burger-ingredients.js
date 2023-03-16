@@ -4,17 +4,38 @@ import styles from './burger-ingredients.module.css';
 import BigCard from "../big-card/big-card";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import {ingredientArray} from "../../utils/prop-types";
+import {IngredientsContext} from "../../utils/context";
 
 const tab1 = 'Булки';
 const tab2 = 'Соусы';
 const tab3 = 'Начинки';
 
-const BurgerIngredients = ({data}) => {
+const BurgerIngredients = () => {
 
     const [current, setCurrent] = React.useState(tab1);
     const [modalVisible, setModalVisible] = React.useState(false);
     const [selected, setSelected] = React.useState([])
+
+    /** Все ингридиенты **/
+    const ingredients = React.useContext(IngredientsContext);
+
+    /** Булки **/
+    const buns = React.useMemo(
+        () => ingredients.filter((item) => item.type === "bun"),
+        [ingredients]
+    );
+
+    /** Соусы **/
+    const sauces = React.useMemo(
+        () => ingredients.filter((item) => item.type === "sauce"),
+        [ingredients]
+    );
+
+    /** Начинки **/
+    const mains = React.useMemo(
+        () => ingredients.filter((item) => item.type === "main"),
+        [ingredients]
+    );
 
     const closeModal = () => {
         setModalVisible(false);
@@ -27,7 +48,7 @@ const BurgerIngredients = ({data}) => {
                     <IngredientDetails item={selected}/>
                 </Modal>}
 
-            <section style={{width: '600px'}}>
+            <section className={`${styles.section} mt-10`}>
                 <div className='mt-10 mb-5'>
                     <p className="text text_type_main-large">
                         Соберите бургер
@@ -49,24 +70,20 @@ const BurgerIngredients = ({data}) => {
                 <section className={styles.scrollList}>
                     <div>
                         <p className="text text_type_main-medium">Булки</p>
-                        <BigCard data={data} type='bun' onClick={setModalVisible} setSelected={setSelected}/>
+                        <BigCard data={buns} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                     <div>
                         <p className="text text_type_main-medium">Соусы</p>
-                        <BigCard data={data} type='sauce' onClick={setModalVisible} setSelected={setSelected}/>
+                        <BigCard data={sauces} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                     <div>
                         <p className="text text_type_main-medium">Начинки</p>
-                        <BigCard data={data} type='main' onClick={setModalVisible} setSelected={setSelected}/>
+                        <BigCard data={mains} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                 </section>
             </section>
         </>
     )
 }
-
-BurgerIngredients.propTypes = {
-    data: ingredientArray.isRequired
-};
 
 export default BurgerIngredients;

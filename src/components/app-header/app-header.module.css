@@ -8,7 +8,6 @@
 
 .navList {
     composes: pt-4 from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
-    composes: pb-4 from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;

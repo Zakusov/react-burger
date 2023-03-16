@@ -3,10 +3,12 @@ import AppHeader from '../app-header/app-header.js';
 import BurgerConstructor from '../burger-constructor/burger-constructor.js';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients.js';
 import {getIngredients} from '../../utils/burger-api';
+import {IngredientsContext} from "../../utils/context";
+import styles from "./app.module.css";
 
 function App() {
-    const [error, setError] = React.useState(false);
     const [ingredients, setIngredients] = React.useState([]);
+    const [error, setError] = React.useState(false);
 
     React.useEffect(() => {
         getIngredients().then((res) => {
@@ -21,12 +23,12 @@ function App() {
         <>
             {error && <div>Упс! Похоже, закончились ингридиенты... Попробуйте зайти позже.</div>}
             <AppHeader/>
-            <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
-                <BurgerIngredients data={ingredients}/>
-                <div className='pt-25'>
-                    <BurgerConstructor data={ingredients}/>
-                </div>
-            </div>
+            <IngredientsContext.Provider value={ingredients}>
+                <main className={styles.main}>
+                    <BurgerIngredients/>
+                    <BurgerConstructor/>
+                </main>
+            </IngredientsContext.Provider>
         </ >
     );
 }

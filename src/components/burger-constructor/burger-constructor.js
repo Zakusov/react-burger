@@ -3,11 +3,20 @@ import styles from './burger-constructor.module.css';
 import React from 'react';
 import Modal from '../modal/modal.js';
 import OrderDetails from '../order-details/order-details.js'
-import {ingredientArray} from "../../utils/prop-types";
+import {IngredientsContext} from "../../utils/context";
 
-const BurgerConstructor = ({data}) => {
+const BurgerConstructor = () => {
 
     const [modalVisible, setModalVisible] = React.useState(false);
+
+    /** Все ингридиенты **/
+    const ingredients = React.useContext(IngredientsContext);
+
+    /** Все ингридиенты, кроме булок **/
+    const notBuns = React.useMemo(
+        () => ingredients.filter((item) => item.type !== "bun"),
+        [ingredients]
+    );
 
     const closeModal = () => {
         setModalVisible(false);
@@ -20,7 +29,7 @@ const BurgerConstructor = ({data}) => {
                     <OrderDetails/>
                 </Modal>
             }
-            <div className={`${styles.container} pr-4 pl-4 ml-10`}>
+            <div className={`${styles.container} pt-15`}>
                 <ul className={styles.bun}>
                     <li className='mb-4 ml-2'>
                         <ConstructorElement
@@ -32,15 +41,13 @@ const BurgerConstructor = ({data}) => {
                     </li>
                 </ul>
                 <ul className={styles.scrollList}>
-                    {data.map((elem) => {
-                        if (elem.type !== 'bun') {
-                            return (
-                                <li className='mb-4 ml-2' key={elem._id}>
-                                    <DragIcon type="primary"/>
-                                    <ConstructorElement text={elem.name} price={elem.price} thumbnail={elem.image}/>
-                                </li>
-                            )
-                        }
+                    {notBuns.map((elem) => {
+                        return (
+                            <li className='mb-4 ml-2' key={elem._id}>
+                                <DragIcon type="primary"/>
+                                <ConstructorElement text={elem.name} price={elem.price} thumbnail={elem.image}/>
+                            </li>
+                        )
                     })}
                 </ul>
                 <ul className={styles.bun}>
@@ -67,9 +74,5 @@ const BurgerConstructor = ({data}) => {
         </>
     )
 }
-
-BurgerConstructor.propTypes = {
-    data: ingredientArray.isRequired
-};
 
 export default BurgerConstructor;
