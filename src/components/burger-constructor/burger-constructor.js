@@ -21,42 +21,36 @@ const BurgerConstructor = ({data}) => {
                 </Modal>
             }
             <div className={`${styles.container} pr-4 pl-4 ml-10`}>
-                <ul>
-                    <li className='mb-4 ml-8'>
-                        <div className={styles.borderEdge}>
-                            <ConstructorElement
-                                type="top"
-                                isLocked={true}
-                                text="Краторная булка N-200i (верх)"
-                                price={20}
-                                thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
-                            />
-                        </div>
+                <ul className={styles.bun}>
+                    <li className='mb-4 ml-2'>
+                        <ConstructorElement
+                            type="top"
+                            isLocked={true}
+                            text="Краторная булка N-200i (верх)"
+                            price={20}
+                            thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}/>
                     </li>
-                    <li className='mb-4'>
-                        <ul className={styles.scrollList}>
-                            {data.map((elem) => {
-                                if (elem.type !== 'bun') {
-                                    return (
-                                        <li className='mb-4 ml-2' key={elem._id}>
-                                            <DragIcon type="primary"/>
-                                            <ConstructorElement text={elem.name} price={elem.price}
-                                                                thumbnail={elem.image}/>
-                                        </li>)
-                                }
-                            })}
-                        </ul>
-                    </li>
-                    <li className='mb-4 ml-8'>
-                        <div>
-                            <ConstructorElement
-                                type="bottom"
-                                isLocked={true}
-                                text="Краторная булка N-200i (низ)"
-                                price={20}
-                                thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
-                            />
-                        </div>
+                </ul>
+                <ul className={styles.scrollList}>
+                    {data.map((elem) => {
+                        if (elem.type !== 'bun') {
+                            return (
+                                <li className='mb-4 ml-2' key={elem._id}>
+                                    <DragIcon type="primary"/>
+                                    <ConstructorElement text={elem.name} price={elem.price} thumbnail={elem.image}/>
+                                </li>
+                            )
+                        }
+                    })}
+                </ul>
+                <ul className={styles.bun}>
+                    <li className='mb-4 ml-2'>
+                        <ConstructorElement
+                            type="bottom"
+                            isLocked={true}
+                            text="Краторная булка N-200i (низ)"
+                            price={20}
+                            thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}/>
                     </li>
                 </ul>
                 <section className={styles.bottomBoxContainer}>
