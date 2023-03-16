@@ -1,0 +1,23 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ingredients {
+    display: flex;
+    justify-content: space-between;
+    width: 508px;
+}
+
+.photo {
+    width: 480px;
+    height: 240px;
+}
+
+.ingredients_section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
