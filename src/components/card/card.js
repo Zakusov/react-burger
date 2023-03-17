@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './card.module.css';
 import {ingredientType} from "../../utils/prop-types";
+import styles from './card.module.css';
 
 const Card = ({item, onClick, setSelected}) => {
 
@@ -15,19 +15,19 @@ const Card = ({item, onClick, setSelected}) => {
 
     return (
         <>
-            <div className='ml-4 mb-8' style={{width: '265px'}} onClick={onCardClick}>
-                <div style={{position: 'relative'}}>
+            <div className={`${styles.main} ml-4 mb-8`} onClick={onCardClick}>
+                <div className={styles.counter}>
                     <Counter count={count} size="default"/>
                 </div>
-                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                <div className={styles.image}>
                     <img className='mb-1' src={item.image} alt={item.name}/>
-                    <div className='mb-1' style={{display: 'flex'}}>
+                    <div className={`${styles.price} mb-1`}>
                         <p className="text text_type_digits-default">{item.price}</p><CurrencyIcon type="primary"/>
                     </div>
                 </div>
 
-                <div className={styles.textCont}>
-                    <p className="text text_type_main-default" style={{textAlign: "center"}}>
+                <div className={styles.textDiv}>
+                    <p className="text text_type_main-default">
                         {item.name}
                     </p>
                 </div>

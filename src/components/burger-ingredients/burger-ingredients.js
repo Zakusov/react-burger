@@ -55,7 +55,7 @@ const BurgerIngredients = () => {
                     </p>
                 </div>
                 <div className='mb-10'>
-                    <div style={{display: 'flex'}}>
+                    <div className={styles.tab}>
                         <Tab value={tab1} active={current === tab1} onClick={setCurrent}>
                             {tab1}
                         </Tab>
