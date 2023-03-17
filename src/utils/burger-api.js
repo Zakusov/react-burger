@@ -1,21 +1,26 @@
 import {NORMA_API} from "./constants";
 
 const checkResponse = (res) => {
-  return res.ok ? res.json() : res.json().then((error) => Promise.reject(error));
+    return res.ok ? res.json() : res.json().then((error) => Promise.reject(error));
 };
 
+const request = (endpoint, options) => {
+    // принимает два аргумента: урл и объект опций, как и `fetch`
+    return fetch(`${NORMA_API}/${endpoint}`, options).then(checkResponse)
+}
+
 export const getIngredients = () => {
-  return fetch(`${NORMA_API}/ingredients`).then(checkResponse);
+    return request("ingredients");
 };
 
 export const createOrder = (ingredientIds) => {
-  return fetch(`${NORMA_API}/orders`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      "ingredients": ingredientIds
-    })
-  }).then(checkResponse);
+    return request("orders", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            "ingredients": ingredientIds
+        })
+    });
 };
