@@ -1,9 +1,9 @@
 import Card from "../card/card";
 import PropTypes from "prop-types";
 import {ingredientArray} from "../../utils/prop-types";
-import styles from "./big-card.module.css"
+import styles from "./ingredient-list.module.css"
 
-const BigCard = ({data, onClick, setSelected}) => {
+const IngredientList = ({data, onClick, setSelected}) => {
     return (
         <div className={`${styles.main} pt-6 pr-1 pb-10 pl-4`}>
             {data.map((elem) => {
@@ -15,10 +15,10 @@ const BigCard = ({data, onClick, setSelected}) => {
     )
 }
 
-BigCard.propTypes = {
+IngredientList.propTypes = {
     data: ingredientArray.isRequired,
     onClick: PropTypes.func.isRequired,
     setSelected: PropTypes.func.isRequired
 };
 
-export default BigCard;
+export default IngredientList;

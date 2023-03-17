@@ -1,7 +1,7 @@
 import React from 'react';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './burger-ingredients.module.css';
-import BigCard from "../big-card/big-card";
+import IngredientList from "../ingredient-list/ingredient-list";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import {IngredientsContext} from "../../utils/context";
@@ -70,15 +70,15 @@ const BurgerIngredients = () => {
                 <section className={styles.scrollList}>
                     <div>
                         <p className="text text_type_main-medium">Булки</p>
-                        <BigCard data={buns} onClick={setModalVisible} setSelected={setSelected}/>
+                        <IngredientList data={buns} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                     <div>
                         <p className="text text_type_main-medium">Соусы</p>
-                        <BigCard data={sauces} onClick={setModalVisible} setSelected={setSelected}/>
+                        <IngredientList data={sauces} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                     <div>
                         <p className="text text_type_main-medium">Начинки</p>
-                        <BigCard data={mains} onClick={setModalVisible} setSelected={setSelected}/>
+                        <IngredientList data={mains} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                 </section>
             </section>
