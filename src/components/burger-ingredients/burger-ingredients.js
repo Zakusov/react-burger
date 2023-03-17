@@ -12,7 +12,7 @@ const tab3 = 'Начинки';
 
 const BurgerIngredients = () => {
 
-    const [current, setCurrent] = React.useState(tab1);
+    const [currentTab, setCurrentTab] = React.useState(tab1);
     const [modalVisible, setModalVisible] = React.useState(false);
     const [selected, setSelected] = React.useState([])
 
@@ -37,6 +37,27 @@ const BurgerIngredients = () => {
         [ingredients]
     );
 
+    const bunsList = React.useRef(null);
+    const saucesList = React.useRef(null);
+    const mainsList = React.useRef(null);
+
+    const scrollTo = (ref) => {
+        ref.current.scrollIntoView({behavior: "smooth"});
+    }
+
+    React.useEffect(() => {
+        switch (currentTab) {
+            case tab2:
+                scrollTo(saucesList);
+                break;
+            case tab3:
+                scrollTo(mainsList);
+                break;
+            default:
+                scrollTo(bunsList);
+        }
+    }, [currentTab])
+
     const closeModal = () => {
         setModalVisible(false);
     };
@@ -56,28 +77,28 @@ const BurgerIngredients = () => {
                 </div>
                 <div className='mb-10'>
                     <div className={styles.tab}>
-                        <Tab value={tab1} active={current === tab1} onClick={setCurrent}>
+                        <Tab value={tab1} active={currentTab === tab1} onClick={setCurrentTab}>
                             {tab1}
                         </Tab>
-                        <Tab value={tab2} active={current === tab2} onClick={setCurrent}>
+                        <Tab value={tab2} active={currentTab === tab2} onClick={setCurrentTab}>
                             {tab2}
                         </Tab>
-                        <Tab value={tab3} active={current === tab3} onClick={setCurrent}>
+                        <Tab value={tab3} active={currentTab === tab3} onClick={setCurrentTab}>
                             {tab3}
                         </Tab>
                     </div>
                 </div>
                 <section className={styles.scrollList}>
                     <div>
-                        <p className="text text_type_main-medium">Булки</p>
+                        <p className="text text_type_main-medium" ref={bunsList}>Булки</p>
                         <IngredientList data={buns} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                     <div>
-                        <p className="text text_type_main-medium">Соусы</p>
+                        <p className="text text_type_main-medium" ref={saucesList}>Соусы</p>
                         <IngredientList data={sauces} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                     <div>
-                        <p className="text text_type_main-medium">Начинки</p>
+                        <p className="text text_type_main-medium" ref={mainsList}>Начинки</p>
                         <IngredientList data={mains} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                 </section>
