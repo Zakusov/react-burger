@@ -5,7 +5,7 @@ import {CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import styles from './modal.module.css';
 
-const modalRoot = document.getElementById("root");
+const modalRoot = document.getElementById("modals");
 
 function Modal({onClose, title, children}) {
     const onKeyDown = (event) => {

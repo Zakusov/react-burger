@@ -12,6 +12,10 @@
     gap: 10px;
 }
 
+.bun {
+    width: 592px;
+}
+
 .scrollList {
     composes: custom-scroll from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
 

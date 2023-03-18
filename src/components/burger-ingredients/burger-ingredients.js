@@ -1,20 +1,62 @@
 import React from 'react';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './burger-ingredients.module.css';
-import BigCard from "../big-card/big-card";
+import IngredientList from "../ingredient-list/ingredient-list";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import {ingredientArray} from "../../utils/prop-types";
+import {IngredientsContext} from "../../utils/context";
 
 const tab1 = 'Булки';
 const tab2 = 'Соусы';
 const tab3 = 'Начинки';
 
-const BurgerIngredients = ({data}) => {
+const BurgerIngredients = () => {
 
-    const [current, setCurrent] = React.useState(tab1);
+    const [currentTab, setCurrentTab] = React.useState(tab1);
     const [modalVisible, setModalVisible] = React.useState(false);
     const [selected, setSelected] = React.useState([])
+
+    /** Все ингридиенты **/
+    const ingredients = React.useContext(IngredientsContext);
+
+    /** Булки **/
+    const buns = React.useMemo(
+        () => ingredients.filter((item) => item.type === "bun"),
+        [ingredients]
+    );
+
+    /** Соусы **/
+    const sauces = React.useMemo(
+        () => ingredients.filter((item) => item.type === "sauce"),
+        [ingredients]
+    );
+
+    /** Начинки **/
+    const mains = React.useMemo(
+        () => ingredients.filter((item) => item.type === "main"),
+        [ingredients]
+    );
+
+    const bunsList = React.useRef(null);
+    const saucesList = React.useRef(null);
+    const mainsList = React.useRef(null);
+
+    const scrollTo = (ref) => {
+        ref.current.scrollIntoView({behavior: "smooth"});
+    }
+
+    React.useEffect(() => {
+        switch (currentTab) {
+            case tab2:
+                scrollTo(saucesList);
+                break;
+            case tab3:
+                scrollTo(mainsList);
+                break;
+            default:
+                scrollTo(bunsList);
+        }
+    }, [currentTab])
 
     const closeModal = () => {
         setModalVisible(false);
@@ -27,46 +69,42 @@ const BurgerIngredients = ({data}) => {
                     <IngredientDetails item={selected}/>
                 </Modal>}
 
-            <section style={{width: '600px'}}>
+            <section className={`${styles.section} mt-10`}>
                 <div className='mt-10 mb-5'>
                     <p className="text text_type_main-large">
                         Соберите бургер
                     </p>
                 </div>
                 <div className='mb-10'>
-                    <div style={{display: 'flex'}}>
-                        <Tab value={tab1} active={current === tab1} onClick={setCurrent}>
+                    <div className={styles.tab}>
+                        <Tab value={tab1} active={currentTab === tab1} onClick={setCurrentTab}>
                             {tab1}
                         </Tab>
-                        <Tab value={tab2} active={current === tab2} onClick={setCurrent}>
+                        <Tab value={tab2} active={currentTab === tab2} onClick={setCurrentTab}>
                             {tab2}
                         </Tab>
-                        <Tab value={tab3} active={current === tab3} onClick={setCurrent}>
+                        <Tab value={tab3} active={currentTab === tab3} onClick={setCurrentTab}>
                             {tab3}
                         </Tab>
                     </div>
                 </div>
                 <section className={styles.scrollList}>
                     <div>
-                        <p className="text text_type_main-medium">Булки</p>
-                        <BigCard data={data} type='bun' onClick={setModalVisible} setSelected={setSelected}/>
+                        <p className="text text_type_main-medium" ref={bunsList}>Булки</p>
+                        <IngredientList data={buns} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                     <div>
-                        <p className="text text_type_main-medium">Соусы</p>
-                        <BigCard data={data} type='sauce' onClick={setModalVisible} setSelected={setSelected}/>
+                        <p className="text text_type_main-medium" ref={saucesList}>Соусы</p>
+                        <IngredientList data={sauces} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                     <div>
-                        <p className="text text_type_main-medium">Начинки</p>
-                        <BigCard data={data} type='main' onClick={setModalVisible} setSelected={setSelected}/>
+                        <p className="text text_type_main-medium" ref={mainsList}>Начинки</p>
+                        <IngredientList data={mains} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                 </section>
             </section>
         </>
     )
 }
-
-BurgerIngredients.propTypes = {
-    data: ingredientArray.isRequired
-};
 
 export default BurgerIngredients;

@@ -1,6 +1,14 @@
+.section {
+    max-width: 600px;
+}
+
+.tab {
+    display: flex;
+}
+
 .scrollList {
     composes: custom-scroll from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
 
-    height: 912px;
+    height: 550px;
     overflow-y: auto;
 }

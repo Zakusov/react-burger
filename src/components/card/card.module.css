@@ -1,4 +1,23 @@
-.textCont {
+.main {
+    width: 265px;
+}
+
+.counter {
+    position: relative;
+}
+
+.image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.price {
+    display: flex;
+}
+
+.textDiv {
     display: flex;
     justify-content: center;
+    text-align: center;
 }
