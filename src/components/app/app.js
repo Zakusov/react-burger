@@ -1,8 +1,10 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {loadIngredients} from "../../services/actions/ingredients-actions";
-
 import AppHeader from '../app-header/app-header.js';
+import {DndProvider} from "react-dnd"
+import {HTML5Backend} from "react-dnd-html5-backend";
+
+import {loadIngredients} from "../../services/actions/ingredients-actions";
 import BurgerConstructor from '../burger-constructor/burger-constructor.js';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients.js';
 import {Loader} from "../loader/loader";
@@ -22,12 +24,14 @@ function App() {
     return (
         <>
             <AppHeader/>
-            <main className={styles.main}>
-                {isFailed && <div>Упс! Похоже, закончились ингредиенты... Попробуйте зайти позже.</div>}
-                {!isFailed && isLoading && <Loader size="large"/>}
-                {!isFailed && !isLoading && <BurgerIngredients/>}
-                <BurgerConstructor/>
-            </main>
+            <DndProvider backend={HTML5Backend}>
+                <main className={styles.main}>
+                    {isFailed && <div>Упс! Похоже, закончились ингредиенты... Попробуйте зайти позже.</div>}
+                    {!isFailed && isLoading && <Loader size="large"/>}
+                    {!isFailed && !isLoading && <BurgerIngredients/>}
+                    <BurgerConstructor/>
+                </main>
+            </DndProvider>
         </>
     );
 }

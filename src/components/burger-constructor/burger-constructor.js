@@ -1,11 +1,12 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
+import {useDrop} from "react-dnd";
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+
 import Modal from "../modal/modal.js";
-
 import OrderDetails from "../order-details/order-details.js"
-import {createOrder} from "../../utils/burger-api";
 
+import {createOrder} from "../../utils/burger-api";
 import styles from "./burger-constructor.module.css";
 import {addIngredient, deleteAll, deleteIngredient} from "../../services/actions/order-actions";
 
@@ -42,6 +43,17 @@ const BurgerConstructor = () => {
         getInitialComposition(ingredients).forEach(item => dispatch(addIngredient(item)));
     }, [dispatch, ingredients]);
 
+    // Добавление ингредиента перетаскиванием
+    const [{isHover}, dropTargetRef] = useDrop({
+        accept: 'ingredient',
+        collect: monitor => ({
+            isHover: monitor.isOver()
+        }),
+        drop(item) {
+            dispatch(addIngredient(item))
+        }
+    });
+
     /** Удаление ингредиента из корзины. */
     const onDelete = (id) => {
         dispatch(deleteIngredient(id));
@@ -70,7 +82,7 @@ const BurgerConstructor = () => {
                     <OrderDetails orderId={orderId} error={error}/>
                 </Modal>
             }
-            <div className={`${styles.container} pt-15`}>
+            <div className={`${styles.container} pt-15`} ref={dropTargetRef}>
                 {bun &&
                     <ul className={styles.bun}>
                         <li className='mb-4 ml-2'>

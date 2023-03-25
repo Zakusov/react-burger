@@ -19,8 +19,8 @@
 .scrollList {
     composes: custom-scroll from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
 
-    max-height: calc(100vh - 595px);
-    min-height: 165px;
+    max-height: calc(100vh - 520px);
+    min-height: 175px;
     width: 600px;
     overflow-y: scroll;
 }
