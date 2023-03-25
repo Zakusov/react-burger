@@ -64,9 +64,11 @@ const OrderItem = ({item, index, moveCard}) => {
     }
 
     return (
-        <div ref={itemRef} className={styles.item} style={{opacity}} onDrop={handleDrop} data-handler-id={handlerId}>
+        <div ref={itemRef} className={styles.container} style={{opacity}} onDrop={handleDrop}
+             data-handler-id={handlerId}>
             <DragIcon type="primary"/>
             <ConstructorElement
+                className={styles.item}
                 text={item.name}
                 price={item.price}
                 thumbnail={item.image}

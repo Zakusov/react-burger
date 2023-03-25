@@ -1,3 +1,7 @@
+.container {
+    width: 560px;
+}
+
 .item {
-    display: contents;
+    width: 100%;
 }
