@@ -8,7 +8,7 @@ import OrderDetails from "../order-details/order-details.js"
 import OrderItem from "../order-item/order-item";
 
 import {createOrder} from "../../utils/burger-api";
-import {addIngredient, replaceFilling} from "../../services/actions/order-actions";
+import {addIngredient, deleteAll, replaceFilling} from "../../services/actions/order-actions";
 import styles from "./burger-constructor.module.css";
 
 
@@ -50,15 +50,16 @@ const BurgerConstructor = () => {
         ingredientIds.push(bun._id);
         createOrder(ingredientIds).then((res) => {
             setOrderId(res.order.number);
+            setModalVisible(true);
         }).catch((e) => {
             setError(true);
             console.log(e);
         });
-        setModalVisible(true);
     }
 
     const closeModal = () => {
         setModalVisible(false);
+        dispatch(deleteAll());
     };
 
     return (
