@@ -11,9 +11,7 @@ import styles from "./app.module.css";
 
 function App() {
     const dispatch = useDispatch();
-    const {loadingStarted, loadingFailed} = useSelector(
-        state => state.ingredients
-    );
+    const {isLoading, isFailed} = useSelector(state => state.ingredients);
 
     React.useEffect(() => {
             dispatch(loadIngredients());
@@ -25,9 +23,9 @@ function App() {
         <>
             <AppHeader/>
             <main className={styles.main}>
-                {loadingFailed && <div>Упс! Похоже, закончились ингридиенты... Попробуйте зайти позже.</div>}
-                {!loadingFailed && loadingStarted && <Loader size="large"/>}
-                {!loadingFailed && !loadingStarted && <BurgerIngredients/>}
+                {isFailed && <div>Упс! Похоже, закончились ингридиенты... Попробуйте зайти позже.</div>}
+                {!isFailed && isLoading && <Loader size="large"/>}
+                {!isFailed && !isLoading && <BurgerIngredients/>}
                 <BurgerConstructor/>
             </main>
         </>

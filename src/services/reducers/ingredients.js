@@ -2,20 +2,20 @@ import {GET_INGREDIENTS, GET_INGREDIENTS_FAILED, GET_INGREDIENTS_SUCCESS} from "
 
 const initialState = {
     ingredients: [],
-    loadingStarted: false,
-    loadingFailed: false
+    isLoading: false,
+    isFailed: false
 };
 
 export const ingredientsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_INGREDIENTS: {
-            return {...state, loadingStarted: true};
+            return {...state, isLoading: true};
         }
         case GET_INGREDIENTS_SUCCESS: {
-            return {...state, loadingStarted: false, loadingFailed: false, ingredients: action.ingredients};
+            return {...state, isLoading: false, isFailed: false, ingredients: action.ingredients};
         }
         case GET_INGREDIENTS_FAILED: {
-            return {...state, loadingStarted: false, loadingFailed: true};
+            return {...state, isLoading: false, isFailed: true};
         }
         default: {
             return state;
