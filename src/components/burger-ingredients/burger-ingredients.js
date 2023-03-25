@@ -1,10 +1,12 @@
-import React from 'react';
+import React from "react";
+import {useSelector} from "react-redux";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from './burger-ingredients.module.css';
-import IngredientList from "../ingredient-list/ingredient-list";
+
 import Modal from "../modal/modal";
+import IngredientList from "../ingredient-list/ingredient-list";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import {IngredientsContext} from "../../utils/context";
+
+import styles from "./burger-ingredients.module.css";
 
 const tab1 = 'Булки';
 const tab2 = 'Соусы';
@@ -17,7 +19,7 @@ const BurgerIngredients = () => {
     const [selected, setSelected] = React.useState([])
 
     /** Все ингридиенты **/
-    const ingredients = React.useContext(IngredientsContext);
+    const {ingredients} = useSelector(state => state.ingredients);
 
     /** Булки **/
     const buns = React.useMemo(

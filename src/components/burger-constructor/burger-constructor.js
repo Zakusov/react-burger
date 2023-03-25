@@ -1,10 +1,12 @@
-import {Button, ConstructorElement, CurrencyIcon, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './burger-constructor.module.css';
-import React from 'react';
-import Modal from '../modal/modal.js';
-import OrderDetails from '../order-details/order-details.js'
-import {IngredientsContext} from "../../utils/context";
+import React from "react";
+import {useSelector} from "react-redux";
+import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import Modal from "../modal/modal.js";
+
+import OrderDetails from "../order-details/order-details.js"
 import {createOrder} from "../../utils/burger-api";
+
+import styles from "./burger-constructor.module.css";
 
 const BurgerConstructor = () => {
 
@@ -13,7 +15,7 @@ const BurgerConstructor = () => {
     const [error, setError] = React.useState(false);
 
     /** Все ингридиенты **/
-    const ingredients = React.useContext(IngredientsContext);
+    const {ingredients} = useSelector(state => state.ingredients);
 
     /** Все ингридиенты, кроме булок **/
     const notBuns = React.useMemo(
