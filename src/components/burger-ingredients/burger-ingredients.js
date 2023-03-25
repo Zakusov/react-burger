@@ -58,7 +58,7 @@ const BurgerIngredients = () => {
             default:
                 scrollTo(bunsList);
         }
-    }, [currentTab])
+    }, [currentTab]);
 
     const closeModal = () => {
         setModalVisible(false);
