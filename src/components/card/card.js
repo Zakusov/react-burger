@@ -4,10 +4,23 @@ import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-com
 import {ingredientType} from "../../utils/prop-types";
 import styles from './card.module.css';
 import {useDrag} from "react-dnd";
+import {useSelector} from "react-redux";
 
 const Card = ({item, onClick, setSelected}) => {
 
     const [count, setCount] = React.useState(0);
+
+    // Содержимое корзины
+    const {bun, filling} = useSelector(state => state.order);
+
+    // Обновление счётчика добавленных ингредиентов
+    React.useEffect(() => {
+        if (item.type === 'bun') {
+            setCount(item._id === bun?._id ? 1 : 0);
+        } else {
+            setCount(filling.filter(elem => elem._id === item._id).length);
+        }
+    }, [item, bun, filling]);
 
     const onCardClick = () => {
         onClick(true);
@@ -25,9 +38,11 @@ const Card = ({item, onClick, setSelected}) => {
     return (
         <>
             <div className={`${styles.main} ml-4 mb-8`} style={{opacity}} onClick={onCardClick} ref={dragRef}>
-                <div className={styles.counter}>
-                    <Counter count={count} size="default"/>
-                </div>
+                {count > 0 &&
+                    <div className={styles.counter}>
+                        <Counter count={count} size="default"/>
+                    </div>
+                }
                 <div className={styles.image}>
                     <img className='mb-1' src={item.image} alt={item.name}/>
                     <div className={`${styles.price} mb-1`}>
