@@ -7,7 +7,7 @@ import OrderDetails from "../order-details/order-details.js"
 import {createOrder} from "../../utils/burger-api";
 
 import styles from "./burger-constructor.module.css";
-import {addIngredient, deleteAll} from "../../services/actions/order-actions";
+import {addIngredient, deleteAll, deleteIngredient} from "../../services/actions/order-actions";
 
 /** Возвращает первый ингредиент указанного типа. */
 function getFirst(ingredients, type) {
@@ -41,6 +41,11 @@ const BurgerConstructor = () => {
         // Формируем новый состав.
         getInitialComposition(ingredients).forEach(item => dispatch(addIngredient(item)));
     }, [dispatch, ingredients]);
+
+    /** Удаление ингредиента из корзины. */
+    const onDelete = (id) => {
+        dispatch(deleteIngredient(id));
+    }
 
     const onCreateOrder = () => {
         const ingredientIds = filling.map(element => element._id);
@@ -84,7 +89,12 @@ const BurgerConstructor = () => {
                             return (
                                 <li className='mb-4 ml-2' key={item.id}>
                                     <DragIcon type="primary"/>
-                                    <ConstructorElement text={item.name} price={item.price} thumbnail={item.image}/>
+                                    <ConstructorElement
+                                        text={item.name}
+                                        price={item.price}
+                                        thumbnail={item.image}
+                                        handleClose={() => onDelete(item.id)}
+                                    />
                                 </li>
                             )
                         })}
