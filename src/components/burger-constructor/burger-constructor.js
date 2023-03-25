@@ -8,22 +8,9 @@ import OrderDetails from "../order-details/order-details.js"
 import OrderItem from "../order-item/order-item";
 
 import {createOrder} from "../../utils/burger-api";
-import {addIngredient, deleteAll, replaceFilling} from "../../services/actions/order-actions";
+import {addIngredient, replaceFilling} from "../../services/actions/order-actions";
 import styles from "./burger-constructor.module.css";
 
-/** Возвращает первый ингредиент указанного типа. */
-function getFirst(ingredients, type) {
-    const [first] = ingredients.filter((item) => item.type === type);
-    return first;
-}
-
-/** Исходный состав бургера. */
-function getInitialComposition(ingredients) {
-    const bun = getFirst(ingredients, "bun");
-    const sauce = getFirst(ingredients, "sauce");
-    const main = getFirst(ingredients, "main");
-    return [bun, sauce, main].filter(item => item && item.type);
-}
 
 const BurgerConstructor = () => {
 
@@ -36,13 +23,6 @@ const BurgerConstructor = () => {
 
     // Исходный состав бургера
     const dispatch = useDispatch();
-    const {ingredients} = useSelector(state => state.ingredients);
-    React.useEffect(() => {
-        // Состав исходных ингредиентов изменился. Очищаем корзину.
-        dispatch(deleteAll());
-        // Формируем новый состав.
-        getInitialComposition(ingredients).forEach(item => dispatch(addIngredient(item)));
-    }, [dispatch, ingredients]);
 
     // Добавление ингредиента перетаскиванием
     const [{isHover}, dropTargetRef] = useDrop({
@@ -89,6 +69,9 @@ const BurgerConstructor = () => {
                 </Modal>
             }
             <div className={`${styles.container} pt-15`} ref={dropTargetRef}>
+                {!bun &&
+                    <div>Пожалуйста, перенесите сюда булку и ингредиенты для создания заказа</div>
+                }
                 {bun &&
                     <ul className={styles.bun}>
                         <li className='mb-4 ml-2'>
