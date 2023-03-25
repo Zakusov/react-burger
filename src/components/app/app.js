@@ -1,6 +1,6 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {loadIngredients} from "../../services/actions/ingredients";
+import {loadIngredients} from "../../services/actions/ingredients-actions";
 
 import AppHeader from '../app-header/app-header.js';
 import BurgerConstructor from '../burger-constructor/burger-constructor.js';
