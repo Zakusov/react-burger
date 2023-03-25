@@ -23,7 +23,7 @@ function App() {
         <>
             <AppHeader/>
             <main className={styles.main}>
-                {isFailed && <div>Упс! Похоже, закончились ингридиенты... Попробуйте зайти позже.</div>}
+                {isFailed && <div>Упс! Похоже, закончились ингредиенты... Попробуйте зайти позже.</div>}
                 {!isFailed && isLoading && <Loader size="large"/>}
                 {!isFailed && !isLoading && <BurgerIngredients/>}
                 <BurgerConstructor/>

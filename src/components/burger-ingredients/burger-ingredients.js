@@ -18,7 +18,7 @@ const BurgerIngredients = () => {
     const [modalVisible, setModalVisible] = React.useState(false);
     const [selected, setSelected] = React.useState([])
 
-    /** Все ингридиенты **/
+    /** Все ингредиенты **/
     const {ingredients} = useSelector(state => state.ingredients);
 
     /** Булки **/

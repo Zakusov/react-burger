@@ -1,5 +1,5 @@
 import uuid from 'react-uuid';
-import {ADD_INGREDIENT, DELETE_INGREDIENT} from "../actions/order-actions";
+import {ADD_INGREDIENT, DELETE_ALL, DELETE_INGREDIENT} from "../actions/order-actions";
 
 const initialState = {
     bun: null,
@@ -25,13 +25,13 @@ export const orderReducer = (state = initialState, action) => {
                     ...state,
                     bun: ingredient,
                     price: calculatePrice(ingredient, state.filling)
-                }
+                };
             }
             return {
                 ...state,
                 filling: [...state.filling, ingredient],
                 price: calculatePrice(state.bun, state.filling, ingredient)
-            }
+            };
         }
         case DELETE_INGREDIENT: {
             const filling = [...state.filling.filter(item => item.id !== action.id)];
@@ -39,7 +39,10 @@ export const orderReducer = (state = initialState, action) => {
                 ...state,
                 filling: filling,
                 cost: calculatePrice(state.bun, filling)
-            }
+            };
+        }
+        case DELETE_ALL: {
+            return {...initialState};
         }
         default: {
             return state;

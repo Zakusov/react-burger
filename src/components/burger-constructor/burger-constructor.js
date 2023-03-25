@@ -7,7 +7,21 @@ import OrderDetails from "../order-details/order-details.js"
 import {createOrder} from "../../utils/burger-api";
 
 import styles from "./burger-constructor.module.css";
-import {addIngredient} from "../../services/actions/order-actions";
+import {addIngredient, deleteAll} from "../../services/actions/order-actions";
+
+/** Возвращает первый ингредиент указанного типа. */
+function getFirst(ingredients, type) {
+    const [first] = ingredients.filter((item) => item.type === type);
+    return first;
+}
+
+/** Исходный состав бургера. */
+function getInitialComposition(ingredients) {
+    const bun = getFirst(ingredients, "bun");
+    const sauce = getFirst(ingredients, "sauce");
+    const main = getFirst(ingredients, "main");
+    return [bun, sauce, main].filter(item => item && item.type);
+}
 
 const BurgerConstructor = () => {
 
@@ -15,14 +29,17 @@ const BurgerConstructor = () => {
     const [orderId, setOrderId] = React.useState(0);
     const [error, setError] = React.useState(false);
 
-    /** Содержимое корзины **/
+    // Содержимое корзины
     const {bun, filling, price} = useSelector(state => state.order);
 
-    // FIXME Временное решение: заполняем конструктор всеми ингридиентами
+    // Исходный состав бургера
     const dispatch = useDispatch();
     const {ingredients} = useSelector(state => state.ingredients);
     React.useEffect(() => {
-        ingredients.forEach(item => dispatch(addIngredient(item)));
+        // Состав исходных ингредиентов изменился. Очищаем корзину.
+        dispatch(deleteAll());
+        // Формируем новый состав.
+        getInitialComposition(ingredients).forEach(item => dispatch(addIngredient(item)));
     }, [dispatch, ingredients]);
 
     const onCreateOrder = () => {
@@ -61,16 +78,18 @@ const BurgerConstructor = () => {
                         </li>
                     </ul>
                 }
-                <ul className={styles.scrollList}>
-                    {filling?.map(item => {
-                        return (
-                            <li className='mb-4 ml-2' key={item.id}>
-                                <DragIcon type="primary"/>
-                                <ConstructorElement text={item.name} price={item.price} thumbnail={item.image}/>
-                            </li>
-                        )
-                    })}
-                </ul>
+                {filling &&
+                    <ul className={styles.scrollList}>
+                        {filling.map(item => {
+                            return (
+                                <li className='mb-4 ml-2' key={item.id}>
+                                    <DragIcon type="primary"/>
+                                    <ConstructorElement text={item.name} price={item.price} thumbnail={item.image}/>
+                                </li>
+                            )
+                        })}
+                    </ul>
+                }
                 {bun &&
                     <ul className={styles.bun}>
                         <li className='mb-4 ml-2'>
