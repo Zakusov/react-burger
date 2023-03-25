@@ -112,7 +112,7 @@ const BurgerConstructor = () => {
                     <p className="text text_type_digits-medium">{price}</p>
                     <CurrencyIcon type="primary"/>
                     <div className='ml-10'>
-                        <Button htmlType="button" type="primary" size="large" onClick={onCreateOrder}>
+                        <Button htmlType="button" type="primary" size="large" onClick={onCreateOrder} disabled={!bun}>
                             Оформить заказ
                         </Button>
                     </div>
