@@ -1,5 +1,5 @@
 import uuid from 'react-uuid';
-import {ADD_INGREDIENT, DELETE_ALL, DELETE_INGREDIENT} from "../actions/order-actions";
+import {ADD_INGREDIENT, DELETE_ALL, DELETE_INGREDIENT, REPLACE_FILLING} from "../actions/order-actions";
 
 const initialState = {
     bun: null,
@@ -43,6 +43,14 @@ export const orderReducer = (state = initialState, action) => {
         }
         case DELETE_ALL: {
             return {...initialState};
+        }
+        case REPLACE_FILLING: {
+            return {
+                ...state,
+                filling: [
+                    ...action.filling
+                ]
+            }
         }
         default: {
             return state;

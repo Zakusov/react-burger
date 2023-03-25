@@ -20,7 +20,7 @@
     composes: custom-scroll from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
 
     max-height: calc(100vh - 480px);
-    min-height: 175px;
+    min-height: 80px;
     width: 600px;
     overflow-y: scroll;
 }

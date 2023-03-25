@@ -1,14 +1,15 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useDrop} from "react-dnd";
-import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import Modal from "../modal/modal.js";
 import OrderDetails from "../order-details/order-details.js"
+import OrderItem from "../order-item/order-item";
 
 import {createOrder} from "../../utils/burger-api";
+import {addIngredient, deleteAll, replaceFilling} from "../../services/actions/order-actions";
 import styles from "./burger-constructor.module.css";
-import {addIngredient, deleteAll, deleteIngredient} from "../../services/actions/order-actions";
 
 /** Возвращает первый ингредиент указанного типа. */
 function getFirst(ingredients, type) {
@@ -54,10 +55,15 @@ const BurgerConstructor = () => {
         }
     });
 
-    /** Удаление ингредиента из корзины. */
-    const onDelete = (id) => {
-        dispatch(deleteIngredient(id));
-    }
+    /** Меняет ингредиенты местами. */
+    const onMoveCard = useCallback((dragIndex, hoverIndex) => {
+        console.log("Меняем местами элементы " + dragIndex + " и " + hoverIndex)
+        const dragItem = filling[dragIndex];
+        const newFilling = [...filling];
+        newFilling.splice(dragIndex, 1);
+        newFilling.splice(hoverIndex, 0, dragItem);
+        dispatch(replaceFilling(newFilling))
+    }, [dispatch, filling]);
 
     const onCreateOrder = () => {
         const ingredientIds = filling.map(element => element._id);
@@ -97,16 +103,10 @@ const BurgerConstructor = () => {
                 }
                 {filling &&
                     <ul className={styles.scrollList}>
-                        {filling.map(item => {
+                        {filling.map((item, index) => {
                             return (
                                 <li className='mb-4 ml-2' key={item.id}>
-                                    <DragIcon type="primary"/>
-                                    <ConstructorElement
-                                        text={item.name}
-                                        price={item.price}
-                                        thumbnail={item.image}
-                                        handleClose={() => onDelete(item.id)}
-                                    />
+                                    <OrderItem key={`item-${item.id}`} item={item} index={index} moveCard={onMoveCard}/>
                                 </li>
                             )
                         })}

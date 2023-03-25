@@ -1,10 +1,11 @@
 import React from 'react';
+import {useSelector} from "react-redux";
+import {useDrag} from "react-dnd";
 import PropTypes from 'prop-types';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+
 import {ingredientType} from "../../utils/prop-types";
 import styles from './card.module.css';
-import {useDrag} from "react-dnd";
-import {useSelector} from "react-redux";
 
 const Card = ({item, onClick, setSelected}) => {
 
@@ -25,7 +26,7 @@ const Card = ({item, onClick, setSelected}) => {
     const onCardClick = () => {
         onClick(true);
         setSelected(item);
-    }
+    };
 
     const [{opacity}, dragRef] = useDrag({
         type: 'ingredient',
@@ -33,7 +34,7 @@ const Card = ({item, onClick, setSelected}) => {
         collect: monitor => ({
             opacity: monitor.isDragging() ? 0.1 : 1
         })
-    })
+    });
 
     return (
         <>
