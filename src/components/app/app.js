@@ -1,35 +1,38 @@
 import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import AppHeader from '../app-header/app-header.js';
+import {DndProvider} from "react-dnd"
+import {HTML5Backend} from "react-dnd-html5-backend";
+
+import {loadIngredients} from "../../services/actions/ingredients-actions";
 import BurgerConstructor from '../burger-constructor/burger-constructor.js';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients.js';
-import {getIngredients} from '../../utils/burger-api';
-import {IngredientsContext} from "../../utils/context";
+import {Loader} from "../loader/loader";
+
 import styles from "./app.module.css";
 
 function App() {
-    const [ingredients, setIngredients] = React.useState([]);
-    const [error, setError] = React.useState(false);
+    const dispatch = useDispatch();
+    const {isLoading, isFailed} = useSelector(state => state.ingredients);
 
     React.useEffect(() => {
-        getIngredients().then((res) => {
-            setIngredients(res.data);
-        }).catch((e) => {
-            setError(true);
-            console.log(e)
-        });
-    }, [])
+            dispatch(loadIngredients());
+        },
+        [dispatch]
+    );
 
     return (
         <>
-            {error && <div>Упс! Похоже, закончились ингридиенты... Попробуйте зайти позже.</div>}
             <AppHeader/>
-            <IngredientsContext.Provider value={ingredients}>
+            <DndProvider backend={HTML5Backend}>
                 <main className={styles.main}>
-                    <BurgerIngredients/>
+                    {isFailed && <div>Упс! Похоже, закончились ингредиенты... Попробуйте зайти позже.</div>}
+                    {!isFailed && isLoading && <Loader size="large"/>}
+                    {!isFailed && !isLoading && <BurgerIngredients/>}
                     <BurgerConstructor/>
                 </main>
-            </IngredientsContext.Provider>
-        </ >
+            </DndProvider>
+        </>
     );
 }
 

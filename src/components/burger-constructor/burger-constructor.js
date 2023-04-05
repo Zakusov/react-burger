@@ -1,10 +1,16 @@
-import {Button, ConstructorElement, CurrencyIcon, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './burger-constructor.module.css';
-import React from 'react';
-import Modal from '../modal/modal.js';
-import OrderDetails from '../order-details/order-details.js'
-import {IngredientsContext} from "../../utils/context";
+import React, {useCallback} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useDrop} from "react-dnd";
+import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+
+import Modal from "../modal/modal.js";
+import OrderDetails from "../order-details/order-details.js"
+import OrderItem from "../order-item/order-item";
+
 import {createOrder} from "../../utils/burger-api";
+import {addIngredient, deleteAll, replaceFilling} from "../../services/actions/order-actions";
+import styles from "./burger-constructor.module.css";
+
 
 const BurgerConstructor = () => {
 
@@ -12,32 +18,48 @@ const BurgerConstructor = () => {
     const [orderId, setOrderId] = React.useState(0);
     const [error, setError] = React.useState(false);
 
-    /** Все ингридиенты **/
-    const ingredients = React.useContext(IngredientsContext);
+    // Содержимое корзины
+    const {bun, filling, price} = useSelector(state => state.order);
 
-    /** Все ингридиенты, кроме булок **/
-    const notBuns = React.useMemo(
-        () => ingredients.filter((item) => item.type !== "bun"),
-        [ingredients]
-    );
+    // Исходный состав бургера
+    const dispatch = useDispatch();
+
+    // Добавление ингредиента перетаскиванием
+    const [{isHover}, dropTargetRef] = useDrop({
+        accept: 'ingredient',
+        collect: monitor => ({
+            isHover: monitor.isOver()
+        }),
+        drop(item) {
+            dispatch(addIngredient(item))
+        }
+    });
+
+    /** Меняет ингредиенты местами. */
+    const onMoveCard = useCallback((dragIndex, hoverIndex) => {
+        console.log("Меняем местами элементы " + dragIndex + " и " + hoverIndex)
+        const dragItem = filling[dragIndex];
+        const newFilling = [...filling];
+        newFilling.splice(dragIndex, 1);
+        newFilling.splice(hoverIndex, 0, dragItem);
+        dispatch(replaceFilling(newFilling))
+    }, [dispatch, filling]);
 
     const onCreateOrder = () => {
-        const ingredientIds = notBuns.map(element => element._id);
-        // Булка сверху
-        ingredientIds.push("60d3b41abdacab0026a733c6");
-        // Булка снизу
-        ingredientIds.push("60d3b41abdacab0026a733c6");
+        const ingredientIds = filling.map(element => element._id);
+        ingredientIds.push(bun._id);
         createOrder(ingredientIds).then((res) => {
             setOrderId(res.order.number);
+            setModalVisible(true);
         }).catch((e) => {
             setError(true);
             console.log(e);
         });
-        setModalVisible(true);
     }
 
     const closeModal = () => {
         setModalVisible(false);
+        dispatch(deleteAll());
     };
 
     return (
@@ -47,43 +69,50 @@ const BurgerConstructor = () => {
                     <OrderDetails orderId={orderId} error={error}/>
                 </Modal>
             }
-            <div className={`${styles.container} pt-15`}>
-                <ul className={styles.bun}>
-                    <li className='mb-4 ml-2'>
-                        <ConstructorElement
-                            type="top"
-                            isLocked={true}
-                            text="Краторная булка N-200i"
-                            price={20}
-                            thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}/>
-                    </li>
-                </ul>
-                <ul className={styles.scrollList}>
-                    {notBuns.map(element => {
-                        return (
-                            <li className='mb-4 ml-2' key={element._id}>
-                                <DragIcon type="primary"/>
-                                <ConstructorElement text={element.name} price={element.price}
-                                                    thumbnail={element.image}/>
-                            </li>
-                        )
-                    })}
-                </ul>
-                <ul className={styles.bun}>
-                    <li className='mb-4 ml-2'>
-                        <ConstructorElement
-                            type="bottom"
-                            isLocked={true}
-                            text="Краторная булка N-200i"
-                            price={20}
-                            thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}/>
-                    </li>
-                </ul>
+            <div className={`${styles.container} pt-15`} ref={dropTargetRef}>
+                {!bun &&
+                    <div>Пожалуйста, перенесите сюда булку и ингредиенты для создания заказа</div>
+                }
+                {bun &&
+                    <ul className={styles.bun}>
+                        <li className='mb-4 ml-2'>
+                            <ConstructorElement
+                                type="top"
+                                isLocked={true}
+                                text={`${bun.name} (верх)`}
+                                price={bun.price}
+                                thumbnail={bun.image}/>
+                        </li>
+                    </ul>
+                }
+                {filling &&
+                    <ul className={styles.scrollList}>
+                        {filling.map((item, index) => {
+                            return (
+                                <li className='mb-4 ml-2' key={item.id}>
+                                    <OrderItem key={`item-${item.id}`} item={item} index={index} moveCard={onMoveCard}/>
+                                </li>
+                            )
+                        })}
+                    </ul>
+                }
+                {bun &&
+                    <ul className={styles.bun}>
+                        <li className='mb-4 ml-2'>
+                            <ConstructorElement
+                                type="bottom"
+                                isLocked={true}
+                                text={`${bun.name} (низ)`}
+                                price={bun.price}
+                                thumbnail={bun.image}/>
+                        </li>
+                    </ul>
+                }
                 <section className={styles.bottomBoxContainer}>
-                    <p className="text text_type_digits-medium">610</p>
+                    <p className="text text_type_digits-medium">{price}</p>
                     <CurrencyIcon type="primary"/>
                     <div className='ml-10'>
-                        <Button htmlType="button" type="primary" size="large" onClick={onCreateOrder}>
+                        <Button htmlType="button" type="primary" size="large" onClick={onCreateOrder} disabled={!bun}>
                             Оформить заказ
                         </Button>
                     </div>

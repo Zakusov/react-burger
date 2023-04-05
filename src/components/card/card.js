@@ -1,6 +1,9 @@
 import React from 'react';
+import {useSelector} from "react-redux";
+import {useDrag} from "react-dnd";
 import PropTypes from 'prop-types';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+
 import {ingredientType} from "../../utils/prop-types";
 import styles from './card.module.css';
 
@@ -8,17 +11,39 @@ const Card = ({item, onClick, setSelected}) => {
 
     const [count, setCount] = React.useState(0);
 
+    // Содержимое корзины
+    const {bun, filling} = useSelector(state => state.order);
+
+    // Обновление счётчика добавленных ингредиентов
+    React.useEffect(() => {
+        if (item.type === 'bun') {
+            setCount(item._id === bun?._id ? 1 : 0);
+        } else {
+            setCount(filling.filter(elem => elem._id === item._id).length);
+        }
+    }, [item, bun, filling]);
+
     const onCardClick = () => {
         onClick(true);
         setSelected(item);
-    }
+    };
+
+    const [{opacity}, dragRef] = useDrag({
+        type: 'ingredient',
+        item,
+        collect: monitor => ({
+            opacity: monitor.isDragging() ? 0.1 : 1
+        })
+    });
 
     return (
         <>
-            <div className={`${styles.main} ml-4 mb-8`} onClick={onCardClick}>
-                <div className={styles.counter}>
-                    <Counter count={count} size="default"/>
-                </div>
+            <div className={`${styles.main} ml-4 mb-8`} style={{opacity}} onClick={onCardClick} ref={dragRef}>
+                {count > 0 &&
+                    <div className={styles.counter}>
+                        <Counter count={count} size="default"/>
+                    </div>
+                }
                 <div className={styles.image}>
                     <img className='mb-1' src={item.image} alt={item.name}/>
                     <div className={`${styles.price} mb-1`}>

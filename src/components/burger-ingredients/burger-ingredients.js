@@ -1,10 +1,12 @@
-import React from 'react';
+import React from "react";
+import {useSelector} from "react-redux";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from './burger-ingredients.module.css';
-import IngredientList from "../ingredient-list/ingredient-list";
+
 import Modal from "../modal/modal";
+import IngredientList from "../ingredient-list/ingredient-list";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import {IngredientsContext} from "../../utils/context";
+
+import styles from "./burger-ingredients.module.css";
 
 const tab1 = 'Булки';
 const tab2 = 'Соусы';
@@ -16,8 +18,8 @@ const BurgerIngredients = () => {
     const [modalVisible, setModalVisible] = React.useState(false);
     const [selected, setSelected] = React.useState([])
 
-    /** Все ингридиенты **/
-    const ingredients = React.useContext(IngredientsContext);
+    /** Все ингредиенты **/
+    const {ingredients} = useSelector(state => state.ingredients);
 
     /** Булки **/
     const buns = React.useMemo(
@@ -37,9 +39,38 @@ const BurgerIngredients = () => {
         [ingredients]
     );
 
+    const scrollList = React.useRef(null);
     const bunsList = React.useRef(null);
     const saucesList = React.useRef(null);
     const mainsList = React.useRef(null);
+
+    const typeListRefs = new Map();
+    typeListRefs.set(tab1, bunsList);
+    typeListRefs.set(tab2, saucesList);
+    typeListRefs.set(tab3, mainsList);
+
+    // Переключение вкладок при скроллинге
+    React.useEffect(() => {
+        const typeTitleInViewport = {};
+        const callback = (entries) => {
+            entries.forEach((entry) => {
+                typeTitleInViewport[entry.target.id] = entry.isIntersecting;
+            })
+            for (let typeTitle of Object.keys(typeTitleInViewport)) {
+                if (typeTitleInViewport[typeTitle]) {
+                    setCurrentTab(typeTitle);
+                }
+            }
+        };
+
+        const options = {
+            root: scrollList.current,
+            rootMargin: '20% 0% -80% 0%',
+            threshold: 0
+        };
+        const observer = new IntersectionObserver(callback, options);
+        typeListRefs.forEach((typeTitle) => observer.observe(typeTitle.current));
+    });
 
     const scrollTo = (ref) => {
         ref.current.scrollIntoView({behavior: "smooth"});
@@ -56,7 +87,7 @@ const BurgerIngredients = () => {
             default:
                 scrollTo(bunsList);
         }
-    }, [currentTab])
+    }, [currentTab]);
 
     const closeModal = () => {
         setModalVisible(false);
@@ -88,17 +119,17 @@ const BurgerIngredients = () => {
                         </Tab>
                     </div>
                 </div>
-                <section className={styles.scrollList}>
+                <section className={styles.scrollList} ref={scrollList}>
                     <div>
-                        <p className="text text_type_main-medium" ref={bunsList}>Булки</p>
+                        <p className="text text_type_main-medium" ref={bunsList} id={tab1}>Булки</p>
                         <IngredientList data={buns} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                     <div>
-                        <p className="text text_type_main-medium" ref={saucesList}>Соусы</p>
+                        <p className="text text_type_main-medium" ref={saucesList} id={tab2}>Соусы</p>
                         <IngredientList data={sauces} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                     <div>
-                        <p className="text text_type_main-medium" ref={mainsList}>Начинки</p>
+                        <p className="text text_type_main-medium" ref={mainsList} id={tab3}>Начинки</p>
                         <IngredientList data={mains} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                 </section>
