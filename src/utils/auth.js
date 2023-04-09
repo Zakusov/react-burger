@@ -57,7 +57,6 @@ export function useProvideAuth() {
         });
     };
 
-
     const signIn = form => {
         loginRequest(form).then((res) => {
             if (res.success) {
@@ -74,7 +73,7 @@ export function useProvideAuth() {
 
     const signOut = () => {
         const token = localStorage.getItem(REFRESH_TOKEN);
-        logoutRequest(token).then((res) => {
+        logoutRequest(token).then(() => {
             deleteUserData();
         }).catch((e) => {
             console.log(e);
@@ -91,6 +90,7 @@ export function useProvideAuth() {
         user,
         getUser,
         register,
+        update,
         signIn,
         signOut
     };

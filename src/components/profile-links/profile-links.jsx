@@ -1,25 +1,18 @@
 import {useCallback} from "react";
-import {useDispatch} from 'react-redux';
 import {NavLink, useNavigate} from 'react-router-dom';
-
-import {actions as userActions} from '../../services/slices/user';
 import {useAuth} from "../../utils/auth";
 import styles from './profile-links.module.css';
 
 export const ProfileLinks = () => {
     const auth = useAuth();
-    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {setUserClear} = userActions;
 
     const logout = useCallback(
         () => {
-            auth.signOut().then((res) => {
-                dispatch(setUserClear());
-                navigate('/login', {replace: true})
-            });
+            auth.signOut();
+            navigate('/login', {replace: true});
         },
-        [auth]
+        [auth, navigate]
     );
 
     return (
