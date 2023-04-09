@@ -1,39 +1,28 @@
-import React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import AppHeader from '../app-header/app-header.js';
-import {DndProvider} from "react-dnd"
-import {HTML5Backend} from "react-dnd-html5-backend";
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import {ProvideAuth} from "../../utils/auth";
+import {ProtectedRouteElement} from "../protected-route/protected-route";
+import {MainPage} from "../../pages/main-page";
+import {LoginPage} from "../../pages/login-page";
+import {RegisterPage} from "../../pages/register-page";
+import {ForgotPasswordPage} from "../../pages/forgot-password";
+import {ResetPasswordPage} from "../../pages/reset-password";
+import {ProfilePage} from "../../pages/profile-page";
+import {NotFoundPage} from "../../pages/not-found-page";
 
-import {loadIngredients} from "../../services/actions/ingredients-actions";
-import BurgerConstructor from '../burger-constructor/burger-constructor.js';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients.js';
-import {Loader} from "../loader/loader";
-
-import styles from "./app.module.css";
-
-function App() {
-    const dispatch = useDispatch();
-    const {isLoading, isFailed} = useSelector(state => state.ingredients);
-
-    React.useEffect(() => {
-            dispatch(loadIngredients());
-        },
-        [dispatch]
-    );
-
+export default function App() {
     return (
-        <>
-            <AppHeader/>
-            <DndProvider backend={HTML5Backend}>
-                <main className={styles.main}>
-                    {isFailed && <div>Упс! Похоже, закончились ингредиенты... Попробуйте зайти позже.</div>}
-                    {!isFailed && isLoading && <Loader size="large"/>}
-                    {!isFailed && !isLoading && <BurgerIngredients/>}
-                    <BurgerConstructor/>
-                </main>
-            </DndProvider>
-        </>
+        <ProvideAuth>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<ProtectedRouteElement element={<MainPage/>}/>}/>
+                    <Route path="/login" element={<LoginPage/>}/>
+                    <Route path="/register" element={<RegisterPage/>}/>
+                    <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
+                    <Route path="/reset-password" element={<ResetPasswordPage/>}/>
+                    <Route path="/profile" element={<ProfilePage/>}/>
+                    <Route path="*" element={<NotFoundPage/>}/>
+                </Routes>
+            </BrowserRouter>
+        </ProvideAuth>
     );
 }
-
-export default App;

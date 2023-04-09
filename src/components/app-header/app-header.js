@@ -7,15 +7,15 @@ function AppHeader() {
         <header className={styles.navPanel}>
             <div className={styles.navList}>
                 <nav className={`${styles.navigation} ${styles.first}`}>
-                    <AppHeaderItem type="primary">
+                    <AppHeaderItem type="primary" link="/">
                         <BurgerIcon type="primary"/> Конструктор
                     </AppHeaderItem>
-                    <AppHeaderItem type="secondary">
+                    <AppHeaderItem type="secondary" link="/">
                         <ListIcon type="secondary"/> Лента заказов
                     </AppHeaderItem>
                 </nav>
                 <Logo/>
-                <AppHeaderItem type="secondary" extraClass={styles.last}>
+                <AppHeaderItem type="secondary" link="/profile" extraClass={styles.last}>
                     <ProfileIcon type="secondary"/> Личный кабинет
                 </AppHeaderItem>
             </div>
