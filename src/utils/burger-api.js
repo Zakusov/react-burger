@@ -1,4 +1,4 @@
-import {NORMA_API} from "./constants";
+import {BASE_URL} from "./constants";
 import {getCookie} from "./cookie";
 import {ACCESS_TOKEN, REFRESH_TOKEN} from "../services/actions/account-actions";
 
@@ -8,7 +8,7 @@ const checkResponse = (res) => {
 
 const request = (endpoint, options) => {
     // принимает два аргумента: урл и объект опций, как и `fetch`
-    return fetch(`${NORMA_API}/${endpoint}`, options).then(checkResponse)
+    return fetch(`${BASE_URL}/${endpoint}`, options).then(checkResponse)
 }
 
 export const registerRequest = (form) => {
