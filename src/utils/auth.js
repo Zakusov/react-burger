@@ -44,7 +44,7 @@ export function useProvideAuth() {
             }, processError);
     };
 
-    const register = form => {
+    const register = (form, onError) => {
         registerRequest(form).then((res) => {
             if (res.success) {
                 setUser({...res.user, id: res.user._id});
@@ -53,12 +53,15 @@ export function useProvideAuth() {
             } else {
                 deleteUserData();
             }
-        }).catch((e) => {
-            console.log(e);
+        }).catch((error) => {
+            console.log(error);
+            if (onError) {
+                onError(error);
+            }
         });
     };
 
-    const update = form => {
+    const update = (form, onError) => {
         updateUserRequest(form).then((res) => {
             if (res.success) {
                 setUser({...res.user, id: res.user._id});
@@ -67,12 +70,15 @@ export function useProvideAuth() {
             } else {
                 deleteUserData();
             }
-        }).catch((e) => {
-            console.log(e);
+        }).catch((error) => {
+            console.log(error);
+            if (onError) {
+                onError(error);
+            }
         });
     };
 
-    const signIn = form => {
+    const signIn = (form, onError) => {
         loginRequest(form).then((res) => {
             if (res.success) {
                 setUser({...res.user, id: res.user._id});
@@ -81,17 +87,23 @@ export function useProvideAuth() {
             } else {
                 deleteUserData();
             }
-        }).catch((e) => {
-            console.log(e);
+        }).catch((error) => {
+            console.log(error);
+            if (onError) {
+                onError(error);
+            }
         });
     };
 
-    const signOut = () => {
+    const signOut = (onError) => {
         const token = localStorage.getItem(REFRESH_TOKEN);
         logoutRequest(token).then(() => {
             deleteUserData();
-        }).catch((e) => {
-            console.log(e);
+        }).catch((error) => {
+            console.log(error);
+            if (onError) {
+                onError(error);
+            }
         });
     };
 

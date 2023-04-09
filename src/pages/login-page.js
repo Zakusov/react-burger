@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Link, Navigate} from 'react-router-dom';
 import {Button, Input, Logo, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -8,15 +8,20 @@ import styles from './login-page.module.css';
 export const LoginPage = () => {
     const auth = useAuth();
     const [form, setValue] = useState({email: '', password: ''});
+    const [error, setError] = useState(null);
 
     const onChange = e => {
         setValue({...form, [e.target.name]: e.target.value});
     };
 
+    function onError(err) {
+        setError(err && err.message ? err.message : "Что-то пошло не так :(");
+    }
+
     let login = useCallback(
         e => {
             e.preventDefault();
-            auth.signIn(form);
+            auth.signIn(form, onError);
         },
         [auth, form]
     );
@@ -30,6 +35,8 @@ export const LoginPage = () => {
             <div className={styles.logo}>
                 <Logo/>
             </div>
+            {error && <p className={`text text_color_error ${styles.error}`}>{error}</p>}
+
             <p className={`text text_type_main-medium ${styles.title}`}>Вход</p>
 
             <div className={styles.inputWrapper}>

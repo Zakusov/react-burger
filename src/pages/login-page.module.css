@@ -28,6 +28,11 @@
     margin-bottom: 24px;
 }
 
+.error {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
 .inputWrapper {
     margin-bottom: 24px;
     text-align: -webkit-center;
