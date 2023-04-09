@@ -18,15 +18,13 @@ export const ProfileLinks = () => {
     return (
         <div className={styles.menuProfile}>
             <div className={styles.itemMenu}>
-                <NavLink exact to="/profile"
-                         className={`text text_type_main-medium ${styles.link} ${styles.unchecked}`}
-                         activeClassName={styles.checked}>Профиль
+                <NavLink to="/profile"
+                         className={`text text_type_main-medium ${styles.link} ${styles.unchecked}`}>Профиль
                 </NavLink>
             </div>
             <div className={styles.itemMenu}>
-                <NavLink exact to="/profile/orders"
-                         className={`text text_type_main-medium ${styles.link} ${styles.unchecked}`}
-                         activeClassName={styles.checked}>История заказов
+                <NavLink to="/profile"
+                         className={`text text_type_main-medium ${styles.link} ${styles.unchecked}`}>История заказов
                 </NavLink>
             </div>
             <div className={`${styles.itemMenu} ${styles.lastItemMenu}`}>

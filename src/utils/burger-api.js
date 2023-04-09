@@ -1,6 +1,6 @@
 import {NORMA_API} from "./constants";
 import {getCookie} from "./cookie";
-import {ACCESS_TOKEN} from "../services/actions/account-actions";
+import {ACCESS_TOKEN, REFRESH_TOKEN} from "../services/actions/account-actions";
 
 const checkResponse = (res) => {
     return res.ok ? res.json() : res.json().then((error) => Promise.reject(error));
@@ -18,7 +18,7 @@ export const registerRequest = (form) => {
         cache: 'no-cache',
         credentials: 'same-origin',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json;charset=utf-8'
         },
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
@@ -72,6 +72,23 @@ export const getUserRequest = () => {
     });
 };
 
+export const updateTokenRequest = () => {
+    const token = localStorage.getItem(REFRESH_TOKEN);
+    return request('auth/token', {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: getCookie(ACCESS_TOKEN)
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify({token})
+    });
+};
+
 export const logoutRequest = (token) => {
     return request('auth/logout', {
         method: 'POST',
@@ -83,7 +100,7 @@ export const logoutRequest = (token) => {
         },
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
-        body: JSON.stringify(token)
+        body: JSON.stringify({token})
     });
 };
 

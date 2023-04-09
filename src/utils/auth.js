@@ -2,7 +2,14 @@ import React, {createContext, useContext, useState} from 'react';
 import {deleteCookie, setCookie} from "./cookie";
 import {ACCESS_TOKEN, REFRESH_TOKEN} from "../services/actions/account-actions";
 
-import {getUserRequest, loginRequest, logoutRequest, registerRequest, updateUserRequest} from "./burger-api";
+import {
+    getUserRequest,
+    loginRequest,
+    logoutRequest,
+    registerRequest,
+    updateTokenRequest,
+    updateUserRequest
+} from "./burger-api";
 
 const AuthContext = createContext(undefined);
 
@@ -19,6 +26,14 @@ export function useAuth() {
 export function useProvideAuth() {
     const [user, setUser] = useState(null);
 
+    function processError(error) {
+        if (error && error.message && error.message === 'jwt expired') {
+            updateTokenRequest().then(() => {
+                console.log("Token updated");
+            });
+        }
+    }
+
     const getUser = () => {
         return getUserRequest()
             .then(data => {
@@ -26,7 +41,7 @@ export function useProvideAuth() {
                     setUser({...data.user, id: data.user._id});
                 }
                 return data.success;
-            });
+            }, processError);
     };
 
     const register = form => {

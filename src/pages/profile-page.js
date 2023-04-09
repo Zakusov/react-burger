@@ -9,7 +9,7 @@ export const ProfilePage = () => {
     const auth = useAuth();
     const user = auth.user;
     const [form, setValue] =
-        useState({name: user.name, email: user.email, password: user.password});
+        useState({name: user.name, email: user.email, password: ''});
 
     let onSave = useCallback(
         e => {
@@ -22,7 +22,7 @@ export const ProfilePage = () => {
     const onCancel = () => setValue({
         name: user.name,
         email: user.email,
-        password: user.password
+        password: ''
     });
 
     return (
