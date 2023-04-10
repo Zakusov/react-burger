@@ -3,16 +3,13 @@ import {Link, Navigate} from 'react-router-dom';
 import {Button, Input, Logo, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 
 import {useAuth} from "../utils/auth";
+import {useForm} from "../hooks/useForm";
 import styles from './login-page.module.css';
 
 export const LoginPage = () => {
     const auth = useAuth();
-    const [form, setValue] = useState({email: '', password: ''});
+    const {values, handleChange} = useForm({email: '', password: ''});
     const [error, setError] = useState(null);
-
-    const onChange = e => {
-        setValue({...form, [e.target.name]: e.target.value});
-    };
 
     function onError(err) {
         setError(err && err.message ? err.message : "Что-то пошло не так :(");
@@ -21,9 +18,9 @@ export const LoginPage = () => {
     let login = useCallback(
         e => {
             e.preventDefault();
-            auth.signIn(form, onError);
+            auth.signIn(values, onError);
         },
-        [auth, form]
+        [auth, values]
     );
 
     if (auth.user) {
@@ -40,12 +37,12 @@ export const LoginPage = () => {
             <p className={`text text_type_main-medium ${styles.title}`}>Вход</p>
 
             <div className={styles.inputWrapper}>
-                <Input name="email" type={'email'} placeholder={'Email'} value={form.email}
-                       onChange={event => onChange(event)}/>
+                <Input name="email" type="email" placeholder="Email" value={values.email}
+                       onChange={event => handleChange(event)}/>
             </div>
             <div className={styles.inputWrapper}>
-                <PasswordInput name="password" placeholder={'Пароль'} value={form.password}
-                               onChange={event => onChange(event)}/>
+                <PasswordInput name="password" placeholder="Пароль" value={values.password}
+                               onChange={event => handleChange(event)}/>
             </div>
 
             <div className={styles.button}>

@@ -1,26 +1,21 @@
-import {useCallback, useState} from 'react';
+import {useCallback} from 'react';
 import {Link, Navigate} from 'react-router-dom';
-
-
 import {Button, Input, Logo, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './register-page.module.css';
 import {useAuth} from "../utils/auth";
+import {useForm} from "../hooks/useForm";
 
 export const RegisterPage = () => {
     const auth = useAuth();
-    const [form, setValue] = useState({name: '', email: '', password: ''});
-
-    const onChange = e => {
-        setValue({...form, [e.target.name]: e.target.value});
-    };
+    const {values, handleChange} = useForm({name: '', email: '', password: ''});
 
     let register = useCallback(
         e => {
             e.preventDefault();
-            auth.register(form);
+            auth.register(values);
         },
-        [auth, form]
+        [auth, values]
     );
 
     if (auth.user) {
@@ -35,16 +30,16 @@ export const RegisterPage = () => {
             <p className={`text text_type_main-medium ${styles.title}`}>Регистрация</p>
 
             <div className={styles.inputWrapper}>
-                <Input name="name" type={'text'} placeholder={'Имя'} value={form.name}
-                       onChange={event => onChange(event)}/>
+                <Input name="name" type={'text'} placeholder={'Имя'} value={values.name}
+                       onChange={event => handleChange(event)}/>
             </div>
             <div className={styles.inputWrapper}>
-                <Input name="email" type={'email'} placeholder={'Email'} value={form.email}
-                       onChange={event => onChange(event)}/>
+                <Input name="email" type={'email'} placeholder={'Email'} value={values.email}
+                       onChange={event => handleChange(event)}/>
             </div>
             <div className={styles.inputWrapper}>
-                <PasswordInput name="password" placeholder={'Пароль'} value={form.password}
-                               onChange={event => onChange(event)}/>
+                <PasswordInput name="password" placeholder={'Пароль'} value={values.password}
+                               onChange={event => handleChange(event)}/>
             </div>
 
             <div className={styles.button}>

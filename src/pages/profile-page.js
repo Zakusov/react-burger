@@ -1,30 +1,27 @@
-import React, {useCallback, useState} from 'react';
-import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
+import React, {useCallback} from 'react';
+import {Button, Input, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 
+import AppHeader from "../components/app-header/app-header";
 import {ProfileLinks} from '../components/profile-links/profile-links';
 import {useAuth} from "../utils/auth";
+import {useForm} from "../hooks/useForm";
 import styles from './profile-page.module.css';
-import AppHeader from "../components/app-header/app-header";
 
 export const ProfilePage = () => {
     const auth = useAuth();
     const user = auth.user;
-    const [form, setValue] =
-        useState({name: user.name, email: user.email, password: ''});
+    const initialState = {name: user.name, email: user.email, password: ''};
+    const {values, handleChange, setValues} = useForm(initialState);
 
-    let onSave = useCallback(
+    const onSave = useCallback(
         e => {
             e.preventDefault();
-            auth.update(form);
+            auth.update(values);
         },
-        [auth, form]
+        [auth, values]
     );
 
-    const onCancel = () => setValue({
-        name: user.name,
-        email: user.email,
-        password: ''
-    });
+    const onCancel = () => setValues(initialState);
 
     return (
         <>
@@ -37,45 +34,18 @@ export const ProfilePage = () => {
                     <div>
                         <div className={styles.inputsWrapper}>
                             <div className={styles.inputWrapper}>
-                                <Input
-                                    icon={'EditIcon'}
-                                    type={'text'}
-                                    placeholder={'Имя'}
-                                    value={form.name}
-                                    onChange={
-                                        (event) => setValue({
-                                            ...form,
-                                            name: event.target.value
-                                        })
-                                    }/>
+                                <Input name="name" type="text" icon="EditIcon" placeholder="Имя"
+                                       value={values.name} onChange={event => handleChange(event)}/>
                             </div>
 
                             <div className={styles.inputWrapper}>
-                                <Input
-                                    icon={'EditIcon'}
-                                    type={'text'}
-                                    placeholder={'Логин'}
-                                    value={form.email}
-                                    onChange={
-                                        (event) => setValue({
-                                            ...form,
-                                            email: event.target.value
-                                        })
-                                    }/>
+                                <Input name="email" type="text" icon="EditIcon" placeholder="Логин"
+                                       value={values.email} onChange={event => handleChange(event)}/>
                             </div>
 
                             <div className={styles.inputWrapper}>
-                                <Input
-                                    icon={'EditIcon'}
-                                    type={form.password ? 'password' : 'text'}
-                                    placeholder={'Пароль'}
-                                    value={form.password}
-                                    onChange={
-                                        (event) => setValue({
-                                            ...form,
-                                            password: event.target.value
-                                        })
-                                    }/>
+                                <PasswordInput name="password" icon="EditIcon" placeholder="Пароль"
+                                               value={values.password} onChange={event => handleChange(event)}/>
                             </div>
 
                             <div className={styles.buttonsWrapper}>

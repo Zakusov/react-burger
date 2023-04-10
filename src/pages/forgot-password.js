@@ -1,17 +1,17 @@
-import {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {Button, Input, Logo} from '@ya.praktikum/react-developer-burger-ui-components';
+
 import {recoveryPass} from "../services/actions/account-actions";
+import {useForm} from "../hooks/useForm";
 import styles from './forgot-password.module.css';
 
 export const ForgotPasswordPage = () => {
     const navigate = useNavigate();
-
-    const [email, setEmail] = useState('');
+    const {values, handleChange} = useForm({email: ''});
 
     const onRecoveryClick = () => {
-        if (email) {
-            recoveryPass(email)
+        if (values.email) {
+            recoveryPass(values.email)
                 .then(result => {
                     if (result instanceof Error) throw new Error();
                     localStorage.setItem('allowResetPassword', 'allow');
@@ -29,11 +29,8 @@ export const ForgotPasswordPage = () => {
             <p className={`text text_type_main-medium ${styles.title}`}>Восстановление пароля</p>
 
             <div className={styles.inputWrapper}>
-                <Input
-                    type={'email'}
-                    placeholder={'E-mail'}
-                    value={email}
-                    onChange={event => setEmail(event.target.value)}/>
+                <Input name="email" type="email" placeholder="E-mail" value={values.email}
+                       onChange={event => handleChange(event)}/>
             </div>
 
             <div className={styles.button}>
