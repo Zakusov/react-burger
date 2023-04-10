@@ -2,15 +2,15 @@ import {useCallback} from 'react';
 import {Link, Navigate} from 'react-router-dom';
 import {Button, Input, Logo, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 
-import styles from './register-page.module.css';
 import {useAuth} from "../utils/auth";
 import {useForm} from "../hooks/useForm";
+import styles from './register-page.module.css';
 
 export const RegisterPage = () => {
     const auth = useAuth();
     const {values, handleChange} = useForm({name: '', email: '', password: ''});
 
-    let register = useCallback(
+    const onSubmit = useCallback(
         e => {
             e.preventDefault();
             auth.register(values);
@@ -23,7 +23,7 @@ export const RegisterPage = () => {
     }
 
     return (
-        <div className={styles.wrapper}>
+        <form className={styles.wrapper} onSubmit={onSubmit}>
             <div className={styles.logo}>
                 <Logo/>
             </div>
@@ -43,13 +43,13 @@ export const RegisterPage = () => {
             </div>
 
             <div className={styles.button}>
-                <Button htmlType="button" type="primary" size="large" onClick={register}>Зарегистрироваться</Button>
+                <Button htmlType="submit" type="primary" size="large">Зарегистрироваться</Button>
             </div>
 
             <div className={styles.footer}>
                 <p className={`text text_type_main-default ${styles.footerInfo}`}>Уже зарегистрированы?</p>
                 <Link to="/login" className={`text text_type_main-default ml-2 ${styles.footerEnter}`}>Войти</Link>
             </div>
-        </div>
+        </form>
     );
 }

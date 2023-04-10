@@ -15,7 +15,7 @@ export const LoginPage = () => {
         setError(err && err.message ? err.message : "Что-то пошло не так :(");
     }
 
-    let login = useCallback(
+    const onSubmit = useCallback(
         e => {
             e.preventDefault();
             auth.signIn(values, onError);
@@ -28,7 +28,7 @@ export const LoginPage = () => {
     }
 
     return (
-        <div className={styles.wrapper}>
+        <form className={styles.wrapper} onSubmit={onSubmit}>
             <div className={styles.logo}>
                 <Logo/>
             </div>
@@ -46,7 +46,7 @@ export const LoginPage = () => {
             </div>
 
             <div className={styles.button}>
-                <Button htmlType="button" type="primary" size="large" onClick={login}>Войти</Button>
+                <Button htmlType="submit" type="primary" size="large">Войти</Button>
             </div>
 
             <div className={`mb-4 ${styles.footer}`}>
@@ -60,6 +60,6 @@ export const LoginPage = () => {
                 <Link to="/forgot-password" className={`text text_type_main-default ml-2 ${styles.footerEnter}`}>Восстановить
                     пароль</Link>
             </div>
-        </div>
+        </form>
     );
 }

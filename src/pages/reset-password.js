@@ -1,11 +1,10 @@
-import {useRef} from 'react';
+import {useCallback, useRef} from 'react';
 import {Link, Navigate, useNavigate} from 'react-router-dom';
-
 import {Button, Input, Logo} from '@ya.praktikum/react-developer-burger-ui-components';
 
 import {resetPass} from "../services/actions/account-actions";
-import styles from './reset-password.module.css';
 import {useForm} from "../hooks/useForm";
+import styles from './reset-password.module.css';
 
 export const ResetPasswordPage = () => {
     const passRef = useRef(null);
@@ -20,25 +19,29 @@ export const ResetPasswordPage = () => {
         });
     };
 
-    const onSave = () => {
-        if (values.password && values.token) {
-            resetPass({
-                password: values.password,
-                token: values.token
-            })
-                .then(result => {
-                    console.log("Reset password result: " + result);
-                    if (result instanceof Error) throw new Error();
-                    localStorage.setItem('allowResetPassword', '');
-                    navigate('/login', {replace: true})
+    const onSubmit = useCallback(
+        e => {
+            e.preventDefault();
+            if (values.password && values.token) {
+                resetPass({
+                    password: values.password,
+                    token: values.token
                 })
-                .catch(error => console.log(error));
-        }
-    }
+                    .then(result => {
+                        console.log("Reset password result: " + result);
+                        if (result instanceof Error) throw new Error();
+                        localStorage.setItem('allowResetPassword', '');
+                        navigate('/login', {replace: true})
+                    })
+                    .catch(error => console.log(error));
+            }
+        },
+        [values, navigate]
+    );
 
     return (
         localStorage.getItem('allowResetPassword') ?
-            (<div className={styles.wrapper}>
+            (<form className={styles.wrapper} onSubmit={onSubmit}>
                 <div className={styles.logo}>
                     <Logo/>
                 </div>
@@ -60,14 +63,14 @@ export const ResetPasswordPage = () => {
                 </div>
 
                 <div className={styles.button}>
-                    <Button htmlType="button" type="primary" size="large" onClick={onSave}>Сохранить</Button>
+                    <Button htmlType="submit" type="primary" size="large">Сохранить</Button>
                 </div>
 
                 <div className={styles.footer}>
                     <p className={`text text_type_main-default ${styles.footerInfo}`}>Вспомнили пароль?</p>
                     <Link to="/login" className={`text text_type_main-default ml-2 ${styles.footerEnter}`}>Войти</Link>
                 </div>
-            </div>)
+            </form>)
             : <Navigate to={'/login'}/>
     );
 }

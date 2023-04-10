@@ -13,7 +13,7 @@ export const ProfilePage = () => {
     const initialState = {name: user.name, email: user.email, password: ''};
     const {values, handleChange, setValues} = useForm(initialState);
 
-    const onSave = useCallback(
+    const onSubmit = useCallback(
         e => {
             e.preventDefault();
             auth.update(values);
@@ -26,7 +26,7 @@ export const ProfilePage = () => {
     return (
         <>
             <AppHeader/>
-            <div className={styles.mainProfileWrapper}>
+            <form className={styles.mainProfileWrapper} onSubmit={onSubmit}>
                 <div className={styles.profileWrapper}>
                     <div className={styles.linksWrapper}>
                         <ProfileLinks/>
@@ -49,15 +49,14 @@ export const ProfilePage = () => {
                             </div>
 
                             <div className={styles.buttonsWrapper}>
-                                <Button htmlType="button" type="primary" size="large"
-                                        onClick={onSave}>Сохранить</Button>
+                                <Button htmlType="submit" type="primary" size="large">Сохранить</Button>
                                 <Button htmlType="button" type="primary" size="large"
                                         onClick={onCancel}>Отменить</Button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </>
     );
 }
