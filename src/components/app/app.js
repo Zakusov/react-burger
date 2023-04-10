@@ -14,7 +14,7 @@ export default function App() {
         <ProvideAuth>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<ProtectedRouteElement element={<MainPage/>}/>}/>
+                    <Route path="/" element={<MainPage/>}/>
                     <Route path="/login" element={<LoginPage/>}/>
                     <Route path="/register" element={<RegisterPage/>}/>
                     <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
