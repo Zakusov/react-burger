@@ -1,14 +1,13 @@
 import Card from "../card/card";
-import PropTypes from "prop-types";
 import {ingredientArray} from "../../utils/prop-types";
 import styles from "./ingredient-list.module.css"
 
-const IngredientList = ({data, onClick, setSelected}) => {
+const IngredientList = ({data}) => {
     return (
         <div className={`${styles.main} pt-6 pr-1 pb-10 pl-4`}>
             {data.map((elem) => {
                 return (
-                    <Card key={elem._id} item={elem} onClick={onClick} setSelected={setSelected}/>
+                    <Card key={elem._id} item={elem}/>
                 )
             })}
         </div>
@@ -16,9 +15,7 @@ const IngredientList = ({data, onClick, setSelected}) => {
 }
 
 IngredientList.propTypes = {
-    data: ingredientArray.isRequired,
-    onClick: PropTypes.func.isRequired,
-    setSelected: PropTypes.func.isRequired
+    data: ingredientArray.isRequired
 };
 
 export default IngredientList;

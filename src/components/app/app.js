@@ -20,6 +20,7 @@ export default function App() {
                     <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
                     <Route path="/reset-password" element={<ResetPasswordPage/>}/>
                     <Route path="/profile" element={<ProtectedRouteElement element={<ProfilePage/>}/>}/>
+                    <Route path="/ingredients/:id" element={<MainPage/>}/>
                     <Route path="*" element={<NotFoundPage/>}/>
                 </Routes>
             </BrowserRouter>

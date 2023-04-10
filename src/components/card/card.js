@@ -1,21 +1,21 @@
-import React from 'react';
+import {useEffect, useState} from 'react';
+import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {useDrag} from "react-dnd";
-import PropTypes from 'prop-types';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 
 import {ingredientType} from "../../utils/prop-types";
 import styles from './card.module.css';
 
-const Card = ({item, onClick, setSelected}) => {
+const Card = ({item}) => {
 
-    const [count, setCount] = React.useState(0);
+    const [count, setCount] = useState(0);
 
     // Содержимое корзины
     const {bun, filling} = useSelector(state => state.order);
 
     // Обновление счётчика добавленных ингредиентов
-    React.useEffect(() => {
+    useEffect(() => {
         if (item.type === 'bun') {
             setCount(item._id === bun?._id ? 1 : 0);
         } else {
@@ -23,9 +23,10 @@ const Card = ({item, onClick, setSelected}) => {
         }
     }, [item, bun, filling]);
 
+    const navigate = useNavigate();
+
     const onCardClick = () => {
-        onClick(true);
-        setSelected(item);
+        navigate(`/ingredients/${item._id}`);
     };
 
     const [{opacity}, dragRef] = useDrag({
@@ -61,9 +62,7 @@ const Card = ({item, onClick, setSelected}) => {
     )
 }
 Card.propTypes = {
-    item: ingredientType.isRequired,
-    onClick: PropTypes.func.isRequired,
-    setSelected: PropTypes.func.isRequired,
+    item: ingredientType.isRequired
 }
 
 export default Card;

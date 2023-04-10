@@ -1,11 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useSelector} from "react-redux";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 
-import Modal from "../modal/modal";
 import IngredientList from "../ingredient-list/ingredient-list";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-
+import Modal from "../modal/modal";
 import styles from "./burger-ingredients.module.css";
 
 const tab1 = 'Булки';
@@ -39,6 +39,32 @@ const BurgerIngredients = () => {
         [ingredients]
     );
 
+    const {state, pathname} = useLocation();
+    const url = window.location.href;
+    const navigate = useNavigate();
+    const isContainRoute = (state, route) => state.some(({url}) => url === route);
+
+    useEffect(
+        () => {
+            if (selected && state && !isContainRoute(state, url)) {
+                navigate('', {state: [...state, {path: pathname, url}], replace: true});
+            }
+        },
+        [selected, state, url, pathname, navigate]
+    );
+
+    const {id} = useParams();
+    useEffect(
+        () => {
+            const found = ingredients.find((item) => item._id === id);
+            if (found) {
+                setSelected(found);
+                setModalVisible(true);
+            }
+        },
+        [id, ingredients]
+    );
+
     const scrollList = React.useRef(null);
     const bunsList = React.useRef(null);
     const saucesList = React.useRef(null);
@@ -50,7 +76,7 @@ const BurgerIngredients = () => {
     typeListRefs.set(tab3, mainsList);
 
     // Переключение вкладок при скроллинге
-    React.useEffect(() => {
+    useEffect(() => {
         const typeTitleInViewport = {};
         const callback = (entries) => {
             entries.forEach((entry) => {
@@ -76,7 +102,7 @@ const BurgerIngredients = () => {
         ref.current.scrollIntoView({behavior: "smooth"});
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         switch (currentTab) {
             case tab2:
                 scrollTo(saucesList);
@@ -91,6 +117,7 @@ const BurgerIngredients = () => {
 
     const closeModal = () => {
         setModalVisible(false);
+        navigate('/');
     };
 
     return (
@@ -122,15 +149,15 @@ const BurgerIngredients = () => {
                 <section className={styles.scrollList} ref={scrollList}>
                     <div>
                         <p className="text text_type_main-medium" ref={bunsList} id={tab1}>Булки</p>
-                        <IngredientList data={buns} onClick={setModalVisible} setSelected={setSelected}/>
+                        <IngredientList data={buns}/>
                     </div>
                     <div>
                         <p className="text text_type_main-medium" ref={saucesList} id={tab2}>Соусы</p>
-                        <IngredientList data={sauces} onClick={setModalVisible} setSelected={setSelected}/>
+                        <IngredientList data={sauces}/>
                     </div>
                     <div>
                         <p className="text text_type_main-medium" ref={mainsList} id={tab3}>Начинки</p>
-                        <IngredientList data={mains} onClick={setModalVisible} setSelected={setSelected}/>
+                        <IngredientList data={mains}/>
                     </div>
                 </section>
             </section>
