@@ -1,11 +1,8 @@
 import React, {useEffect} from "react";
 import {useSelector} from "react-redux";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import IngredientList from "../ingredient-list/ingredient-list";
-import IngredientDetails from "../ingredient-details/ingredient-details";
-import Modal from "../modal/modal";
 import styles from "./burger-ingredients.module.css";
 
 const tab1 = 'Булки';
@@ -13,10 +10,6 @@ const tab2 = 'Соусы';
 const tab3 = 'Начинки';
 
 const BurgerIngredients = () => {
-
-    const [currentTab, setCurrentTab] = React.useState(tab1);
-    const [modalVisible, setModalVisible] = React.useState(false);
-    const [selected, setSelected] = React.useState(null)
 
     /** Все ингредиенты **/
     const {ingredients} = useSelector(state => state.ingredients);
@@ -39,32 +32,6 @@ const BurgerIngredients = () => {
         [ingredients]
     );
 
-    const {state, pathname} = useLocation();
-    const url = window.location.href;
-    const navigate = useNavigate();
-    const isContainRoute = (state, route) => state.some(({url}) => url === route);
-
-    useEffect(
-        () => {
-            if (selected && state && !isContainRoute(state, url)) {
-                navigate('', {state: [...state, {path: pathname, url}], replace: true});
-            }
-        },
-        [selected, state, url, pathname, navigate]
-    );
-
-    const {id} = useParams();
-    useEffect(
-        () => {
-            const found = ingredients.find((item) => item._id === id);
-            if (found) {
-                setSelected(found);
-                setModalVisible(true);
-            }
-        },
-        [id, ingredients]
-    );
-
     const scrollList = React.useRef(null);
     const bunsList = React.useRef(null);
     const saucesList = React.useRef(null);
@@ -74,6 +41,8 @@ const BurgerIngredients = () => {
     typeListRefs.set(tab1, bunsList);
     typeListRefs.set(tab2, saucesList);
     typeListRefs.set(tab3, mainsList);
+
+    const [currentTab, setCurrentTab] = React.useState(tab1);
 
     // Переключение вкладок при скроллинге
     useEffect(() => {
@@ -115,20 +84,8 @@ const BurgerIngredients = () => {
         }
     }, [currentTab]);
 
-    const closeModal = () => {
-        setSelected(null);
-        setModalVisible(false);
-        navigate('/');
-    };
-
     return (
         <>
-            {modalVisible &&
-                <Modal onClose={closeModal} title="Детали заказа">
-                    <IngredientDetails item={selected}/>
-                </Modal>
-            }
-
             <section className={`${styles.section} mt-10`}>
                 <div className='mt-10 mb-5'>
                     <p className="text text_type_main-large">

@@ -8,6 +8,7 @@ import App from "./components/app/app";
 import reportWebVitals from "./reportWebVitals";
 
 import "./index.css";
+import {BrowserRouter} from "react-router-dom";
 
 const store = configureStore({
     reducer: rootReducer,
@@ -21,7 +22,9 @@ const root = ReactDOM.createRoot(
 root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <App/>
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
         </Provider>
     </React.StrictMode>
 );

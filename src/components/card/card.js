@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {useDrag} from "react-dnd";
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
@@ -24,9 +24,11 @@ const Card = ({item}) => {
     }, [item, bun, filling]);
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const state = location.state;
 
     const onCardClick = () => {
-        navigate(`/ingredients/${item._id}`);
+        navigate(`/ingredients/${item._id}`, {state: {...state, background: location}});
     };
 
     const [{opacity}, dragRef] = useDrag({
