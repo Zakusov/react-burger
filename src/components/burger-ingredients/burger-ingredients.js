@@ -16,7 +16,7 @@ const BurgerIngredients = () => {
 
     const [currentTab, setCurrentTab] = React.useState(tab1);
     const [modalVisible, setModalVisible] = React.useState(false);
-    const [selected, setSelected] = React.useState([])
+    const [selected, setSelected] = React.useState(null)
 
     /** Все ингредиенты **/
     const {ingredients} = useSelector(state => state.ingredients);
@@ -116,6 +116,7 @@ const BurgerIngredients = () => {
     }, [currentTab]);
 
     const closeModal = () => {
+        setSelected(null);
         setModalVisible(false);
         navigate('/');
     };
@@ -125,7 +126,8 @@ const BurgerIngredients = () => {
             {modalVisible &&
                 <Modal onClose={closeModal} title="Детали заказа">
                     <IngredientDetails item={selected}/>
-                </Modal>}
+                </Modal>
+            }
 
             <section className={`${styles.section} mt-10`}>
                 <div className='mt-10 mb-5'>
