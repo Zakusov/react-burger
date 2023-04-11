@@ -1,114 +1,103 @@
-import {BASE_URL} from "./constants";
 import {getCookie} from "./cookie";
-import {ACCESS_TOKEN, REFRESH_TOKEN} from "../services/actions/account-actions";
+import {ACCESS_TOKEN, BASE_URL, REFRESH_TOKEN} from "./constants";
 
-const checkResponse = (res) => {
+const checkResponse = async (res) => {
     return res.ok ? res.json() : res.json().then((error) => Promise.reject(error));
 };
 
-const request = (endpoint, options) => {
+const request = async (endpoint, options) => {
     // принимает два аргумента: урл и объект опций, как и `fetch`
     return fetch(`${BASE_URL}/${endpoint}`, options).then(checkResponse)
 }
 
-export const registerRequest = (form) => {
+export const registerRequest = async (form) => {
     return request('auth/register', {
         method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
         body: JSON.stringify(form)
     });
 };
 
-export const loginRequest = (form) => {
+export const loginRequest = async (form) => {
     return request('auth/login', {
         method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json'
         },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
         body: JSON.stringify(form)
     });
 };
 
-export const updateUserRequest = (form) => {
+export const updateUserRequest = async (form) => {
     return request('auth/user', {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
             Authorization: getCookie(ACCESS_TOKEN)
         },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
         body: JSON.stringify(form)
     });
 };
 
-export const getUserRequest = () => {
+export const getUserRequest = async () => {
     return request('auth/user', {
         method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json',
             Authorization: getCookie(ACCESS_TOKEN)
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer'
+        }
     });
 };
 
-export const updateTokenRequest = () => {
+export const recoverPasswordRequest = async (email) => {
+    return request('password-reset', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email})
+    });
+};
+
+export const resetPasswordRequest = async (password, token) => {
+    return request('password-reset/reset', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({password, token})
+    });
+};
+
+export const updateTokenRequest = async () => {
     const token = localStorage.getItem(REFRESH_TOKEN);
     return request('auth/token', {
         method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
             Authorization: getCookie(ACCESS_TOKEN)
         },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
         body: JSON.stringify({token})
     });
 };
 
-export const logoutRequest = (token) => {
+export const logoutRequest = async (token) => {
     return request('auth/logout', {
         method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json'
         },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
         body: JSON.stringify({token})
     });
 };
 
-export const getIngredients = () => {
+export const getIngredients = async () => {
     return request("ingredients");
 };
 
-export const createOrder = (ingredientIds) => {
+export const createOrder = async (ingredientIds) => {
     return request("orders", {
         method: "POST",
         headers: {

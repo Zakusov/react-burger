@@ -9,8 +9,9 @@ export const ProfileLinks = () => {
 
     const logout = useCallback(
         () => {
-            auth.signOut();
-            navigate('/login', {replace: true});
+            auth.signOut()
+                .then(() => navigate('/login', {replace: true}))
+                .catch((error) => console.log(error));
         },
         [auth, navigate]
     );

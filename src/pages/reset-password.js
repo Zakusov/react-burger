@@ -2,11 +2,12 @@ import {useCallback, useRef} from 'react';
 import {Link, Navigate, useNavigate} from 'react-router-dom';
 import {Button, Input, Logo} from '@ya.praktikum/react-developer-burger-ui-components';
 
-import {resetPass} from "../services/actions/account-actions";
+import {useAuth} from "../utils/auth";
 import {useForm} from "../hooks/useForm";
 import styles from './reset-password.module.css';
 
 export const ResetPasswordPage = () => {
+    const auth = useAuth();
     const passRef = useRef(null);
     const navigate = useNavigate();
     const {values, handleChange, setValues} = useForm({token: '', password: '', type: 'password', icon: 'ShowIcon'});
@@ -23,20 +24,14 @@ export const ResetPasswordPage = () => {
         e => {
             e.preventDefault();
             if (values.password && values.token) {
-                resetPass({
+                auth.resetPassword({
                     password: values.password,
                     token: values.token
-                })
-                    .then(result => {
-                        console.log("Reset password result: " + result);
-                        if (result instanceof Error) throw new Error();
-                        localStorage.setItem('allowResetPassword', '');
-                        navigate('/login', {replace: true})
-                    })
+                }).then(() => navigate('/login', {replace: true}))
                     .catch(error => console.log(error));
             }
         },
-        [values, navigate]
+        [values, auth, navigate]
     );
 
     return (

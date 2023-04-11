@@ -13,7 +13,8 @@ export const RegisterPage = () => {
     const onSubmit = useCallback(
         e => {
             e.preventDefault();
-            auth.register(values);
+            auth.register(values)
+                .catch((error) => console.log(error));
         },
         [auth, values]
     );

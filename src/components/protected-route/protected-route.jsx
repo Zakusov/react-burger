@@ -11,14 +11,10 @@ export const ProtectedRouteElement = ({element}) => {
     let {getUser, ...auth} = useAuth();
     const [isUserLoaded, setUserLoaded] = useState(false);
 
-    const init = async () => {
-        await getUser();
-        setUserLoaded(true);
-    };
-
     useEffect(() => {
-        init();
-    }, []);
+        getUser().then(() => setUserLoaded(true))
+            .catch((error) => console.log(error));
+    }, [getUser]);
 
     if (!isUserLoaded) {
         return null;

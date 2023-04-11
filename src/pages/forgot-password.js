@@ -2,11 +2,12 @@ import {useCallback} from "react";
 import {Link, useNavigate} from 'react-router-dom';
 import {Button, Input, Logo} from '@ya.praktikum/react-developer-burger-ui-components';
 
-import {recoveryPass} from "../services/actions/account-actions";
 import {useForm} from "../hooks/useForm";
+import {useAuth} from "../utils/auth";
 import styles from './forgot-password.module.css';
 
 export const ForgotPasswordPage = () => {
+    const auth = useAuth();
     const navigate = useNavigate();
     const {values, handleChange} = useForm({email: ''});
 
@@ -14,16 +15,12 @@ export const ForgotPasswordPage = () => {
         e => {
             e.preventDefault();
             if (values.email) {
-                recoveryPass(values.email)
-                    .then(result => {
-                        if (result instanceof Error) throw new Error();
-                        localStorage.setItem('allowResetPassword', 'allow');
-                        navigate('/reset-password', {replace: true});
-                    })
+                auth.recoverPassword(values.email)
+                    .then(() => navigate('/reset-password', {replace: true}))
                     .catch(error => console.log(error));
             }
         },
-        [values, navigate]
+        [values, auth, navigate]
     );
 
     return (

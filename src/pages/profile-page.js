@@ -16,7 +16,8 @@ export const ProfilePage = () => {
     const onSubmit = useCallback(
         e => {
             e.preventDefault();
-            auth.update(values);
+            auth.update(values)
+                .catch((error) => console.log(error));
         },
         [auth, values]
     );

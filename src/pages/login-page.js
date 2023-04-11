@@ -18,7 +18,8 @@ export const LoginPage = () => {
     const onSubmit = useCallback(
         e => {
             e.preventDefault();
-            auth.signIn(values, onError);
+            auth.signIn(values)
+                .catch(onError);
         },
         [auth, values]
     );
