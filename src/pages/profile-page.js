@@ -1,7 +1,5 @@
 import React, {useCallback} from 'react';
 import {Button, Input, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
-
-import AppHeader from "../components/app-header/app-header";
 import {ProfileLinks} from '../components/profile-links/profile-links';
 import {useAuth} from "../utils/auth";
 import {useForm} from "../hooks/useForm";
@@ -26,7 +24,6 @@ export const ProfilePage = () => {
 
     return (
         <>
-            <AppHeader/>
             <form className={styles.mainProfileWrapper} onSubmit={onSubmit}>
                 <div className={styles.profileWrapper}>
                     <div className={styles.linksWrapper}>

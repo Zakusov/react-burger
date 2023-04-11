@@ -1,6 +1,6 @@
 import {useCallback} from "react";
 import {Link, useNavigate} from 'react-router-dom';
-import {Button, Input, Logo} from '@ya.praktikum/react-developer-burger-ui-components';
+import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 
 import {useForm} from "../hooks/useForm";
 import {useAuth} from "../utils/auth";
@@ -25,9 +25,6 @@ export const ForgotPasswordPage = () => {
 
     return (
         <form className={styles.wrapper} onSubmit={onSubmit}>
-            <div className={styles.logo}>
-                <Logo/>
-            </div>
             <p className={`text text_type_main-medium ${styles.title}`}>Восстановление пароля</p>
 
             <div className={styles.inputWrapper}>

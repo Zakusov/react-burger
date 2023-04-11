@@ -1,6 +1,6 @@
 import {useCallback} from 'react';
 import {Link, Navigate} from 'react-router-dom';
-import {Button, Input, Logo, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
+import {Button, Input, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 
 import {useAuth} from "../utils/auth";
 import {useForm} from "../hooks/useForm";
@@ -25,9 +25,6 @@ export const RegisterPage = () => {
 
     return (
         <form className={styles.wrapper} onSubmit={onSubmit}>
-            <div className={styles.logo}>
-                <Logo/>
-            </div>
             <p className={`text text_type_main-medium ${styles.title}`}>Регистрация</p>
 
             <div className={styles.inputWrapper}>

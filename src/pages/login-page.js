@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {Link} from 'react-router-dom';
-import {Button, Input, Logo, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
+import {Button, Input, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 
 import {useAuth} from "../utils/auth";
 import {useForm} from "../hooks/useForm";
@@ -26,9 +26,6 @@ export const LoginPage = () => {
 
     return (
         <form className={styles.wrapper} onSubmit={onSubmit}>
-            <div className={styles.logo}>
-                <Logo/>
-            </div>
             {error && <p className={`text text_color_error ${styles.error}`}>{error}</p>}
 
             <p className={`text text_type_main-medium ${styles.title}`}>Вход</p>

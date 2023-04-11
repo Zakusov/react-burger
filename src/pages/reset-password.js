@@ -1,6 +1,6 @@
 import {useCallback, useRef} from 'react';
 import {Link, Navigate, useNavigate} from 'react-router-dom';
-import {Button, Input, Logo} from '@ya.praktikum/react-developer-burger-ui-components';
+import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 
 import {useAuth} from "../utils/auth";
 import {useForm} from "../hooks/useForm";
@@ -37,9 +37,6 @@ export const ResetPasswordPage = () => {
     return (
         localStorage.getItem('allowResetPassword') ?
             (<form className={styles.wrapper} onSubmit={onSubmit}>
-                <div className={styles.logo}>
-                    <Logo/>
-                </div>
                 <p className={`text text_type_main-medium ${styles.title}`}>Восстановление пароля</p>
 
                 <div className={styles.inputWrapper}>

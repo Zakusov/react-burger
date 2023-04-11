@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import styles from "./app-header-item.module.css";
-import {NavLink} from "react-router-dom";
 
 function AppHeaderItem({type, extraClass, link, children}) {
     let className = type === "primary" ? styles.primary : styles.secondary;
@@ -10,9 +9,9 @@ function AppHeaderItem({type, extraClass, link, children}) {
     }
 
     return (
-        <NavLink className={className} to={link}>
+        <a className={className} href={link}>
             {children}
-        </NavLink>
+        </a>
     );
 }
 

@@ -11,6 +11,7 @@ import {NotFoundPage} from "../../pages/not-found-page";
 import {useDispatch} from "react-redux";
 import {loadIngredients} from "../../services/actions/ingredients-actions";
 import {ProtectedRoute} from "../protected-route/protected-route";
+import AppHeader from "../app-header/app-header";
 
 export default function App() {
     const dispatch = useDispatch();
@@ -23,6 +24,7 @@ export default function App() {
 
     return (
         <ProvideAuth>
+            <AppHeader/>
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<MainPage/>}/>
