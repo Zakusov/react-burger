@@ -8,8 +8,19 @@ import {ForgotPasswordPage} from "../../pages/forgot-password";
 import {ResetPasswordPage} from "../../pages/reset-password";
 import {ProfilePage} from "../../pages/profile-page";
 import {NotFoundPage} from "../../pages/not-found-page";
+import {useDispatch} from "react-redux";
+import React from "react";
+import {loadIngredients} from "../../services/actions/ingredients-actions";
 
 export default function App() {
+    const dispatch = useDispatch();
+
+    React.useEffect(() => {
+            dispatch(loadIngredients());
+        },
+        [dispatch]
+    );
+
     return (
         <ProvideAuth>
             <BrowserRouter>
