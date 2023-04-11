@@ -35,7 +35,7 @@ export const ForgotPasswordPage = () => {
 
             <div className={styles.inputWrapper}>
                 <Input name="email" type="email" placeholder="E-mail" value={values.email}
-                       onChange={event => handleChange(event)}/>
+                       onChange={handleChange}/>
             </div>
 
             <div className={styles.button}>

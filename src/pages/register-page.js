@@ -31,15 +31,15 @@ export const RegisterPage = () => {
 
             <div className={styles.inputWrapper}>
                 <Input name="name" type={'text'} placeholder={'Имя'} value={values.name}
-                       onChange={event => handleChange(event)}/>
+                       onChange={handleChange}/>
             </div>
             <div className={styles.inputWrapper}>
                 <Input name="email" type={'email'} placeholder={'Email'} value={values.email}
-                       onChange={event => handleChange(event)}/>
+                       onChange={handleChange}/>
             </div>
             <div className={styles.inputWrapper}>
                 <PasswordInput name="password" placeholder={'Пароль'} value={values.password}
-                               onChange={event => handleChange(event)}/>
+                               onChange={handleChange}/>
             </div>
 
             <div className={styles.button}>

@@ -50,7 +50,7 @@ export const ResetPasswordPage = () => {
                 <div className={styles.inputWrapper}>
                     <Input name="password" type={values.type} placeholder="Введите новый пароль"
                            value={values.password}
-                           onChange={event => handleChange(event)}
+                           onChange={handleChange}
                            icon={values.icon}
                            ref={passRef}
                            onIconClick={onEyeClick}/>
@@ -59,7 +59,7 @@ export const ResetPasswordPage = () => {
                 <div className={styles.inputWrapper}>
                     <Input name="token" type="text" placeholder="Введите код из письма"
                            value={values.token}
-                           onChange={event => handleChange(event)}/>
+                           onChange={handleChange}/>
                 </div>
 
                 <div className={styles.button}>

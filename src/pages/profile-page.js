@@ -35,17 +35,17 @@ export const ProfilePage = () => {
                         <div className={styles.inputsWrapper}>
                             <div className={styles.inputWrapper}>
                                 <Input name="name" type="text" icon="EditIcon" placeholder="Имя"
-                                       value={values.name} onChange={event => handleChange(event)}/>
+                                       value={values.name} onChange={handleChange}/>
                             </div>
 
                             <div className={styles.inputWrapper}>
                                 <Input name="email" type="text" icon="EditIcon" placeholder="Логин"
-                                       value={values.email} onChange={event => handleChange(event)}/>
+                                       value={values.email} onChange={handleChange}/>
                             </div>
 
                             <div className={styles.inputWrapper}>
                                 <PasswordInput name="password" icon="EditIcon" placeholder="Пароль"
-                                               value={values.password} onChange={event => handleChange(event)}/>
+                                               value={values.password} onChange={handleChange}/>
                             </div>
 
                             <div className={styles.buttonsWrapper}>
