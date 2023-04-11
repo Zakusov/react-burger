@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {Link, Navigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {Button, Input, Logo, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 
 import {useAuth} from "../utils/auth";
@@ -23,10 +23,6 @@ export const LoginPage = () => {
         },
         [auth, values]
     );
-
-    if (auth.user) {
-        return (<Navigate to={'/'}/>);
-    }
 
     return (
         <form className={styles.wrapper} onSubmit={onSubmit}>
