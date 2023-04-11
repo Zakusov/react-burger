@@ -82,7 +82,7 @@ const BurgerIngredients = () => {
             entries.forEach((entry) => {
                 typeTitleInViewport[entry.target.id] = entry.isIntersecting;
             })
-            for (let typeTitle of Object.keys(typeTitleInViewport)) {
+            for (const typeTitle of Object.keys(typeTitleInViewport)) {
                 if (typeTitleInViewport[typeTitle]) {
                     setCurrentTab(typeTitle);
                 }

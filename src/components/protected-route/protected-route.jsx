@@ -8,7 +8,7 @@ import {useAuth} from "../../utils/auth";
  * @param element элемент для авторизованного пользователя.
  */
 export const ProtectedRouteElement = ({element}) => {
-    let {getUser, ...auth} = useAuth();
+    const {getUser, ...auth} = useAuth();
     const [isUserLoaded, setUserLoaded] = useState(false);
 
     useEffect(() => {
