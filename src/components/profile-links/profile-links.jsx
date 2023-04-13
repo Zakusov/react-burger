@@ -19,19 +19,13 @@ export const ProfileLinks = () => {
     return (
         <div className={styles.menuProfile}>
             <div className={styles.itemMenu}>
-                <NavLink to="/profile"
-                         className={`text text_type_main-medium ${styles.link} ${styles.unchecked}`}>Профиль
-                </NavLink>
+                <NavLink className={styles.active} to="/profile">Профиль</NavLink>
             </div>
             <div className={styles.itemMenu}>
-                <NavLink to="/profile"
-                         className={`text text_type_main-medium ${styles.link} ${styles.unchecked}`}>История заказов
-                </NavLink>
+                <div className={styles.pending}>История заказов</div>
             </div>
             <div className={`${styles.itemMenu} ${styles.lastItemMenu}`}>
-                <div onClick={logout}
-                     className={`text text_type_main-medium ${styles.link} ${styles.exitBtn} ${styles.unchecked}`}>Выход
-                </div>
+                <div onClick={logout} className={styles.pending}>Выход</div>
             </div>
 
             <p className={`text text_type_main-default ${styles.footerMenu}`}>В этом разделе вы можете изменить свои

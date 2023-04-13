@@ -17,18 +17,21 @@
     margin-bottom: 80px;
 }
 
-.link {
+.active {
+    composes: text from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+    composes: text_type_main-medium from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+
     text-decoration: none;
+    color: #F2F2F3;
 }
 
-.unchecked {
-    color: #8585ad;
-}
-
-.checked {
-    color: #f2f2f3;
-}
-
-.exitBtn:hover {
+.pending {
+    composes: active;
+    color: #8585AD;
     cursor: pointer;
+}
+
+.pending:hover {
+    color: unset;
+    transition: color linear 0.3s;
 }
