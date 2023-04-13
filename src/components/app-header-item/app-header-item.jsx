@@ -1,3 +1,4 @@
+import {NavLink} from "react-router-dom";
 import PropTypes from "prop-types";
 import styles from "./app-header-item.module.css";
 
@@ -9,9 +10,9 @@ function AppHeaderItem({type, extraClass, link, children}) {
     }
 
     return (
-        <a className={className} href={link}>
+        <NavLink className={className} to={link}>
             {children}
-        </a>
+        </NavLink>
     );
 }
 
