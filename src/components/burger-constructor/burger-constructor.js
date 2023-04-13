@@ -1,19 +1,21 @@
 import React, {useCallback} from "react";
 import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 import {useDrop} from "react-dnd";
 import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import Modal from "../modal/modal.js";
 import OrderDetails from "../order-details/order-details.js"
 import OrderItem from "../order-item/order-item";
-
 import {createOrder} from "../../utils/burger-api";
+import {useAuth} from "../../utils/auth";
 import {addIngredient, deleteAll, replaceFilling} from "../../services/actions/order-actions";
 import styles from "./burger-constructor.module.css";
 
-
 const BurgerConstructor = () => {
 
+    const auth = useAuth();
+    const navigate = useNavigate();
     const [modalVisible, setModalVisible] = React.useState(false);
     const [orderId, setOrderId] = React.useState(0);
     const [error, setError] = React.useState(false);
@@ -46,15 +48,19 @@ const BurgerConstructor = () => {
     }, [dispatch, filling]);
 
     const onCreateOrder = () => {
-        const ingredientIds = filling.map(element => element._id);
-        ingredientIds.push(bun._id);
-        createOrder(ingredientIds).then((res) => {
-            setOrderId(res.order.number);
-            setModalVisible(true);
-        }).catch((e) => {
-            setError(true);
-            console.log(e);
-        });
+        if (auth.user) {
+            const ingredientIds = filling.map(element => element._id);
+            ingredientIds.push(bun._id);
+            createOrder(ingredientIds).then((res) => {
+                setOrderId(res.order.number);
+                setModalVisible(true);
+            }).catch((e) => {
+                setError(true);
+                console.log(e);
+            });
+        } else {
+            navigate('/login');
+        }
     }
 
     const closeModal = () => {
