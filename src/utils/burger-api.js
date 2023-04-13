@@ -93,11 +93,11 @@ export const logoutRequest = async (token) => {
     });
 };
 
-export const getIngredients = async () => {
+export const getIngredientsRequest = async () => {
     return request("ingredients");
 };
 
-export const createOrder = async (ingredientIds) => {
+export const createOrderRequest = async (ingredientIds) => {
     return request("orders", {
         method: "POST",
         headers: {

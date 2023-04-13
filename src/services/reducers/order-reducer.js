@@ -1,9 +1,20 @@
-import {ADD_INGREDIENT, DELETE_ALL, DELETE_INGREDIENT, REPLACE_FILLING} from "../actions/order-actions";
+import {
+    ADD_INGREDIENT,
+    CREATE_ORDER,
+    CREATE_ORDER_FAILED,
+    CREATE_ORDER_SUCCESS,
+    DELETE_ALL,
+    DELETE_INGREDIENT,
+    REPLACE_FILLING
+} from "../actions/order-actions";
 
 const initialState = {
     bun: null,
     filling: [],
-    price: 0
+    price: 0,
+    isSending: false,
+    isFailed: false,
+    orderId: null
 };
 
 function getPrice(ingredient) {
@@ -17,21 +28,21 @@ function calculatePrice(bun, filling, ingredient) {
 export const orderReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_INGREDIENT: {
-            if (action.ingredient.type === 'bun') {
+            if (action.payload.type === 'bun') {
                 return {
                     ...state,
-                    bun: action.ingredient,
-                    price: calculatePrice(action.ingredient, state.filling)
+                    bun: action.payload,
+                    price: calculatePrice(action.payload, state.filling)
                 };
             }
             return {
                 ...state,
-                filling: [...state.filling, action.ingredient],
-                price: calculatePrice(state.bun, state.filling, action.ingredient)
+                filling: [...state.filling, action.payload],
+                price: calculatePrice(state.bun, state.filling, action.payload)
             };
         }
         case DELETE_INGREDIENT: {
-            const filling = [...state.filling.filter(item => item.id !== action.id)];
+            const filling = [...state.filling.filter(item => item.id !== action.payload)];
             return {
                 ...state,
                 filling: filling,
@@ -45,8 +56,28 @@ export const orderReducer = (state = initialState, action) => {
             return {
                 ...state,
                 filling: [
-                    ...action.filling
+                    ...action.payload
                 ]
+            }
+        }
+        case CREATE_ORDER: {
+            return {
+                ...state,
+                isSending: true
+            }
+        }
+        case CREATE_ORDER_SUCCESS: {
+            return {
+                ...state,
+                isSending: false,
+                orderId: action.payload
+            }
+        }
+        case CREATE_ORDER_FAILED: {
+            return {
+                ...state,
+                isSending: false,
+                isFailed: true
             }
         }
         default: {
