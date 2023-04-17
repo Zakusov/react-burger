@@ -1,11 +1,8 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useSelector} from "react-redux";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 
-import Modal from "../modal/modal";
 import IngredientList from "../ingredient-list/ingredient-list";
-import IngredientDetails from "../ingredient-details/ingredient-details";
-
 import styles from "./burger-ingredients.module.css";
 
 const tab1 = 'Булки';
@@ -13,10 +10,6 @@ const tab2 = 'Соусы';
 const tab3 = 'Начинки';
 
 const BurgerIngredients = () => {
-
-    const [currentTab, setCurrentTab] = React.useState(tab1);
-    const [modalVisible, setModalVisible] = React.useState(false);
-    const [selected, setSelected] = React.useState([])
 
     /** Все ингредиенты **/
     const {ingredients} = useSelector(state => state.ingredients);
@@ -49,14 +42,16 @@ const BurgerIngredients = () => {
     typeListRefs.set(tab2, saucesList);
     typeListRefs.set(tab3, mainsList);
 
+    const [currentTab, setCurrentTab] = React.useState(tab1);
+
     // Переключение вкладок при скроллинге
-    React.useEffect(() => {
+    useEffect(() => {
         const typeTitleInViewport = {};
         const callback = (entries) => {
             entries.forEach((entry) => {
                 typeTitleInViewport[entry.target.id] = entry.isIntersecting;
             })
-            for (let typeTitle of Object.keys(typeTitleInViewport)) {
+            for (const typeTitle of Object.keys(typeTitleInViewport)) {
                 if (typeTitleInViewport[typeTitle]) {
                     setCurrentTab(typeTitle);
                 }
@@ -76,7 +71,7 @@ const BurgerIngredients = () => {
         ref.current.scrollIntoView({behavior: "smooth"});
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         switch (currentTab) {
             case tab2:
                 scrollTo(saucesList);
@@ -89,17 +84,8 @@ const BurgerIngredients = () => {
         }
     }, [currentTab]);
 
-    const closeModal = () => {
-        setModalVisible(false);
-    };
-
     return (
         <>
-            {modalVisible &&
-                <Modal onClose={closeModal} title="Детали заказа">
-                    <IngredientDetails item={selected}/>
-                </Modal>}
-
             <section className={`${styles.section} mt-10`}>
                 <div className='mt-10 mb-5'>
                     <p className="text text_type_main-large">
@@ -122,15 +108,15 @@ const BurgerIngredients = () => {
                 <section className={styles.scrollList} ref={scrollList}>
                     <div>
                         <p className="text text_type_main-medium" ref={bunsList} id={tab1}>Булки</p>
-                        <IngredientList data={buns} onClick={setModalVisible} setSelected={setSelected}/>
+                        <IngredientList data={buns}/>
                     </div>
                     <div>
                         <p className="text text_type_main-medium" ref={saucesList} id={tab2}>Соусы</p>
-                        <IngredientList data={sauces} onClick={setModalVisible} setSelected={setSelected}/>
+                        <IngredientList data={sauces}/>
                     </div>
                     <div>
                         <p className="text text_type_main-medium" ref={mainsList} id={tab3}>Начинки</p>
-                        <IngredientList data={mains} onClick={setModalVisible} setSelected={setSelected}/>
+                        <IngredientList data={mains}/>
                     </div>
                 </section>
             </section>

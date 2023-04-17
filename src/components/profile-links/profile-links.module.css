@@ -1,0 +1,37 @@
+.menuProfile {
+    width: 320px;
+}
+
+.itemMenu {
+    width: 320px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+}
+
+.footerMenu {
+    color: #8585ad;
+}
+
+.lastItemMenu {
+    margin-bottom: 80px;
+}
+
+.active {
+    composes: text from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+    composes: text_type_main-medium from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+
+    text-decoration: none;
+    color: #F2F2F3;
+}
+
+.pending {
+    composes: active;
+    color: #8585AD;
+    cursor: pointer;
+}
+
+.pending:hover {
+    color: unset;
+    transition: color linear 0.3s;
+}

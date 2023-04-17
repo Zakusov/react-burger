@@ -1,39 +1,62 @@
-import React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import AppHeader from '../app-header/app-header.js';
-import {DndProvider} from "react-dnd"
-import {HTML5Backend} from "react-dnd-html5-backend";
-
+import React, {useEffect} from "react";
+import {Route, Routes, useLocation, useNavigate} from 'react-router-dom';
+import {ProvideAuth} from "../../utils/auth";
+import {MainPage} from "../../pages/main-page";
+import {LoginPage} from "../../pages/login-page";
+import {RegisterPage} from "../../pages/register-page";
+import {ForgotPasswordPage} from "../../pages/forgot-password";
+import {ResetPasswordPage} from "../../pages/reset-password";
+import {ProfilePage} from "../../pages/profile-page";
+import {NotFoundPage} from "../../pages/not-found-page";
+import {useDispatch} from "react-redux";
 import {loadIngredients} from "../../services/actions/ingredients-actions";
-import BurgerConstructor from '../burger-constructor/burger-constructor.js';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients.js';
-import {Loader} from "../loader/loader";
+import {ProtectedRoute} from "../protected-route/protected-route";
+import AppHeader from "../app-header/app-header";
+import Modal from "../modal/modal";
+import IngredientDetails from "../ingredient-details/ingredient-details";
 
-import styles from "./app.module.css";
+export default function App() {
+    const location = useLocation();
+    const state = location.state;
+    const background = state?.background;
 
-function App() {
+    const navigate = useNavigate();
+    const closeModal = () => {
+        navigate(-1);
+    };
+
     const dispatch = useDispatch();
-    const {isLoading, isFailed} = useSelector(state => state.ingredients);
-
-    React.useEffect(() => {
+    useEffect(() => {
             dispatch(loadIngredients());
         },
         [dispatch]
     );
 
     return (
-        <>
+        <ProvideAuth>
             <AppHeader/>
-            <DndProvider backend={HTML5Backend}>
-                <main className={styles.main}>
-                    {isFailed && <div>Упс! Похоже, закончились ингредиенты... Попробуйте зайти позже.</div>}
-                    {!isFailed && isLoading && <Loader size="large"/>}
-                    {!isFailed && !isLoading && <BurgerIngredients/>}
-                    <BurgerConstructor/>
-                </main>
-            </DndProvider>
-        </>
+            <Routes location={background || location}>
+                <Route path="/" element={<MainPage/>}/>
+                <Route path="/login" element={<ProtectedRoute anonymous={true}><LoginPage/></ProtectedRoute>}/>
+                <Route path="/register"
+                       element={<ProtectedRoute anonymous={true}><RegisterPage/></ProtectedRoute>}/>
+                <Route path="/forgot-password"
+                       element={<ProtectedRoute anonymous={true}><ForgotPasswordPage/></ProtectedRoute>}/>
+                <Route path="/reset-password"
+                       element={<ProtectedRoute anonymous={true}><ResetPasswordPage/></ProtectedRoute>}/>
+                <Route path="/profile" element={<ProtectedRoute><ProfilePage/></ProtectedRoute>}/>
+                <Route path="/ingredients/:id" element={<IngredientDetails/>}/>
+                <Route path="*" element={<NotFoundPage/>}/>
+            </Routes>
+            {background && (
+                <Routes>
+                    <Route path="/ingredients/:id" element={
+                        <Modal title="Детали заказа" onClose={closeModal}>
+                            <IngredientDetails/>
+                        </Modal>
+                    }/>
+                </Routes>
+            )}
+        </ProvideAuth>
     );
 }
-
-export default App;

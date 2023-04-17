@@ -1,4 +1,4 @@
-import {getIngredients} from "../../utils/burger-api";
+import {getIngredientsRequest} from "../../utils/burger-api";
 
 export const GET_INGREDIENTS = "GET_INGREDIENTS";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
@@ -9,7 +9,7 @@ export function loadIngredients() {
         dispatch({
             type: GET_INGREDIENTS
         });
-        getIngredients().then((res) => {
+        getIngredientsRequest().then((res) => {
             dispatch({
                 type: GET_INGREDIENTS_SUCCESS,
                 ingredients: res.data

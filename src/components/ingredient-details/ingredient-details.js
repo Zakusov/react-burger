@@ -1,7 +1,27 @@
 import style from './ingredient-details.module.css';
-import {ingredientType} from "../../utils/prop-types";
+import React, {useEffect} from "react";
+import {useSelector} from "react-redux";
+import {useParams} from "react-router-dom";
 
-const IngredientDetails = ({item}) => {
+const IngredientDetails = () => {
+    const {ingredients} = useSelector(state => state.ingredients);
+    const [item, setItem] = React.useState(null)
+    const {id} = useParams();
+
+    useEffect(
+        () => {
+            const found = ingredients.find((item) => item._id === id);
+            if (found) {
+                setItem(found);
+            }
+        },
+        [id, ingredients]
+    );
+
+    if (!item) {
+        return null;
+    }
+
     return (
         <div className={style.content}>
             <div className='mb-4'><img className={style.photo} src={item.image} alt="Ingredient"></img></div>
@@ -26,9 +46,6 @@ const IngredientDetails = ({item}) => {
             </div>
         </div>
     )
-}
-IngredientDetails.propTypes = {
-    item: ingredientType.isRequired
 }
 
 export default IngredientDetails

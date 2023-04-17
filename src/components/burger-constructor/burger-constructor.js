@@ -1,25 +1,23 @@
 import React, {useCallback} from "react";
 import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 import {useDrop} from "react-dnd";
 import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import Modal from "../modal/modal.js";
 import OrderDetails from "../order-details/order-details.js"
 import OrderItem from "../order-item/order-item";
-
-import {createOrder} from "../../utils/burger-api";
-import {addIngredient, deleteAll, replaceFilling} from "../../services/actions/order-actions";
+import {useAuth} from "../../utils/auth";
+import {addIngredient, createOrder, deleteAll, replaceFilling} from "../../services/actions/order-actions";
 import styles from "./burger-constructor.module.css";
-
 
 const BurgerConstructor = () => {
 
-    const [modalVisible, setModalVisible] = React.useState(false);
-    const [orderId, setOrderId] = React.useState(0);
-    const [error, setError] = React.useState(false);
+    const auth = useAuth();
+    const navigate = useNavigate();
 
     // Содержимое корзины
-    const {bun, filling, price} = useSelector(state => state.order);
+    const {bun, filling, price, isFailed, orderId} = useSelector(state => state.order);
 
     // Исходный состав бургера
     const dispatch = useDispatch();
@@ -46,27 +44,22 @@ const BurgerConstructor = () => {
     }, [dispatch, filling]);
 
     const onCreateOrder = () => {
-        const ingredientIds = filling.map(element => element._id);
-        ingredientIds.push(bun._id);
-        createOrder(ingredientIds).then((res) => {
-            setOrderId(res.order.number);
-            setModalVisible(true);
-        }).catch((e) => {
-            setError(true);
-            console.log(e);
-        });
+        if (auth.user) {
+            dispatch(createOrder(bun, filling));
+        } else {
+            navigate('/login');
+        }
     }
 
     const closeModal = () => {
-        setModalVisible(false);
         dispatch(deleteAll());
     };
 
     return (
         <>
-            {modalVisible &&
+            {orderId &&
                 <Modal onClose={closeModal} title=''>
-                    <OrderDetails orderId={orderId} error={error}/>
+                    <OrderDetails orderId={orderId} error={isFailed}/>
                 </Modal>
             }
             <div className={`${styles.container} pt-15`} ref={dropTargetRef}>
