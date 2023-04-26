@@ -1,8 +1,16 @@
+import React, {FC} from "react";
 import {NavLink} from "react-router-dom";
-import PropTypes from "prop-types";
 import styles from "./app-header-item.module.css";
 
-function AppHeaderItem({type, extraClass, link, children}) {
+type TType = 'primary' | 'secondary';
+
+type TAppHeaderItemProps = {
+    type: TType;
+    extraClass: string;
+    link: string;
+} & React.HTMLAttributes<HTMLElement>;
+
+const AppHeaderItem: FC<TAppHeaderItemProps> = ({type, extraClass, link, children}: TAppHeaderItemProps) => {
     let className = type === "primary" ? styles.primary : styles.secondary;
 
     if (extraClass) {
@@ -15,12 +23,4 @@ function AppHeaderItem({type, extraClass, link, children}) {
         </NavLink>
     );
 }
-
-AppHeaderItem.propTypes = {
-    type: PropTypes.oneOf(["primary", "secondary"]).isRequired,
-    extraClass: PropTypes.string,
-    link: PropTypes.string,
-    children: PropTypes.arrayOf(PropTypes.node).isRequired,
-};
-
 export default AppHeaderItem;
