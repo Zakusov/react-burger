@@ -1,11 +1,11 @@
 import {useMatch} from 'react-router-dom';
 import {BurgerIcon, ListIcon, Logo, ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import AppHeaderItem from "../app-header-item/app-header-item";
+import {AppHeaderItem, TType} from "../app-header-item/app-header-item";
 import styles from "./app-header.module.css";
 
-function AppHeader() {
-    const homeType = !!useMatch("/") ? "primary" : "secondary";
-    const profileType = !!useMatch("/profile") ? "primary" : "secondary";
+const AppHeader = () => {
+    const homeType: TType = !!useMatch("/") ? "primary" : "secondary";
+    const profileType: TType = !!useMatch("/profile") ? "primary" : "secondary";
 
     return (
         <header className={styles.navPanel}>
