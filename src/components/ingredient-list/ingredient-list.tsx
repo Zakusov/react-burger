@@ -1,8 +1,22 @@
 import Card from "../card/card";
-import {ingredientArray} from "../../utils/prop-types";
 import styles from "./ingredient-list.module.css"
 
-const IngredientList = ({data}) => {
+interface IIngredientProps {
+    _id: string;
+    name: string;
+    type: string;
+    proteins: number;
+    fat: number;
+    carbohydrates: number;
+    calories: number;
+    price: number;
+    image: string;
+    image_mobile: string;
+    image_large: string;
+    __v: number;
+}
+
+const IngredientList = (data: IIngredientProps[]) => {
     return (
         <div className={`${styles.main} pt-6 pr-1 pb-10 pl-4`}>
             {data.map((elem) => {
@@ -13,9 +27,5 @@ const IngredientList = ({data}) => {
         </div>
     )
 }
-
-IngredientList.propTypes = {
-    data: ingredientArray.isRequired
-};
 
 export default IngredientList;
