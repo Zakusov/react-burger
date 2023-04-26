@@ -5,7 +5,7 @@ import {useDrop} from "react-dnd";
 import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import Modal from "../modal/modal.js";
-import OrderDetails from "../order-details/order-details.js"
+import OrderDetails from "../order-details/order-details.tsx"
 import OrderItem from "../order-item/order-item";
 import {useAuth} from "../../utils/auth";
 import {addIngredient, createOrder, deleteAll, replaceFilling} from "../../services/actions/order-actions";

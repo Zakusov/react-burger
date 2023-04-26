@@ -1,9 +1,13 @@
 import React from "react";
 import doneImage from '../../images/done.png'
-import PropTypes from "prop-types";
 import style from './order-details.module.css'
 
-const OrderDetails = ({orderId, error}) => {
+interface IOrderDetailsProps {
+    orderId: number;
+    error: boolean;
+}
+
+const OrderDetails = ({orderId, error}: IOrderDetailsProps) => {
     return (
         <>
             {error && <div>
@@ -24,10 +28,5 @@ const OrderDetails = ({orderId, error}) => {
         </>
     )
 }
-
-OrderDetails.propTypes = {
-    orderId: PropTypes.number.isRequired,
-    error: PropTypes.bool.isRequired,
-};
 
 export default OrderDetails;
