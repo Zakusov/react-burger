@@ -13,4 +13,16 @@ export type IngredientType = {
     __v: number;
 }
 
-export type IngredientExType = IngredientType & { id: string; }
+export type IngredientExType = IngredientType & {
+    id: string;
+}
+
+export type LoginType = {
+    email: string;
+    password: string;
+}
+
+export type UserType = {
+    name: string;
+} & LoginType;
+
