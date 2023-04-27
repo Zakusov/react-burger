@@ -1,9 +1,10 @@
-import React, {useEffect} from "react";
+import React, {RefObject, useEffect, useRef} from "react";
 import {useSelector} from "react-redux";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import IngredientList from "../ingredient-list/ingredient-list";
 import styles from "./burger-ingredients.module.css";
+import {IngredientType} from "../../utils/types";
 
 const tab1 = 'Булки';
 const tab2 = 'Соусы';
@@ -12,30 +13,31 @@ const tab3 = 'Начинки';
 const BurgerIngredients = () => {
 
     /** Все ингредиенты **/
+        // @ts-ignore
     const {ingredients} = useSelector(state => state.ingredients);
 
     /** Булки **/
     const buns = React.useMemo(
-        () => ingredients.filter((item) => item.type === "bun"),
+        () => ingredients.filter((item: IngredientType) => item.type === "bun"),
         [ingredients]
     );
 
     /** Соусы **/
     const sauces = React.useMemo(
-        () => ingredients.filter((item) => item.type === "sauce"),
+        () => ingredients.filter((item: IngredientType) => item.type === "sauce"),
         [ingredients]
     );
 
     /** Начинки **/
     const mains = React.useMemo(
-        () => ingredients.filter((item) => item.type === "main"),
+        () => ingredients.filter((item: IngredientType) => item.type === "main"),
         [ingredients]
     );
 
-    const scrollList = React.useRef(null);
-    const bunsList = React.useRef(null);
-    const saucesList = React.useRef(null);
-    const mainsList = React.useRef(null);
+    const scrollList = useRef<HTMLElement>(null);
+    const bunsList = useRef<HTMLParagraphElement>(null);
+    const saucesList = useRef<HTMLParagraphElement>(null);
+    const mainsList = useRef<HTMLParagraphElement>(null);
 
     const typeListRefs = new Map();
     typeListRefs.set(tab1, bunsList);
@@ -46,19 +48,19 @@ const BurgerIngredients = () => {
 
     // Переключение вкладок при скроллинге
     useEffect(() => {
-        const typeTitleInViewport = {};
-        const callback = (entries) => {
+        const typeTitleInViewport = new Map<string, boolean>();
+        const callback: IntersectionObserverCallback = (entries) => {
             entries.forEach((entry) => {
-                typeTitleInViewport[entry.target.id] = entry.isIntersecting;
+                typeTitleInViewport.set(entry.target.id, entry.isIntersecting);
             })
             for (const typeTitle of Object.keys(typeTitleInViewport)) {
-                if (typeTitleInViewport[typeTitle]) {
+                if (typeTitleInViewport.get(typeTitle)) {
                     setCurrentTab(typeTitle);
                 }
             }
         };
 
-        const options = {
+        const options: IntersectionObserverInit = {
             root: scrollList.current,
             rootMargin: '20% 0% -80% 0%',
             threshold: 0
@@ -67,8 +69,10 @@ const BurgerIngredients = () => {
         typeListRefs.forEach((typeTitle) => observer.observe(typeTitle.current));
     });
 
-    const scrollTo = (ref) => {
-        ref.current.scrollIntoView({behavior: "smooth"});
+    const scrollTo = (ref: RefObject<HTMLElement>) => {
+        if (ref && ref.current) {
+            ref.current.scrollIntoView({behavior: "smooth"});
+        }
     }
 
     useEffect(() => {

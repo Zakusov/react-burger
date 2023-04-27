@@ -9,7 +9,7 @@ import OrderDetails from "../order-details/order-details";
 import OrderItem from "../order-item/order-item";
 import {addIngredient, createOrder, deleteAll, replaceFilling} from "../../services/actions/order-actions";
 import {useAuth} from "../../utils/auth";
-import {IngredientExType} from "../../utils/types";
+import {SelectedIngredientType} from "../../utils/types";
 import styles from "./burger-constructor.module.css";
 
 const BurgerConstructor = () => {
@@ -85,7 +85,7 @@ const BurgerConstructor = () => {
                 }
                 {filling &&
                     <ul className={styles.scrollList}>
-                        {filling.map((item: IngredientExType, index: number) => {
+                        {filling.map((item: SelectedIngredientType, index: number) => {
                             return (
                                 <li className='mb-4 ml-2' key={item.id}>
                                     <OrderItem key={`item-${item.id}`} item={item} index={index} moveCard={onMoveCard}/>

@@ -13,7 +13,7 @@ export type IngredientType = {
     __v: number;
 }
 
-export type IngredientExType = IngredientType & {
+export type SelectedIngredientType = IngredientType & {
     id: string;
 }
 

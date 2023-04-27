@@ -9,10 +9,10 @@ import {ingredientType} from "../../utils/prop-types";
 
 import PropTypes from "prop-types";
 import styles from "./order-item.module.css";
-import {IngredientExType} from "../../utils/types";
+import {SelectedIngredientType} from "../../utils/types";
 
 interface IOrderItemProps {
-    item: IngredientExType;
+    item: SelectedIngredientType;
     index: number;
     moveCard: (dragIndex: number, hoverIndex: number) => void;
 }
