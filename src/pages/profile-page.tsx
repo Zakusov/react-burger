@@ -1,18 +1,19 @@
-import React, {useCallback} from 'react';
+import React, {FormEvent, useCallback} from 'react';
 import {Button, Input, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 import {ProfileLinks} from '../components/profile-links/profile-links';
-import {useAuth} from "../utils/auth";
 import {useForm} from "../hooks/useForm";
+import {useAuth} from "../utils/auth";
+import {UserType} from "../utils/types";
 import styles from './profile-page.module.css';
 
 export const ProfilePage = () => {
     const auth = useAuth();
-    const user = auth.user;
-    const initialState = {name: user.name, email: user.email, password: ''};
+    const user: UserType = auth.user!;
+    const initialState = {name: user?.name, email: user.email, password: ''};
     const {values, handleChange, setValues} = useForm(initialState);
 
     const onSubmit = useCallback(
-        e => {
+        (e: FormEvent) => {
             e.preventDefault();
             auth.update(values)
                 .catch((error) => console.log(error));

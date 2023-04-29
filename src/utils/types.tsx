@@ -24,5 +24,6 @@ export type LoginType = {
 
 export type UserType = {
     name: string;
+    id?: string;
 } & LoginType;
 

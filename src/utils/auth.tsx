@@ -34,7 +34,7 @@ export function useAuth() {
 type AuthReturnType = ReturnType<typeof useProvideAuth>;
 
 export function useProvideAuth() {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<UserType>();
 
     const getErrorMessage = (error: Error) => error && error.message ? error.message : "Упс";
 
@@ -114,7 +114,7 @@ export function useProvideAuth() {
     };
 
     function deleteUserData() {
-        setUser(null);
+        setUser(undefined);
         deleteCookie(ACCESS_TOKEN);
         localStorage.removeItem(REFRESH_TOKEN);
     }
