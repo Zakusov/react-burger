@@ -1,4 +1,4 @@
-import {useCallback} from "react";
+import {FormEvent, useCallback} from "react";
 import {Link, useNavigate} from 'react-router-dom';
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -12,7 +12,7 @@ export const ForgotPasswordPage = () => {
     const {values, handleChange} = useForm({email: ''});
 
     const onSubmit = useCallback(
-        e => {
+        (e: FormEvent) => {
             e.preventDefault();
             if (values.email) {
                 auth.recoverPassword(values.email)
@@ -28,7 +28,7 @@ export const ForgotPasswordPage = () => {
             <p className={`text text_type_main-medium ${styles.title}`}>Восстановление пароля</p>
 
             <div className={styles.inputWrapper}>
-                <Input name="email" type="email" placeholder="E-mail" value={values.email}
+                <Input name="email" type="email" placeholder="E-mail" value={values.email ? values.email : ''}
                        onChange={handleChange}/>
             </div>
 
