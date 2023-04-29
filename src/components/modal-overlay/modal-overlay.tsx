@@ -1,8 +1,13 @@
+import {FC, HTMLAttributes, MouseEvent} from "react";
 import PropTypes from 'prop-types';
 import styles from './modal-overlay.module.css';
 
-function ModalOverlay({onClose, children}) {
-	const onPopupClick = (e) => {
+type TModalOverlayProps = {
+	onClose: () => void;
+} & HTMLAttributes<HTMLElement>;
+
+const ModalOverlay: FC<TModalOverlayProps> = ({onClose, children}: TModalOverlayProps) => {
+	const onPopupClick = (e: MouseEvent<HTMLDivElement>) => {
 		if (e.target === e.currentTarget) {
 			onClose();
 		}

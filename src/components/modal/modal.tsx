@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import {FC, HTMLAttributes, useCallback, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import {CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -10,14 +10,17 @@ const modalRoot = document.getElementById("modals")!;
 type TModalProps = {
     onClose: () => void;
     title: string;
-} & React.HTMLAttributes<HTMLElement>;
+} & HTMLAttributes<HTMLElement>;
 
 const Modal: FC<TModalProps> = ({onClose, title, children}: TModalProps) => {
-    const onKeyDown = (event: KeyboardEvent) => {
+
+    type KeyDownCallback = (event: KeyboardEvent) => void;
+
+    const onKeyDown = useCallback<KeyDownCallback>((event: KeyboardEvent) => {
         if (event.key === "Escape") {
             onClose();
         }
-    };
+    }, [onClose]);
 
     useEffect(() => {
         document.addEventListener("keydown", onKeyDown);
