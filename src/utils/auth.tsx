@@ -107,7 +107,7 @@ export function useProvideAuth() {
     };
 
     const signOut = async () => {
-        const token = localStorage.getItem(REFRESH_TOKEN);
+        const token = localStorage.getItem(REFRESH_TOKEN)!;
         return logoutRequest(token).then(() => {
             deleteUserData();
         });
