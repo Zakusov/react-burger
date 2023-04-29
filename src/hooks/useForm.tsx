@@ -1,15 +1,6 @@
 import {ChangeEvent, useState} from "react";
 
-type UseFormType = {
-    name?: string;
-    email?: string;
-    password?: string;
-    token?: string;
-    type?: string;
-    icon?: string;
-}
-
-export function useForm(inputValues: UseFormType) {
+export function useForm<T>(inputValues: T) {
     const [values, setValues] = useState(inputValues);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
