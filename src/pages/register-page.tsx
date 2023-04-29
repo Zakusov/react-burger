@@ -1,4 +1,4 @@
-import {useCallback} from 'react';
+import {FormEvent, useCallback} from 'react';
 import {Link, Navigate} from 'react-router-dom';
 import {Button, Input, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -11,7 +11,7 @@ export const RegisterPage = () => {
     const {values, handleChange} = useForm({name: '', email: '', password: ''});
 
     const onSubmit = useCallback(
-        e => {
+        (e: FormEvent) => {
             e.preventDefault();
             auth.register(values)
                 .catch((error) => console.log(error));
