@@ -1,16 +1,18 @@
-import style from './ingredient-details.module.css';
-import React, {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
+import {IngredientType} from "../../utils/types";
+import style from './ingredient-details.module.css';
 
 const IngredientDetails = () => {
+    // @ts-ignore
     const {ingredients} = useSelector(state => state.ingredients);
-    const [item, setItem] = React.useState(null)
+    const [item, setItem] = useState<IngredientType>()
     const {id} = useParams();
 
     useEffect(
         () => {
-            const found = ingredients.find((item) => item._id === id);
+            const found = ingredients.find((item: IngredientType) => item._id === id);
             if (found) {
                 setItem(found);
             }
