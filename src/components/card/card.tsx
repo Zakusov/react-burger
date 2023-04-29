@@ -3,8 +3,6 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {useDrag} from "react-dnd";
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-
-import {ingredientType} from "../../utils/prop-types";
 import styles from './card.module.css';
 import {IngredientType} from "../../utils/types";
 
@@ -68,9 +66,6 @@ const Card = ({item}: ICardProps) => {
             </div>
         </>
     )
-}
-Card.propTypes = {
-    item: ingredientType.isRequired
 }
 
 export default Card;

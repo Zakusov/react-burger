@@ -5,11 +5,8 @@ import {Identifier} from 'dnd-core';
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import {deleteIngredient} from "../../services/actions/order-actions";
-import {ingredientType} from "../../utils/prop-types";
-
-import PropTypes from "prop-types";
-import styles from "./order-item.module.css";
 import {SelectedIngredientType} from "../../utils/types";
+import styles from "./order-item.module.css";
 
 interface IOrderItemProps {
     item: SelectedIngredientType;
@@ -94,11 +91,5 @@ const OrderItem = ({item, index, moveCard}: IOrderItemProps) => {
         </div>
     )
 }
-
-OrderItem.propTypes = {
-    item: ingredientType.isRequired,
-    index: PropTypes.number.isRequired,
-    moveCard: PropTypes.func.isRequired
-};
 
 export default OrderItem;
