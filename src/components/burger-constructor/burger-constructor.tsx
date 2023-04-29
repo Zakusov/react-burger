@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {useDrop} from "react-dnd";
 import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
-import Modal from "../modal/modal.js";
+import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import OrderItem from "../order-item/order-item";
 import {addIngredient, createOrder, deleteAll, replaceFilling} from "../../services/actions/order-actions";
