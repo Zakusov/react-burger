@@ -1,12 +1,16 @@
 import {Navigate, useLocation} from 'react-router-dom';
-import {useEffect} from 'react';
+import {FC, HTMLAttributes, useEffect} from 'react';
 import {useAuth} from "../../utils/auth";
+
+type TProtectedRouteProps = {
+    anonymous?: boolean;
+} & HTMLAttributes<HTMLElement>;
 
 /**
  * Если пользователь не авторизован и пытается попасть на защищённый маршрут, то переадресовываем его на страницу входа.
  * Если пользователь авторизован и пытается попасть на страницу для неавторизованных пользователей, то возвращаем его на предыдущую страницу.
  */
-export const ProtectedRoute = ({children, anonymous = false}) => {
+export const ProtectedRoute: FC<TProtectedRouteProps> = ({children, anonymous = false}: TProtectedRouteProps) => {
     const auth = useAuth();
 
     useEffect(() => {
@@ -28,5 +32,5 @@ export const ProtectedRoute = ({children, anonymous = false}) => {
     }
 
     // Если все ок, то рендерим внутреннее содержимое
-    return children;
+    return <>{children}</>;
 }
