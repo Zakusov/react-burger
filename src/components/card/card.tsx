@@ -6,12 +6,18 @@ import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-com
 
 import {ingredientType} from "../../utils/prop-types";
 import styles from './card.module.css';
+import {IngredientType} from "../../utils/types";
 
-const Card = ({item}) => {
+interface ICardProps {
+    item: IngredientType;
+}
+
+const Card = ({item}: ICardProps) => {
 
     const [count, setCount] = useState(0);
 
     // Содержимое корзины
+    // @ts-ignore
     const {bun, filling} = useSelector(state => state.order);
 
     // Обновление счётчика добавленных ингредиентов
@@ -19,7 +25,7 @@ const Card = ({item}) => {
         if (item.type === 'bun') {
             setCount(item._id === bun?._id ? 1 : 0);
         } else {
-            setCount(filling.filter(elem => elem._id === item._id).length);
+            setCount(filling.filter((elem: IngredientType) => elem._id === item._id).length);
         }
     }, [item, bun, filling]);
 
