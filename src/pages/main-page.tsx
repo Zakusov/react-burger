@@ -9,6 +9,7 @@ import {Loader} from "../components/loader/loader";
 import styles from "./main-page.module.css";
 
 export const MainPage = () => {
+    // @ts-ignore
     const {isLoading, isFailed} = useSelector(state => state.ingredients);
 
     return (
