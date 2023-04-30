@@ -1,16 +1,29 @@
-import {useCallback, useRef} from 'react';
+import {FormEvent, useCallback, useRef} from 'react';
 import {Link, Navigate, useNavigate} from 'react-router-dom';
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
+import {TICons} from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons";
 
 import {useAuth} from "../utils/auth";
 import {useForm} from "../hooks/useForm";
 import styles from './reset-password.module.css';
 
+type ResetPasswordType = {
+    token: string;
+    password: string;
+    type: 'text' | 'email' | 'password';
+    icon: keyof TICons;
+}
+
 export const ResetPasswordPage = () => {
     const auth = useAuth();
     const passRef = useRef(null);
     const navigate = useNavigate();
-    const {values, handleChange, setValues} = useForm({token: '', password: '', type: 'password', icon: 'ShowIcon'});
+    const {values, handleChange, setValues} = useForm<ResetPasswordType>({
+        token: '',
+        password: '',
+        type: 'password',
+        icon: 'ShowIcon'
+    });
 
     const onEyeClick = () => {
         setValues({
@@ -21,13 +34,11 @@ export const ResetPasswordPage = () => {
     };
 
     const onSubmit = useCallback(
-        e => {
+        (e: FormEvent) => {
             e.preventDefault();
             if (values.password && values.token) {
-                auth.resetPassword({
-                    password: values.password,
-                    token: values.token
-                }).then(() => navigate('/login', {replace: true}))
+                auth.resetPassword(values.password, values.token)
+                    .then(() => navigate('/login', {replace: true}))
                     .catch(error => console.log(error));
             }
         },

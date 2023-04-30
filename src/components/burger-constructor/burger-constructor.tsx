@@ -4,11 +4,12 @@ import {useNavigate} from "react-router-dom";
 import {useDrop} from "react-dnd";
 import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
-import Modal from "../modal/modal.js";
-import OrderDetails from "../order-details/order-details.js"
+import Modal from "../modal/modal";
+import OrderDetails from "../order-details/order-details";
 import OrderItem from "../order-item/order-item";
-import {useAuth} from "../../utils/auth";
 import {addIngredient, createOrder, deleteAll, replaceFilling} from "../../services/actions/order-actions";
+import {useAuth} from "../../utils/auth";
+import {SelectedIngredientType} from "../../utils/types";
 import styles from "./burger-constructor.module.css";
 
 const BurgerConstructor = () => {
@@ -17,6 +18,7 @@ const BurgerConstructor = () => {
     const navigate = useNavigate();
 
     // Содержимое корзины
+    // @ts-ignore
     const {bun, filling, price, isFailed, orderId} = useSelector(state => state.order);
 
     // Исходный состав бургера
@@ -33,8 +35,10 @@ const BurgerConstructor = () => {
         }
     });
 
+    type MoveCardCallback = (dragIndex: number, hoverIndex: number) => void;
+
     /** Меняет ингредиенты местами. */
-    const onMoveCard = useCallback((dragIndex, hoverIndex) => {
+    const onMoveCard = useCallback<MoveCardCallback>((dragIndex, hoverIndex) => {
         console.log("Меняем местами элементы " + dragIndex + " и " + hoverIndex)
         const dragItem = filling[dragIndex];
         const newFilling = [...filling];
@@ -45,6 +49,7 @@ const BurgerConstructor = () => {
 
     const onCreateOrder = () => {
         if (auth.user) {
+            // @ts-ignore
             dispatch(createOrder(bun, filling));
         } else {
             navigate('/login');
@@ -80,7 +85,7 @@ const BurgerConstructor = () => {
                 }
                 {filling &&
                     <ul className={styles.scrollList}>
-                        {filling.map((item, index) => {
+                        {filling.map((item: SelectedIngredientType, index: number) => {
                             return (
                                 <li className='mb-4 ml-2' key={item.id}>
                                     <OrderItem key={`item-${item.id}`} item={item} index={index} moveCard={onMoveCard}/>

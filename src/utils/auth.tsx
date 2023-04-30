@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext, FC, useContext, useState} from 'react';
 
 import {deleteCookie, setCookie} from "./cookie";
 import {
@@ -13,12 +13,17 @@ import {
 } from "./burger-api";
 
 import {ACCESS_TOKEN, REFRESH_TOKEN} from "./constants";
+import {LoginType, UserType} from "./types";
 
-const AuthContext = createContext(undefined);
+// @ts-ignore
+const AuthContext = createContext<AuthReturnType>(undefined);
 
-export function ProvideAuth({children}) {
+type TProvideAuthProps = React.HTMLAttributes<HTMLElement>;
+
+export const ProvideAuth: FC<TProvideAuthProps> = ({children}: TProvideAuthProps) => {
     const auth = useProvideAuth();
 
+    // @ts-ignore
     return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
 
@@ -26,10 +31,12 @@ export function useAuth() {
     return useContext(AuthContext);
 }
 
-export function useProvideAuth() {
-    const [user, setUser] = useState(null);
+type AuthReturnType = ReturnType<typeof useProvideAuth>;
 
-    const getErrorMessage = (error) => error && error.message ? error.message : "Упс";
+export function useProvideAuth() {
+    const [user, setUser] = useState<UserType>();
+
+    const getErrorMessage = (error: Error) => error && error.message ? error.message : "Упс";
 
     const getUser = async () => {
         return getUserRequest().then(data => {
@@ -47,7 +54,7 @@ export function useProvideAuth() {
         });
     };
 
-    const register = async (form) => {
+    const register = async (form: UserType) => {
         return registerRequest(form).then((res) => {
             if (res.success) {
                 setUser({...res.user, id: res.user._id});
@@ -59,7 +66,7 @@ export function useProvideAuth() {
         });
     };
 
-    const update = async (form) => {
+    const update = async (form: UserType) => {
         return updateUserRequest(form).then((res) => {
             if (res.success) {
                 setUser({...res.user, id: res.user._id});
@@ -71,7 +78,7 @@ export function useProvideAuth() {
         });
     };
 
-    const recoverPassword = async (email) => {
+    const recoverPassword = async (email: string) => {
         return recoverPasswordRequest(email).then((res) => {
             if (res.success) {
                 localStorage.setItem('allowResetPassword', 'allow');
@@ -79,7 +86,7 @@ export function useProvideAuth() {
         });
     };
 
-    const resetPassword = async (password, token) => {
+    const resetPassword = async (password: string, token: string) => {
         return resetPasswordRequest(password, token).then((res) => {
             if (res.success) {
                 localStorage.setItem('allowResetPassword', '');
@@ -87,7 +94,7 @@ export function useProvideAuth() {
         });
     };
 
-    const signIn = async (form) => {
+    const signIn = async (form: LoginType) => {
         return loginRequest(form).then((res) => {
             if (res.success) {
                 setUser({...res.user, id: res.user._id});
@@ -100,14 +107,14 @@ export function useProvideAuth() {
     };
 
     const signOut = async () => {
-        const token = localStorage.getItem(REFRESH_TOKEN);
+        const token = localStorage.getItem(REFRESH_TOKEN)!;
         return logoutRequest(token).then(() => {
             deleteUserData();
         });
     };
 
     function deleteUserData() {
-        setUser(null);
+        setUser(undefined);
         deleteCookie(ACCESS_TOKEN);
         localStorage.removeItem(REFRESH_TOKEN);
     }

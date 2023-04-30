@@ -1,34 +1,48 @@
-import React from "react";
+import {useRef} from "react";
 import {useDispatch} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
+import {Identifier} from 'dnd-core';
+import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import {deleteIngredient} from "../../services/actions/order-actions";
-import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {ingredientType} from "../../utils/prop-types";
-import PropTypes from "prop-types";
-
+import {SelectedIngredientType} from "../../utils/types";
 import styles from "./order-item.module.css";
 
-const OrderItem = ({item, index, moveCard}) => {
+interface IOrderItemProps {
+    item: SelectedIngredientType;
+    index: number;
+    moveCard: (dragIndex: number, hoverIndex: number) => void;
+}
 
-    const itemRef = React.useRef(null);
+interface IDragItem {
+    id: string;
+    index: number;
+}
+
+interface IHandler {
+    handlerId: Identifier | null;
+}
+
+const OrderItem = ({item, index, moveCard}: IOrderItemProps) => {
+
+    const itemRef = useRef<HTMLDivElement>(null);
 
     const [{opacity}, drag] = useDrag({
         type: 'component',
-        item: () => ({id: item.id, index}),
+        item: (): IDragItem => ({id: item.id, index}),
         collect: monitor => ({
             opacity: monitor.isDragging() ? 0 : 1
         })
     });
 
-    const [{handlerId}, drop] = useDrop({
+    const [{handlerId}, drop] = useDrop<IDragItem, unknown, IHandler>({
         accept: 'component',
         collect(monitor) {
             return {
                 handlerId: monitor.getHandlerId()
             }
         },
-        hover(item, monitor) {
+        hover(item: IDragItem, monitor) {
             if (!itemRef.current) {
                 return;
             }
@@ -40,7 +54,7 @@ const OrderItem = ({item, index, moveCard}) => {
             const hoverBoundingRect = itemRef.current?.getBoundingClientRect();
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
             const clientOffset = monitor.getClientOffset();
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+            const hoverClientY = clientOffset ? clientOffset.y - hoverBoundingRect.top : 0;
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                 return;
             }
@@ -54,12 +68,12 @@ const OrderItem = ({item, index, moveCard}) => {
 
     drag(drop(itemRef));
 
-    const handleDrop = (e) => e.preventDefault();
+    const handleDrop = (e: any) => e.preventDefault();
 
     const dispatch = useDispatch();
 
     /** Удаление ингредиента из корзины. */
-    const onDelete = (id) => {
+    const onDelete = (id: string) => {
         dispatch(deleteIngredient(id));
     }
 
@@ -68,7 +82,7 @@ const OrderItem = ({item, index, moveCard}) => {
              data-handler-id={handlerId}>
             <DragIcon type="primary"/>
             <ConstructorElement
-                className={styles.item}
+                extraClass={styles.item}
                 text={item.name}
                 price={item.price}
                 thumbnail={item.image}
@@ -77,11 +91,5 @@ const OrderItem = ({item, index, moveCard}) => {
         </div>
     )
 }
-
-OrderItem.propTypes = {
-    item: ingredientType.isRequired,
-    index: PropTypes.number.isRequired,
-    moveCard: PropTypes.func.isRequired
-};
 
 export default OrderItem;

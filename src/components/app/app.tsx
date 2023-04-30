@@ -27,6 +27,7 @@ export default function App() {
 
     const dispatch = useDispatch();
     useEffect(() => {
+            // @ts-ignore
             dispatch(loadIngredients());
         },
         [dispatch]

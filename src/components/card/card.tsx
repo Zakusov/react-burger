@@ -3,15 +3,19 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {useDrag} from "react-dnd";
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-
-import {ingredientType} from "../../utils/prop-types";
 import styles from './card.module.css';
+import {IngredientType} from "../../utils/types";
 
-const Card = ({item}) => {
+interface ICardProps {
+    item: IngredientType;
+}
+
+const Card = ({item}: ICardProps) => {
 
     const [count, setCount] = useState(0);
 
     // Содержимое корзины
+    // @ts-ignore
     const {bun, filling} = useSelector(state => state.order);
 
     // Обновление счётчика добавленных ингредиентов
@@ -19,7 +23,7 @@ const Card = ({item}) => {
         if (item.type === 'bun') {
             setCount(item._id === bun?._id ? 1 : 0);
         } else {
-            setCount(filling.filter(elem => elem._id === item._id).length);
+            setCount(filling.filter((elem: IngredientType) => elem._id === item._id).length);
         }
     }, [item, bun, filling]);
 
@@ -62,9 +66,6 @@ const Card = ({item}) => {
             </div>
         </>
     )
-}
-Card.propTypes = {
-    item: ingredientType.isRequired
 }
 
 export default Card;

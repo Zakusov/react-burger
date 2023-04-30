@@ -1,4 +1,9 @@
 .main {
+    composes: pt-6 from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
+    composes: pr-1 from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
+    composes: pb-10 from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
+    composes: pl-4 from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
+
     display: flex;
     flex-wrap: wrap;
 }

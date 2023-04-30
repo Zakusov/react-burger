@@ -1,4 +1,9 @@
-export const LoaderSvg = ({color = '#3C39EC', size}) => {
+type LoaderSvgType = {
+    color: string;
+    size: number;
+}
+
+export const LoaderSvg = ({color = '#3C39EC', size}: LoaderSvgType) => {
     return (
         <svg
             width={size}

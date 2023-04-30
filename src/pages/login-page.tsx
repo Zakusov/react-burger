@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {FormEvent, useCallback, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {Button, Input, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -9,14 +9,14 @@ import styles from './login-page.module.css';
 export const LoginPage = () => {
     const auth = useAuth();
     const {values, handleChange} = useForm({email: '', password: ''});
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<String>();
 
-    function onError(err) {
+    function onError(err: Error) {
         setError(err && err.message ? err.message : "Что-то пошло не так :(");
     }
 
     const onSubmit = useCallback(
-        e => {
+        (e: FormEvent) => {
             e.preventDefault();
             auth.signIn(values)
                 .catch(onError);
