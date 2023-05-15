@@ -2,6 +2,7 @@ import {getIngredientsRequest} from "../../utils/burger-api";
 import {GET_INGREDIENTS, GET_INGREDIENTS_FAILED, GET_INGREDIENTS_SUCCESS} from "../constants/ingredients";
 
 export function loadIngredients() {
+    // @ts-ignore
     return function (dispatch) {
         dispatch({
             type: GET_INGREDIENTS
