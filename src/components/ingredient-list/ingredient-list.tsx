@@ -1,5 +1,5 @@
 import Card from "../card/card";
-import {IngredientType} from "../../utils/types";
+import {IngredientType} from "../../services/types/data";
 import styles from "./ingredient-list.module.css"
 
 interface IIngredientListProps {

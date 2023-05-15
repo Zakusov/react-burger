@@ -9,7 +9,7 @@ import OrderDetails from "../order-details/order-details";
 import OrderItem from "../order-item/order-item";
 import {addIngredient, createOrder, deleteAll, replaceFilling} from "../../services/actions/order";
 import {useAuth} from "../../utils/auth";
-import {SelectedIngredientType} from "../../utils/types";
+import {SelectedIngredientType} from "../../services/types";
 import styles from "./burger-constructor.module.css";
 
 const BurgerConstructor = () => {

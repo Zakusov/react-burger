@@ -3,7 +3,7 @@ import {Button, Input, PasswordInput} from '@ya.praktikum/react-developer-burger
 import {ProfileLinks} from '../components/profile-links/profile-links';
 import {useForm} from "../hooks/useForm";
 import {useAuth} from "../utils/auth";
-import {UserType} from "../utils/types";
+import {UserType} from "../services/types";
 import styles from './profile-page.module.css';
 
 export const ProfilePage = () => {

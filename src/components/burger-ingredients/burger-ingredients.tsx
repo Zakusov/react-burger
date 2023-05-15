@@ -3,8 +3,8 @@ import {useSelector} from "react-redux";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import IngredientList from "../ingredient-list/ingredient-list";
+import {IngredientType} from "../../services/types/data";
 import styles from "./burger-ingredients.module.css";
-import {IngredientType} from "../../utils/types";
 
 const tab1 = 'Булки';
 const tab2 = 'Соусы';

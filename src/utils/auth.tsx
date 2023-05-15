@@ -13,7 +13,8 @@ import {
 } from "./burger-api";
 
 import {ACCESS_TOKEN, REFRESH_TOKEN} from "./constants";
-import {LoginType, UserType} from "./types";
+
+import {LoginType, UserType} from "../services/types";
 
 // @ts-ignore
 const AuthContext = createContext<AuthReturnType>(undefined);

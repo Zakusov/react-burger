@@ -1,6 +1,7 @@
 import {getCookie} from "./cookie";
 import {ACCESS_TOKEN, BASE_URL, REFRESH_TOKEN} from "./constants";
-import {LoginType, UserType} from "./types";
+
+import {LoginType, UserType} from "../services/types";
 
 const checkResponse = async (res: Response) => {
     return res.ok ? res.json() : res.json().then((error) => Promise.reject(error));
