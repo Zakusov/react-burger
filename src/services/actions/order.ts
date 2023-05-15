@@ -30,6 +30,28 @@ export interface IReplaceFillingAction {
     readonly payload: Array<SelectedIngredientType>;
 }
 
+export interface ICreateOrderAction {
+    readonly type: typeof CREATE_ORDER;
+}
+
+export interface ICreateOrderSuccessAction {
+    readonly type: typeof CREATE_ORDER_SUCCESS;
+    readonly payload: string;
+}
+
+export interface ICreateOrderFailedAction {
+    readonly type: typeof CREATE_ORDER_FAILED;
+}
+
+export type TOrderActions =
+    | IAddIngredientAction
+    | IDeleteIngredientAction
+    | IDeleteAllAction
+    | IReplaceFillingAction
+    | ICreateOrderAction
+    | ICreateOrderSuccessAction
+    | ICreateOrderFailedAction;
+
 export const addIngredient = (ingredient: IngredientType): IAddIngredientAction => ({
     type: ADD_INGREDIENT,
     payload: {...ingredient, id: uuid()}

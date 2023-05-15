@@ -7,8 +7,19 @@ import {
     DELETE_INGREDIENT,
     REPLACE_FILLING
 } from "../constants/order";
+import {SelectedIngredientType} from "../types/data";
+import {TOrderActions} from "../actions/order";
 
-const initialState = {
+type TOrderState = {
+    bun: SelectedIngredientType | null;
+    filling: Array<SelectedIngredientType>;
+    price: number;
+    isSending: boolean;
+    isFailed: boolean;
+    orderId: string | null;
+};
+
+const initialState: TOrderState = {
     bun: null,
     filling: [],
     price: 0,
@@ -17,15 +28,15 @@ const initialState = {
     orderId: null
 };
 
-function getPrice(ingredient) {
+function getPrice(ingredient?: SelectedIngredientType | null) {
     return ingredient ? ingredient.price : 0;
 }
 
-function calculatePrice(bun, filling, ingredient) {
+function calculatePrice(bun: SelectedIngredientType | null, filling: Array<SelectedIngredientType>, ingredient?: SelectedIngredientType) {
     return getPrice(bun) * 2 + filling?.reduce((acc, obj) => acc + getPrice(obj), 0) + getPrice(ingredient);
 }
 
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (state = initialState, action: TOrderActions) => {
     switch (action.type) {
         case ADD_INGREDIENT: {
             if (action.payload.type === 'bun') {
