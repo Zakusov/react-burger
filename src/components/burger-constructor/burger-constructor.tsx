@@ -7,7 +7,7 @@ import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-deve
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import OrderItem from "../order-item/order-item";
-import {addIngredient, createOrder, deleteAll, replaceFilling} from "../../services/actions/order-actions";
+import {addIngredient, createOrder, deleteAll, replaceFilling} from "../../services/actions/order";
 import {useAuth} from "../../utils/auth";
 import {SelectedIngredientType} from "../../utils/types";
 import styles from "./burger-constructor.module.css";

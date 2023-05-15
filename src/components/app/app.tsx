@@ -9,7 +9,7 @@ import {ResetPasswordPage} from "../../pages/reset-password";
 import {ProfilePage} from "../../pages/profile-page";
 import {NotFoundPage} from "../../pages/not-found-page";
 import {useDispatch} from "react-redux";
-import {loadIngredients} from "../../services/actions/ingredients-actions";
+import {loadIngredients} from "../../services/actions/ingredients";
 import {ProtectedRoute} from "../protected-route/protected-route";
 import AppHeader from "../app-header/app-header";
 import Modal from "../modal/modal";

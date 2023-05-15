@@ -1,13 +1,14 @@
 import uuid from "react-uuid";
 import {createOrderRequest} from "../../utils/burger-api";
-
-export const ADD_INGREDIENT = "ADD_INGREDIENT";
-export const DELETE_INGREDIENT = "DELETE_INGREDIENT";
-export const DELETE_ALL = "DELETE_ALL";
-export const REPLACE_FILLING = "REPLACE_FILLING";
-export const CREATE_ORDER = "CREATE_ORDER";
-export const CREATE_ORDER_SUCCESS = "CREATE_ORDER_SUCCESS";
-export const CREATE_ORDER_FAILED = "CREATE_ORDER_FAILED";
+import {
+    ADD_INGREDIENT,
+    CREATE_ORDER,
+    CREATE_ORDER_FAILED,
+    CREATE_ORDER_SUCCESS,
+    DELETE_ALL,
+    DELETE_INGREDIENT,
+    REPLACE_FILLING
+} from "../constants/order";
 
 export const addIngredient = (ingredient) => ({
     type: ADD_INGREDIENT,

@@ -6,7 +6,7 @@ import {
     DELETE_ALL,
     DELETE_INGREDIENT,
     REPLACE_FILLING
-} from "../actions/order-actions";
+} from "../constants/order";
 
 const initialState = {
     bun: null,

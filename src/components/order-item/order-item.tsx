@@ -4,7 +4,7 @@ import {useDrag, useDrop} from "react-dnd";
 import {Identifier} from 'dnd-core';
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
-import {deleteIngredient} from "../../services/actions/order-actions";
+import {deleteIngredient} from "../../services/actions/order";
 import {SelectedIngredientType} from "../../utils/types";
 import styles from "./order-item.module.css";
 
