@@ -12,3 +12,7 @@ export type IngredientType = {
     image_large: string;
     __v: number;
 }
+
+export type SelectedIngredientType = IngredientType & {
+    id: string;
+}

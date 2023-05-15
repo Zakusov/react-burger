@@ -9,7 +9,7 @@ import OrderDetails from "../order-details/order-details";
 import OrderItem from "../order-item/order-item";
 import {addIngredient, createOrder, deleteAll, replaceFilling} from "../../services/actions/order";
 import {useAuth} from "../../utils/auth";
-import {SelectedIngredientType} from "../../services/types";
+import {IngredientType, SelectedIngredientType} from "../../services/types/data";
 import styles from "./burger-constructor.module.css";
 
 const BurgerConstructor = () => {
@@ -25,7 +25,7 @@ const BurgerConstructor = () => {
     const dispatch = useDispatch();
 
     // Добавление ингредиента перетаскиванием
-    const [{isHover}, dropTargetRef] = useDrop({
+    const [, dropTargetRef] = useDrop<IngredientType>({
         accept: 'ingredient',
         collect: monitor => ({
             isHover: monitor.isOver()
@@ -41,7 +41,7 @@ const BurgerConstructor = () => {
     const onMoveCard = useCallback<MoveCardCallback>((dragIndex, hoverIndex) => {
         console.log("Меняем местами элементы " + dragIndex + " и " + hoverIndex)
         const dragItem = filling[dragIndex];
-        const newFilling = [...filling];
+        const newFilling: Array<SelectedIngredientType> = [...filling];
         newFilling.splice(dragIndex, 1);
         newFilling.splice(hoverIndex, 0, dragItem);
         dispatch(replaceFilling(newFilling))
