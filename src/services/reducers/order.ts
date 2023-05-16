@@ -16,7 +16,7 @@ type TOrderState = {
     price: number;
     isSending: boolean;
     isFailed: boolean;
-    orderId: string | null;
+    orderId: number | null;
 };
 
 const initialState: TOrderState = {
@@ -36,7 +36,7 @@ function calculatePrice(bun: SelectedIngredientType | null, filling: Array<Selec
     return getPrice(bun) * 2 + filling?.reduce((acc, obj) => acc + getPrice(obj), 0) + getPrice(ingredient);
 }
 
-export const orderReducer = (state = initialState, action: TOrderActions) => {
+export const orderReducer = (state: TOrderState = initialState, action: TOrderActions) => {
     switch (action.type) {
         case ADD_INGREDIENT: {
             if (action.payload.type === 'bun') {
@@ -64,32 +64,16 @@ export const orderReducer = (state = initialState, action: TOrderActions) => {
             return {...initialState};
         }
         case REPLACE_FILLING: {
-            return {
-                ...state,
-                filling: [
-                    ...action.payload
-                ]
-            }
+            return {...state, filling: [...action.payload]};
         }
         case CREATE_ORDER: {
-            return {
-                ...state,
-                isSending: true
-            }
+            return {...state, isSending: true};
         }
         case CREATE_ORDER_SUCCESS: {
-            return {
-                ...state,
-                isSending: false,
-                orderId: action.payload
-            }
+            return {...state, isSending: false, orderId: action.payload};
         }
         case CREATE_ORDER_FAILED: {
-            return {
-                ...state,
-                isSending: false,
-                isFailed: true
-            }
+            return {...state, isSending: false, isFailed: true};
         }
         default: {
             return state;

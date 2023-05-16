@@ -1,8 +1,9 @@
 import {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
 import {useDrag} from "react-dnd";
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+
+import {useSelector} from "../../services/hooks"
 import {IngredientType} from "../../services/types/data";
 import styles from './card.module.css';
 
@@ -15,7 +16,6 @@ const Card = ({item}: ICardProps) => {
     const [count, setCount] = useState(0);
 
     // Содержимое корзины
-    // @ts-ignore
     const {bun, filling} = useSelector(state => state.order);
 
     // Обновление счётчика добавленных ингредиентов

@@ -1,10 +1,10 @@
 import {useRef} from "react";
-import {useDispatch} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
 import {Identifier} from 'dnd-core';
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import {deleteIngredient} from "../../services/actions/order";
+import {useDispatch} from "../../services/hooks";
 import {SelectedIngredientType} from "../../services/types/data";
 import styles from "./order-item.module.css";
 

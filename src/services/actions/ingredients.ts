@@ -1,6 +1,7 @@
 import {getIngredientsRequest} from "../../utils/burger-api";
 import {GET_INGREDIENTS, GET_INGREDIENTS_FAILED, GET_INGREDIENTS_SUCCESS} from "../constants/ingredients";
 import {IngredientType} from "../types/data";
+import {AppDispatch, AppThunkAction} from "../types";
 
 export interface IGetIngredientsAction {
     readonly type: typeof GET_INGREDIENTS;
@@ -20,9 +21,8 @@ export type TIngredientsActions =
     | IGetIngredientsSuccessAction
     | IGetIngredientsFailedAction;
 
-export function loadIngredients() {
-    // @ts-ignore
-    return function (dispatch) {
+export const loadIngredients = (): AppThunkAction => {
+    return (dispatch: AppDispatch) => {
         dispatch({
             type: GET_INGREDIENTS
         });

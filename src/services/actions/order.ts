@@ -10,6 +10,7 @@ import {
     REPLACE_FILLING
 } from "../constants/order";
 import {IngredientType, SelectedIngredientType} from "../types/data";
+import {AppDispatch, AppThunkAction} from "../types";
 
 export interface IAddIngredientAction {
     readonly type: typeof ADD_INGREDIENT;
@@ -36,7 +37,7 @@ export interface ICreateOrderAction {
 
 export interface ICreateOrderSuccessAction {
     readonly type: typeof CREATE_ORDER_SUCCESS;
-    readonly payload: string;
+    readonly payload: number;
 }
 
 export interface ICreateOrderFailedAction {
@@ -71,22 +72,23 @@ export const replaceFilling = (filling: Array<SelectedIngredientType>): IReplace
     payload: filling
 });
 
-// @ts-ignore
-export const createOrder = (bun: SelectedIngredientType, filling: Array<SelectedIngredientType>) => function (dispatch) {
-    dispatch({
-        type: CREATE_ORDER
-    });
-    const ingredientIds = filling.map(element => element._id);
-    ingredientIds.push(bun._id);
-    createOrderRequest(ingredientIds).then((res) => {
+export const createOrder = (bun: SelectedIngredientType, filling: Array<SelectedIngredientType>): AppThunkAction => {
+    return (dispatch: AppDispatch) => {
         dispatch({
-            type: CREATE_ORDER_SUCCESS,
-            payload: res.order.number
+            type: CREATE_ORDER
         });
-    }).catch((e) => {
-        console.log(e);
-        dispatch({
-            type: CREATE_ORDER_FAILED
+        const ingredientIds = filling.map(element => element._id);
+        ingredientIds.push(bun._id);
+        createOrderRequest(ingredientIds).then((res) => {
+            dispatch({
+                type: CREATE_ORDER_SUCCESS,
+                payload: res.order.number
+            });
+        }).catch((e) => {
+            console.log(e);
+            dispatch({
+                type: CREATE_ORDER_FAILED
+            });
         });
-    });
+    };
 };

@@ -1,5 +1,7 @@
 import React, {useEffect} from "react";
 import {Route, Routes, useLocation, useNavigate} from 'react-router-dom';
+
+import {useDispatch} from "../../services/hooks";
 import {ProvideAuth} from "../../utils/auth";
 import {MainPage} from "../../pages/main-page";
 import {LoginPage} from "../../pages/login-page";
@@ -8,7 +10,6 @@ import {ForgotPasswordPage} from "../../pages/forgot-password";
 import {ResetPasswordPage} from "../../pages/reset-password";
 import {ProfilePage} from "../../pages/profile-page";
 import {NotFoundPage} from "../../pages/not-found-page";
-import {useDispatch} from "react-redux";
 import {loadIngredients} from "../../services/actions/ingredients";
 import {ProtectedRoute} from "../protected-route/protected-route";
 import AppHeader from "../app-header/app-header";
@@ -27,7 +28,6 @@ export default function App() {
 
     const dispatch = useDispatch();
     useEffect(() => {
-            // @ts-ignore
             dispatch(loadIngredients());
         },
         [dispatch]

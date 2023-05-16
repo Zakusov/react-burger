@@ -24,7 +24,6 @@ type TProvideAuthProps = React.HTMLAttributes<HTMLElement>;
 export const ProvideAuth: FC<TProvideAuthProps> = ({children}: TProvideAuthProps) => {
     const auth = useProvideAuth();
 
-    // @ts-ignore
     return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
 
