@@ -6,10 +6,11 @@ import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-deve
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import OrderItem from "../order-item/order-item";
-import {addIngredient, createOrder, deleteAll, replaceFilling} from "../../services/actions/order";
+import {addIngredient, deleteAll, replaceFilling} from "../../services/actions";
 import {useAuth} from "../../utils/auth";
 import {useDispatch, useSelector} from "../../services/hooks";
-import {IngredientType, SelectedIngredientType} from "../../services/types/data";
+import {IngredientType, SelectedIngredientType} from "../../services/types";
+import {createOrder} from "../../services/thunks";
 import styles from "./burger-constructor.module.css";
 
 const BurgerConstructor = () => {

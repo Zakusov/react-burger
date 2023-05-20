@@ -10,11 +10,13 @@ import {ForgotPasswordPage} from "../../pages/forgot-password";
 import {ResetPasswordPage} from "../../pages/reset-password";
 import {ProfilePage} from "../../pages/profile-page";
 import {NotFoundPage} from "../../pages/not-found-page";
-import {loadIngredients} from "../../services/actions/ingredients";
 import {ProtectedRoute} from "../protected-route/protected-route";
 import AppHeader from "../app-header/app-header";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import FeedOrdersPage from "../../pages/feed-orders";
+import FeedOrderPage from "../../pages/feed-order";
+import {loadIngredients} from "../../services/thunks";
 
 export default function App() {
     const location = useLocation();
@@ -47,6 +49,8 @@ export default function App() {
                        element={<ProtectedRoute anonymous={true}><ResetPasswordPage/></ProtectedRoute>}/>
                 <Route path="/profile" element={<ProtectedRoute><ProfilePage/></ProtectedRoute>}/>
                 <Route path="/ingredients/:id" element={<IngredientDetails/>}/>
+                <Route path="/feed" element={<FeedOrdersPage/>}/>
+                <Route path="/feed/:id" element={<FeedOrderPage/>}/>
                 <Route path="*" element={<NotFoundPage/>}/>
             </Routes>
             {background && (

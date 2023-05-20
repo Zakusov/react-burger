@@ -1,8 +1,10 @@
 import {ThunkAction, ThunkDispatch} from "@reduxjs/toolkit";
 
-import {TIngredientsActions} from "../actions/ingredients";
-import {TOrderActions} from "../actions/order";
+import {TFeedActions, TIngredientsActions, TOrderActions} from "../actions";
 import {store} from "../store";
+
+export * from './data';
+export * from './feeds';
 
 export type LoginType = {
     email: string;
@@ -13,7 +15,7 @@ export type UserType = {
     name: string;
 } & LoginType;
 
-type AppActions = TIngredientsActions | TOrderActions;
+export type AppActions = TIngredientsActions | TOrderActions | TFeedActions;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = ThunkDispatch<RootState, unknown, AppActions>;
 export type AppThunkAction<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AppActions>;

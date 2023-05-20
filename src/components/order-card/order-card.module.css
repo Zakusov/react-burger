@@ -1,0 +1,31 @@
+.feedOrder {
+    background: #1C1C21;
+    border-radius: 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 24px;
+    row-gap: 24px;
+    margin-right: 8px;
+}
+
+.orderNumberDate {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.iconsAndTotal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.price {
+    align-items: center;
+    column-gap: 9px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

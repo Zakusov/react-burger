@@ -1,5 +1,4 @@
 import uuid from "react-uuid";
-import {createOrderRequest} from "../../utils/burger-api";
 import {
     ADD_INGREDIENT,
     CREATE_ORDER,
@@ -8,9 +7,8 @@ import {
     DELETE_ALL,
     DELETE_INGREDIENT,
     REPLACE_FILLING
-} from "../constants/order";
-import {IngredientType, SelectedIngredientType} from "../types/data";
-import {AppDispatch, AppThunkAction} from "../types";
+} from "../constants";
+import {IngredientType, SelectedIngredientType} from "../types";
 
 export interface IAddIngredientAction {
     readonly type: typeof ADD_INGREDIENT;
@@ -72,23 +70,3 @@ export const replaceFilling = (filling: Array<SelectedIngredientType>): IReplace
     payload: filling
 });
 
-export const createOrder = (bun: SelectedIngredientType, filling: Array<SelectedIngredientType>): AppThunkAction => {
-    return (dispatch: AppDispatch) => {
-        dispatch({
-            type: CREATE_ORDER
-        });
-        const ingredientIds = filling.map(element => element._id);
-        ingredientIds.push(bun._id);
-        createOrderRequest(ingredientIds).then((res) => {
-            dispatch({
-                type: CREATE_ORDER_SUCCESS,
-                payload: res.order.number
-            });
-        }).catch((e) => {
-            console.log(e);
-            dispatch({
-                type: CREATE_ORDER_FAILED
-            });
-        });
-    };
-};
