@@ -14,7 +14,6 @@ interface IKeyToNumber {
 }
 
 const OrderInfo = ({info, orderIngredients}: IOrderInfoProps) => {
-
     const [isLoaded, setIsLoaded] = useState(false);
     const [counter, setCounter] = useState<IKeyToNumber>();
     const [price, setPrice] = useState<IKeyToNumber>();
@@ -36,7 +35,7 @@ const OrderInfo = ({info, orderIngredients}: IOrderInfoProps) => {
     }, [orderIngredients]);
 
     return (
-        !isLoaded
+        !isLoaded || !info
             ? <p className="text text_type_main-medium">Идет загрузка...</p>
             : <div className={styles.modal_orderInfo}>
                 <h1 className={`text text_type_digits-default ${styles.id}`}>#{info.number}</h1>
