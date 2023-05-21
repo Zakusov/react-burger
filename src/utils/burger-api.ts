@@ -108,6 +108,7 @@ export const createOrderRequest = async (ingredients: Array<string>) => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            Authorization: getAuthorizationString()
         },
         body: JSON.stringify({ingredients})
     });
