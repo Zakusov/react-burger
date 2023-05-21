@@ -2,24 +2,25 @@ import {FormEvent, useCallback} from 'react';
 import {Link, Navigate} from 'react-router-dom';
 import {Button, Input, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 
-import {useAuth} from "../utils/auth";
+import {useDispatch, useSelector} from "../services/hooks";
 import {useForm} from "../hooks/useForm";
 import styles from './register-page.module.css';
+import {registerUser} from "../services/thunks";
 
 export const RegisterPage = () => {
-    const auth = useAuth();
     const {values, handleChange} = useForm({name: '', email: '', password: ''});
+    const {user} = useSelector(state => state.user);
+    const dispatch = useDispatch();
 
     const onSubmit = useCallback(
         (e: FormEvent) => {
             e.preventDefault();
-            auth.register(values)
-                .catch((error) => console.log(error));
+            dispatch(registerUser(values));
         },
-        [auth, values]
+        [values]
     );
 
-    if (auth.user) {
+    if (user) {
         return (<Navigate to={'/'}/>);
     }
 

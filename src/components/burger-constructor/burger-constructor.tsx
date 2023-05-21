@@ -7,16 +7,12 @@ import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import OrderItem from "../order-item/order-item";
 import {addIngredient, deleteAll, replaceFilling} from "../../services/actions";
-import {useAuth} from "../../utils/auth";
 import {useDispatch, useSelector} from "../../services/hooks";
 import {IngredientType, SelectedIngredientType} from "../../services/types";
 import {createOrder} from "../../services/thunks";
 import styles from "./burger-constructor.module.css";
 
 const BurgerConstructor = () => {
-    const auth = useAuth();
-    const navigate = useNavigate();
-
     // Содержимое корзины
     const {bun, filling, price, isFailed, orderId} = useSelector(state => state.order);
 
@@ -46,8 +42,11 @@ const BurgerConstructor = () => {
         dispatch(replaceFilling(newFilling))
     }, [dispatch, filling]);
 
+    const {user} = useSelector(state => state.user);
+    const navigate = useNavigate();
+
     const onCreateOrder = () => {
-        if (auth.user) {
+        if (user) {
             dispatch(createOrder(bun!, filling));
         } else {
             navigate('/login');

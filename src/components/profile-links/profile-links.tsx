@@ -1,20 +1,20 @@
 import {useCallback} from "react";
 import {NavLink, Outlet, useNavigate} from 'react-router-dom';
 
-import {useAuth} from "../../utils/auth";
+import {useDispatch} from "../../services/hooks";
+import {signOut} from "../../services/thunks";
 import styles from './profile-links.module.css';
 
 export const ProfileLinks = () => {
-    const auth = useAuth();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const logout = useCallback(
         () => {
-            auth.signOut()
-                .then(() => navigate('/login', {replace: true}))
-                .catch((error) => console.log(error));
+            dispatch(signOut());
+            navigate('/login', {replace: true});
         },
-        [auth, navigate]
+        [navigate]
     );
 
     const setActive = ({isActive}: { isActive: boolean }) => isActive ? `${styles.active}` : `${styles.pending}`;

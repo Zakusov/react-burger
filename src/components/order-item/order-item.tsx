@@ -3,9 +3,9 @@ import {useDrag, useDrop} from "react-dnd";
 import {Identifier} from 'dnd-core';
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
-import {deleteIngredient} from "../../services/actions/order";
+import {deleteIngredient} from "../../services/actions";
 import {useDispatch} from "../../services/hooks";
-import {SelectedIngredientType} from "../../services/types/data";
+import {SelectedIngredientType} from "../../services/types";
 import styles from "./order-item.module.css";
 
 interface IOrderItemProps {

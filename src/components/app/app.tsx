@@ -2,7 +2,6 @@ import React, {useEffect} from "react";
 import {Route, Routes, useLocation, useNavigate} from 'react-router-dom';
 
 import {useDispatch} from "../../services/hooks";
-import {ProvideAuth} from "../../utils/auth";
 import {MainPage} from "../../pages/main-page";
 import {LoginPage} from "../../pages/login-page";
 import {RegisterPage} from "../../pages/register-page";
@@ -39,7 +38,7 @@ export default function App() {
     );
 
     return (
-        <ProvideAuth>
+        <>
             <AppHeader/>
             <Routes location={background || location}>
                 <Route path="/" element={<MainPage/>}/>
@@ -81,6 +80,6 @@ export default function App() {
                     }/>
                 </Routes>
             )}
-        </ProvideAuth>
+        </>
     );
 }
