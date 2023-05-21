@@ -5,7 +5,6 @@
 
 .profileWrapper {
     display: flex;
-    margin-top: 120px;
     position: relative;
     height: 400px;
 }

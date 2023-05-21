@@ -1,29 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router";
-import {useNavigate} from "react-router-dom";
 
 import {useDispatch, useSelector} from "../services/hooks";
-import Modal from "../components/modal/modal";
 import OrderInfo from "../components/order-info/order-info";
-import {REMOVE_CURRENT_ORDER_FEED, SET_CURRENT_ORDER_FEED, WS_FEED_CONNECTION_START} from "../services/constants";
+import {SET_CURRENT_WS_FEED, WS_FEED_CONNECTION_START} from "../services/constants";
 import styles from "./feed-order.module.css"
 import {IngredientType, IOrder} from "../services/types";
 
 const FeedOrderPage = () => {
-
     const {ingredients} = useSelector(state => state.ingredients);
     const {orders, currentOrder} = useSelector(state => state.feeds);
     const {id} = useParams();
     const [orderIngredients, setOrderIngredients] = useState<Array<IngredientType>>([]);
     const [isLoaded, setIsLoaded] = useState(false);
+
     const dispatch = useDispatch();
-
-    const navigate = useNavigate();
-    const closeModal = () => {
-        dispatch({type: REMOVE_CURRENT_ORDER_FEED});
-        navigate(-1);
-    };
-
     useEffect(
         () => {
             if (orders) {
@@ -31,7 +22,7 @@ const FeedOrderPage = () => {
                 if (allOrders.length === 0) {
                     dispatch({type: WS_FEED_CONNECTION_START});
                 } else if (id) {
-                    dispatch({type: SET_CURRENT_ORDER_FEED, payload: id});
+                    dispatch({type: SET_CURRENT_WS_FEED, payload: id});
                 }
             }
         },
@@ -54,12 +45,12 @@ const FeedOrderPage = () => {
     );
 
     return (
-        <Modal onClose={closeModal} title=''>
+        <>
             {!isLoaded
                 ? <p className={styles.loading}>Идет загрузка...</p>
                 : <OrderInfo info={currentOrder} orderIngredients={orderIngredients}/>
             }
-        </Modal>
+        </>
     )
 };
 

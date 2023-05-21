@@ -1,0 +1,38 @@
+.container {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  column-gap: 60px;
+  margin-top: -30px;
+}
+
+.orderCards {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  max-height: 812px;
+  overflow-y: scroll;
+  scrollbar-color: #8585AD #2F2F37;
+  scrollbar-width: thin;
+  width: 100%;
+}
+
+.orderCards::-webkit-scrollbar {
+  background: #2F2F37;
+  max-height: 640px;
+  width: 8px;
+}
+
+.orderCards::-webkit-scrollbar-thumb {
+  background: #8585AD;
+  border: 3px solid #8585AD;
+  height: 640px;
+  width: 8px;
+}
+
+.orderCards::-webkit-scrollbar-track {
+  background: #2F2F37;
+}

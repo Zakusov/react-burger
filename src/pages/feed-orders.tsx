@@ -13,9 +13,6 @@ const FeedOrdersPage = () => {
     const {orders, ordersDone, ordersPending, ordersTotal, totalToday} = useSelector(state => state.feeds);
 
     const dispatch = useDispatch();
-    const location = useLocation();
-    const navigate = useNavigate();
-
     useEffect(() => {
         dispatch({type: WS_FEED_CONNECTION_START});
         return () => {
@@ -23,8 +20,11 @@ const FeedOrdersPage = () => {
         }
     }, []);
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const state = location.state;
     const setCurrentOrder = useCallback((id: string) => {
-        navigate(`/feed/${id}`, {state: {from: location}});
+        navigate(`/feed/${id}`, {state: {...state, background: location}});
     }, [dispatch, navigate, location]);
 
     const allOrders = orders as Array<IOrder>;

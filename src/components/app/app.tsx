@@ -17,6 +17,9 @@ import IngredientDetails from "../ingredient-details/ingredient-details";
 import FeedOrdersPage from "../../pages/feed-orders";
 import FeedOrderPage from "../../pages/feed-order";
 import {loadIngredients} from "../../services/thunks";
+import OrdersPage from "../../pages/orders-page";
+import OrderPage from "../../pages/order-page";
+import {ProfileLinks} from "../profile-links/profile-links";
 
 export default function App() {
     const location = useLocation();
@@ -47,7 +50,11 @@ export default function App() {
                        element={<ProtectedRoute anonymous={true}><ForgotPasswordPage/></ProtectedRoute>}/>
                 <Route path="/reset-password"
                        element={<ProtectedRoute anonymous={true}><ResetPasswordPage/></ProtectedRoute>}/>
-                <Route path="/profile" element={<ProtectedRoute><ProfilePage/></ProtectedRoute>}/>
+                <Route path="/profile" element={<ProtectedRoute><ProfileLinks/></ProtectedRoute>}>
+                    <Route index element={<ProtectedRoute><ProfilePage/></ProtectedRoute>}/>
+                    <Route path="orders" element={<ProtectedRoute><OrdersPage/></ProtectedRoute>}/>
+                    <Route path="orders/:id" element={<ProtectedRoute><OrderPage/></ProtectedRoute>}/>
+                </Route>
                 <Route path="/ingredients/:id" element={<IngredientDetails/>}/>
                 <Route path="/feed" element={<FeedOrdersPage/>}/>
                 <Route path="/feed/:id" element={<FeedOrderPage/>}/>
@@ -59,6 +66,18 @@ export default function App() {
                         <Modal title="Детали заказа" onClose={closeModal}>
                             <IngredientDetails/>
                         </Modal>
+                    }/>
+                    <Route path="/feed/:id" element={
+                        <Modal title="" onClose={closeModal}>
+                            <FeedOrderPage/>
+                        </Modal>
+                    }/>
+                    <Route path="/profile/orders/:id" element={
+                        <ProtectedRoute>
+                            <Modal title="" onClose={closeModal}>
+                                <OrderPage/>
+                            </Modal>
+                        </ProtectedRoute>
                     }/>
                 </Routes>
             )}

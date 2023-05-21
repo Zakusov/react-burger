@@ -18,16 +18,14 @@ export const ProtectedRoute: FC<TProtectedRouteProps> = ({children, anonymous = 
     }, [auth]);
 
     const location = useLocation();
-    // Если разрешен неавторизованный доступ, а пользователь авторизован...
     if (anonymous && auth.user) {
-        // ...то отправляем его на предыдущую страницу
         const from = location.state?.from || '/';
+        console.log(`Страница для неавторизованных пользователей. Перенаправляем на ${from}`);
         return <Navigate to={from}/>;
     }
 
-    // Если требуется авторизация, а пользователь не авторизован...
     if (!anonymous && !auth.user) {
-        // ...то отправляем его на страницу логин
+        console.log("Страница для авторизованных пользователей. Перенаправляем на /login");
         return <Navigate to="/login" state={{from: location}}/>;
     }
 

@@ -1,8 +1,11 @@
 import type {Middleware, MiddlewareAPI} from 'redux';
 
 import type {AppActions, AppDispatch, IFeedResponse, RootState, TWSFeedActions} from '../types';
+import {TWSUserFeedActions} from "../types";
+import {getCookie} from "../../utils/cookie";
+import {ACCESS_TOKEN} from "../../utils/constants";
 
-export const socketMiddleware = (wsUrl: string, wsActions: TWSFeedActions): Middleware => {
+export const socketMiddleware = (wsUrl: string, wsActions: TWSFeedActions | TWSUserFeedActions): Middleware => {
     return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
         let socket: WebSocket | null = null;
 
@@ -10,8 +13,14 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSFeedActions): Midd
             const {dispatch} = store;
             const {type} = action;
             const {wsInit, wsSendMessage, onOpen, onClose, onError, onMessage} = wsActions;
+
+            const accessToken = getCookie(ACCESS_TOKEN);
             if (type === wsInit) {
-                socket = new WebSocket(wsUrl);
+                if (accessToken) {
+                    socket = new WebSocket(`${wsUrl}?token=${accessToken}`);
+                } else {
+                    socket = new WebSocket(`${wsUrl}`);
+                }
             }
             if (socket) {
                 socket.onopen = event => {

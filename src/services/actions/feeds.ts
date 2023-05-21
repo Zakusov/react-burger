@@ -1,6 +1,6 @@
 import {
-    REMOVE_CURRENT_ORDER_FEED,
-    SET_CURRENT_ORDER_FEED,
+    REMOVE_CURRENT_WS_FEED,
+    SET_CURRENT_WS_FEED,
     WS_FEED_CONNECTION_CLOSED,
     WS_FEED_CONNECTION_ERROR,
     WS_FEED_CONNECTION_START,
@@ -37,13 +37,13 @@ export interface IFeedSendMessageAction {
     readonly payload: { message: string };
 }
 
-export interface ISetCurrentOrderFeedAction {
-    readonly type: typeof SET_CURRENT_ORDER_FEED;
+export interface ISetCurrentFeedAction {
+    readonly type: typeof SET_CURRENT_WS_FEED;
     readonly payload: string;
 }
 
-export interface IRemoveCurrentOrderFeedAction {
-    readonly type: typeof REMOVE_CURRENT_ORDER_FEED;
+export interface IRemoveCurrentFeedAction {
+    readonly type: typeof REMOVE_CURRENT_WS_FEED;
 }
 
 export type TFeedActions =
@@ -53,5 +53,5 @@ export type TFeedActions =
     | IFeedConnectionClosedAction
     | IFeedGetMessageAction
     | IFeedSendMessageAction
-    | ISetCurrentOrderFeedAction
-    | IRemoveCurrentOrderFeedAction;
+    | ISetCurrentFeedAction
+    | IRemoveCurrentFeedAction;

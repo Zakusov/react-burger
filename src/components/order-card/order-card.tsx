@@ -27,8 +27,8 @@ const OrderCard = ({order, setCurrOrder}: TOrderCardProps) => {
     useEffect(() => {
         if (orderIngredients.length !== 0) {
             setIsLoaded(true);
-            setOrderSum(orderIngredients.reduce((total, i) => {
-                return total + i.price;
+            setOrderSum(orderIngredients.reduce((total, item) => {
+                return total + (item?.price || 0);
             }, 0))
         }
     }, [orderIngredients]);

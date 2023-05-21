@@ -33,6 +33,10 @@ export function useAuth() {
 
 type AuthReturnType = ReturnType<typeof useProvideAuth>;
 
+function getToken(accessToken: string) {
+    return accessToken.split('Bearer ')[1];
+}
+
 export function useProvideAuth() {
     const [user, setUser] = useState<UserType>();
 
@@ -58,7 +62,7 @@ export function useProvideAuth() {
         return registerRequest(form).then((res) => {
             if (res.success) {
                 setUser({...res.user, id: res.user._id});
-                setCookie(ACCESS_TOKEN, res.accessToken);
+                setCookie(ACCESS_TOKEN, getToken(res.accessToken));
                 localStorage.setItem(REFRESH_TOKEN, res.refreshToken);
             } else {
                 deleteUserData();
@@ -70,7 +74,7 @@ export function useProvideAuth() {
         return updateUserRequest(form).then((res) => {
             if (res.success) {
                 setUser({...res.user, id: res.user._id});
-                setCookie(ACCESS_TOKEN, res.accessToken);
+                setCookie(ACCESS_TOKEN, getToken(res.accessToken));
                 localStorage.setItem(REFRESH_TOKEN, res.refreshToken);
             } else {
                 deleteUserData();
@@ -98,7 +102,7 @@ export function useProvideAuth() {
         return loginRequest(form).then((res) => {
             if (res.success) {
                 setUser({...res.user, id: res.user._id});
-                setCookie(ACCESS_TOKEN, res.accessToken);
+                setCookie(ACCESS_TOKEN, getToken(res.accessToken));
                 localStorage.setItem(REFRESH_TOKEN, res.refreshToken);
             } else {
                 deleteUserData();
