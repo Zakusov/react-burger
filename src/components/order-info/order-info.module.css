@@ -1,0 +1,101 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+}
+
+.modal_orderInfo {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 30px 30px 30px;
+}
+
+.id {
+  margin: 0 auto;
+  padding: 0;
+}
+
+.name {
+  padding: 0;
+}
+
+.statusDone {
+  color: #00CCCC;
+}
+
+.ingredientsList {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  max-height: 310px;
+  overflow-y: scroll;
+  padding-left: 0;
+  row-gap: 16px;
+  width: 100%;
+}
+
+.ingredientsList::-webkit-scrollbar {
+  background: #2F2F37;
+  max-height: 664px;
+  width: 8px;
+}
+
+.ingredientsList::-webkit-scrollbar-thumb {
+  background: #8585AD;
+  border: 3px solid #8585AD;
+  height: 40px;
+  width: 8px;
+}
+
+.ingredientsList::-webkit-scrollbar-track {
+  background: #2F2F37;
+}
+
+.ingredient {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ingredientContainer {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.ingredientImage {
+  background: #131316;
+  border: 2px solid #801AB2;
+  border-radius: 100px;
+  box-sizing: border-box;
+  height: 64px;
+  object-fit: cover;
+  width: 64px;
+}
+
+.ingredientPrice {
+  display: flex;
+  flex-direction: row;
+  gap: 9px;
+}
+
+.modal_footer {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 640px;
+  width: 100%;
+}
+
+.total {
+  display: flex;
+  flex-direction: row;
+  gap: 9px;
+}

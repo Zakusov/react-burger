@@ -1,32 +1,30 @@
-import React, {FormEvent, useCallback, useState} from 'react';
+import React, {FormEvent, useCallback} from 'react';
 import {Link} from 'react-router-dom';
 import {Button, Input, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 
-import {useAuth} from "../utils/auth";
+import {signIn} from "../services/thunks";
+import {useDispatch, useSelector} from "../services/hooks";
 import {useForm} from "../hooks/useForm";
+import {LoginType} from "../services/types";
 import styles from './login-page.module.css';
 
 export const LoginPage = () => {
-    const auth = useAuth();
-    const {values, handleChange} = useForm({email: '', password: ''});
-    const [error, setError] = useState<String>();
-
-    function onError(err: Error) {
-        setError(err && err.message ? err.message : "Что-то пошло не так :(");
-    }
+    const initialValues: LoginType = {email: '', password: ''};
+    const {values, handleChange} = useForm(initialValues);
+    const {authFailMessage} = useSelector(state => state.user);
+    const dispatch = useDispatch();
 
     const onSubmit = useCallback(
         (e: FormEvent) => {
             e.preventDefault();
-            auth.signIn(values)
-                .catch(onError);
+            dispatch(signIn(values));
         },
-        [auth, values]
+        [values]
     );
 
     return (
         <form className={styles.wrapper} onSubmit={onSubmit}>
-            {error && <p className={`text text_color_error ${styles.error}`}>{error}</p>}
+            {authFailMessage && <p className={`text text_color_error ${styles.error}`}>{authFailMessage}</p>}
 
             <p className={`text text_type_main-medium ${styles.title}`}>Вход</p>
 

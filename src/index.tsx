@@ -1,19 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import {Provider} from "react-redux";
-import {configureStore} from "@reduxjs/toolkit"
-
-import {rootReducer} from "./services/reducers";
-import App from "./components/app/app";
-import reportWebVitals from "./reportWebVitals";
-
-import "./index.css";
 import {BrowserRouter} from "react-router-dom";
 
-const store = configureStore({
-    reducer: rootReducer,
-    devTools: process.env.NODE_ENV !== 'production'
-})
+import App from "./components/app/app";
+import reportWebVitals from "./reportWebVitals";
+import {store} from "./services/store";
+import "./index.css";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement

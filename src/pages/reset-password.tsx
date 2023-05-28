@@ -3,9 +3,9 @@ import {Link, Navigate, useNavigate} from 'react-router-dom';
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import {TICons} from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons";
 
-import {useAuth} from "../utils/auth";
 import {useForm} from "../hooks/useForm";
 import styles from './reset-password.module.css';
+import {resetPassword} from "../services/thunks";
 
 type ResetPasswordType = {
     token: string;
@@ -15,7 +15,6 @@ type ResetPasswordType = {
 }
 
 export const ResetPasswordPage = () => {
-    const auth = useAuth();
     const passRef = useRef(null);
     const navigate = useNavigate();
     const {values, handleChange, setValues} = useForm<ResetPasswordType>({
@@ -37,12 +36,12 @@ export const ResetPasswordPage = () => {
         (e: FormEvent) => {
             e.preventDefault();
             if (values.password && values.token) {
-                auth.resetPassword(values.password, values.token)
+                resetPassword(values.password, values.token)
                     .then(() => navigate('/login', {replace: true}))
                     .catch(error => console.log(error));
             }
         },
-        [values, auth, navigate]
+        [values, navigate]
     );
 
     return (

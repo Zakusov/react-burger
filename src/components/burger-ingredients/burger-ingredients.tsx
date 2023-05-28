@@ -1,10 +1,10 @@
 import React, {RefObject, useEffect, useRef} from "react";
-import {useSelector} from "react-redux";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 
+import {useSelector} from "../../services/hooks";
+import {IngredientType} from "../../services/types/data";
 import IngredientList from "../ingredient-list/ingredient-list";
 import styles from "./burger-ingredients.module.css";
-import {IngredientType} from "../../utils/types";
 
 const tab1 = 'Булки';
 const tab2 = 'Соусы';
@@ -13,7 +13,6 @@ const tab3 = 'Начинки';
 const BurgerIngredients = () => {
 
     /** Все ингредиенты **/
-        // @ts-ignore
     const {ingredients} = useSelector(state => state.ingredients);
 
     /** Булки **/

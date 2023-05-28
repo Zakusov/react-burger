@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
-import {IngredientType} from "../../utils/types";
+
+import {useSelector} from "../../services/hooks"
+import {IngredientType} from "../../services/types/data";
 import style from './ingredient-details.module.css';
 
 const IngredientDetails = () => {
-    // @ts-ignore
     const {ingredients} = useSelector(state => state.ingredients);
     const [item, setItem] = useState<IngredientType>()
     const {id} = useParams();

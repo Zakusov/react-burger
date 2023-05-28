@@ -3,11 +3,10 @@ import {Link, useNavigate} from 'react-router-dom';
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 
 import {useForm} from "../hooks/useForm";
-import {useAuth} from "../utils/auth";
 import styles from './forgot-password.module.css';
+import {recoverPassword} from "../services/thunks";
 
 export const ForgotPasswordPage = () => {
-    const auth = useAuth();
     const navigate = useNavigate();
     const {values, handleChange} = useForm({email: ''});
 
@@ -15,12 +14,12 @@ export const ForgotPasswordPage = () => {
         (e: FormEvent) => {
             e.preventDefault();
             if (values.email) {
-                auth.recoverPassword(values.email)
+                recoverPassword(values.email)
                     .then(() => navigate('/reset-password', {replace: true}))
                     .catch(error => console.log(error));
             }
         },
-        [values, auth, navigate]
+        [values, navigate]
     );
 
     return (

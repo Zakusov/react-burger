@@ -1,5 +1,4 @@
 import React, {useCallback} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {useDrop} from "react-dnd";
 import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
@@ -7,25 +6,21 @@ import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-deve
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import OrderItem from "../order-item/order-item";
-import {addIngredient, createOrder, deleteAll, replaceFilling} from "../../services/actions/order-actions";
-import {useAuth} from "../../utils/auth";
-import {SelectedIngredientType} from "../../utils/types";
+import {addIngredient, deleteAll, replaceFilling} from "../../services/actions";
+import {useDispatch, useSelector} from "../../services/hooks";
+import {IngredientType, SelectedIngredientType} from "../../services/types";
+import {createOrder} from "../../services/thunks";
 import styles from "./burger-constructor.module.css";
 
 const BurgerConstructor = () => {
-
-    const auth = useAuth();
-    const navigate = useNavigate();
-
     // Содержимое корзины
-    // @ts-ignore
     const {bun, filling, price, isFailed, orderId} = useSelector(state => state.order);
 
     // Исходный состав бургера
     const dispatch = useDispatch();
 
     // Добавление ингредиента перетаскиванием
-    const [{isHover}, dropTargetRef] = useDrop({
+    const [, dropTargetRef] = useDrop<IngredientType>({
         accept: 'ingredient',
         collect: monitor => ({
             isHover: monitor.isOver()
@@ -41,16 +36,18 @@ const BurgerConstructor = () => {
     const onMoveCard = useCallback<MoveCardCallback>((dragIndex, hoverIndex) => {
         console.log("Меняем местами элементы " + dragIndex + " и " + hoverIndex)
         const dragItem = filling[dragIndex];
-        const newFilling = [...filling];
+        const newFilling: Array<SelectedIngredientType> = [...filling];
         newFilling.splice(dragIndex, 1);
         newFilling.splice(hoverIndex, 0, dragItem);
         dispatch(replaceFilling(newFilling))
     }, [dispatch, filling]);
 
+    const {user} = useSelector(state => state.user);
+    const navigate = useNavigate();
+
     const onCreateOrder = () => {
-        if (auth.user) {
-            // @ts-ignore
-            dispatch(createOrder(bun, filling));
+        if (user) {
+            dispatch(createOrder(bun!, filling));
         } else {
             navigate('/login');
         }

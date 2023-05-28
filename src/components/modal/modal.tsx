@@ -15,7 +15,6 @@ type TModalProps = {
 const Modal: FC<TModalProps> = ({onClose, title, children}: TModalProps) => {
 
     type KeyDownCallback = (event: KeyboardEvent) => void;
-
     const onKeyDown = useCallback<KeyDownCallback>((event: KeyboardEvent) => {
         if (event.key === "Escape") {
             onClose();

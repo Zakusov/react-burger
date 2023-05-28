@@ -1,24 +1,22 @@
 import React, {FormEvent, useCallback} from 'react';
 import {Button, Input, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
-import {ProfileLinks} from '../components/profile-links/profile-links';
 import {useForm} from "../hooks/useForm";
-import {useAuth} from "../utils/auth";
-import {UserType} from "../utils/types";
 import styles from './profile-page.module.css';
+import {useDispatch, useSelector} from "../services/hooks";
+import {updateUser} from "../services/thunks";
 
 export const ProfilePage = () => {
-    const auth = useAuth();
-    const user: UserType = auth.user!;
-    const initialState = {name: user?.name, email: user.email, password: ''};
+    const {user} = useSelector(state => state.user);
+    const initialState = {name: user?.name || '', email: user?.email || '', password: ''};
     const {values, handleChange, setValues} = useForm(initialState);
+    const dispatch = useDispatch();
 
     const onSubmit = useCallback(
         (e: FormEvent) => {
             e.preventDefault();
-            auth.update(values)
-                .catch((error) => console.log(error));
+            dispatch(updateUser(values));
         },
-        [auth, values]
+        [values]
     );
 
     const onCancel = () => setValues(initialState);
@@ -27,9 +25,6 @@ export const ProfilePage = () => {
         <>
             <form className={styles.mainProfileWrapper} onSubmit={onSubmit}>
                 <div className={styles.profileWrapper}>
-                    <div className={styles.linksWrapper}>
-                        <ProfileLinks/>
-                    </div>
                     <div>
                         <div className={styles.inputsWrapper}>
                             <div className={styles.inputWrapper}>

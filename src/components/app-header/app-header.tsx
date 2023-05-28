@@ -14,7 +14,7 @@ const AppHeader = () => {
                     <AppHeaderItem type={homeType} link="/">
                         <BurgerIcon type={homeType}/> Конструктор
                     </AppHeaderItem>
-                    <AppHeaderItem type="secondary" link="/">
+                    <AppHeaderItem type="secondary" link="/feed">
                         <ListIcon type="secondary"/> Лента заказов
                     </AppHeaderItem>
                 </nav>

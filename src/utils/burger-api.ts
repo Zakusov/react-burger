@@ -1,6 +1,11 @@
 import {getCookie} from "./cookie";
 import {ACCESS_TOKEN, BASE_URL, REFRESH_TOKEN} from "./constants";
-import {LoginType, UserType} from "./types";
+
+import {LoginType, UserType} from "../services/types";
+
+function getAuthorizationString() {
+    return 'Bearer ' + getCookie(ACCESS_TOKEN);
+}
 
 const checkResponse = async (res: Response) => {
     return res.ok ? res.json() : res.json().then((error) => Promise.reject(error));
@@ -36,7 +41,7 @@ export const updateUserRequest = async (form: UserType) => {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: getCookie(ACCESS_TOKEN)!
+            Authorization: getAuthorizationString()
         },
         body: JSON.stringify(form)
     });
@@ -47,7 +52,7 @@ export const getUserRequest = async () => {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: getCookie(ACCESS_TOKEN)!
+            Authorization: getAuthorizationString()
         }
     });
 };
@@ -78,7 +83,7 @@ export const updateTokenRequest = async () => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
-            Authorization: getCookie(ACCESS_TOKEN)!
+            Authorization: getAuthorizationString()
         },
         body: JSON.stringify({token})
     });
@@ -103,6 +108,7 @@ export const createOrderRequest = async (ingredients: Array<string>) => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            Authorization: getAuthorizationString()
         },
         body: JSON.stringify({ingredients})
     });

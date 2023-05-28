@@ -1,6 +1,7 @@
 import {Navigate, useLocation} from 'react-router-dom';
 import {FC, HTMLAttributes, useEffect} from 'react';
-import {useAuth} from "../../utils/auth";
+import {useDispatch, useSelector} from "../../services/hooks";
+import {getUser} from "../../services/thunks";
 
 type TProtectedRouteProps = {
     anonymous?: boolean;
@@ -11,23 +12,24 @@ type TProtectedRouteProps = {
  * Если пользователь авторизован и пытается попасть на страницу для неавторизованных пользователей, то возвращаем его на предыдущую страницу.
  */
 export const ProtectedRoute: FC<TProtectedRouteProps> = ({children, anonymous = false}: TProtectedRouteProps) => {
-    const auth = useAuth();
+    const {user} = useSelector(state => state.user);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        auth.getUser().catch((error) => console.log(error));
-    }, [auth]);
+        if (!user) {
+            dispatch(getUser());
+        }
+    }, []);
 
     const location = useLocation();
-    // Если разрешен неавторизованный доступ, а пользователь авторизован...
-    if (anonymous && auth.user) {
-        // ...то отправляем его на предыдущую страницу
+    if (anonymous && user) {
         const from = location.state?.from || '/';
+        console.log(`Страница для неавторизованных пользователей. Перенаправляем на ${from}`);
         return <Navigate to={from}/>;
     }
 
-    // Если требуется авторизация, а пользователь не авторизован...
-    if (!anonymous && !auth.user) {
-        // ...то отправляем его на страницу логин
+    if (!anonymous && !user) {
+        console.log("Страница для авторизованных пользователей. Перенаправляем на /login");
         return <Navigate to="/login" state={{from: location}}/>;
     }
 
