@@ -31,7 +31,7 @@ export interface IUserState {
     } | null;
 }
 
-export const initialState: IUserState = {
+export const initialUserState: IUserState = {
     registerRequest: false,
     registerFailed: false,
     registerSuccess: false,
@@ -45,7 +45,7 @@ export const initialState: IUserState = {
     user: null
 }
 
-export const userReducer = (state = initialState, action: TUserActions): IUserState => {
+export const userReducer = (state = initialUserState, action: TUserActions): IUserState => {
     switch (action.type) {
         case GET_REGISTER_REQUEST: {
             return {
