@@ -6,9 +6,9 @@ import {
     DELETE_ALL,
     DELETE_INGREDIENT,
     REPLACE_FILLING
-} from "../constants/order";
-import {SelectedIngredientType} from "../types/data";
-import {TOrderActions} from "../actions/order";
+} from "../constants";
+import {SelectedIngredientType} from "../types";
+import {TOrderActions} from "../actions";
 
 type TOrderState = {
     bun: SelectedIngredientType | null;
@@ -19,7 +19,7 @@ type TOrderState = {
     orderId: number | null;
 };
 
-const initialState: TOrderState = {
+export const initialOrderState: TOrderState = {
     bun: null,
     filling: [],
     price: 0,
@@ -36,7 +36,7 @@ function calculatePrice(bun: SelectedIngredientType | null, filling: Array<Selec
     return getPrice(bun) * 2 + filling?.reduce((acc, obj) => acc + getPrice(obj), 0) + getPrice(ingredient);
 }
 
-export const orderReducer = (state: TOrderState = initialState, action: TOrderActions) => {
+export const orderReducer = (state: TOrderState = initialOrderState, action: TOrderActions) => {
     switch (action.type) {
         case ADD_INGREDIENT: {
             if (action.payload.type === 'bun') {
@@ -61,7 +61,7 @@ export const orderReducer = (state: TOrderState = initialState, action: TOrderAc
             };
         }
         case DELETE_ALL: {
-            return {...initialState};
+            return {...initialOrderState};
         }
         case REPLACE_FILLING: {
             return {...state, filling: [...action.payload]};
