@@ -16,14 +16,14 @@ type TUserFeedState = {
     currentOrderUserFeed: IOrder | null;
 };
 
-const initialStateUserFeed: TUserFeedState = {
+export const initialUserFeedState: TUserFeedState = {
     wsConnectedUserFeed: false,
     isErrorUserFeed: false,
     ordersUserFeed: [],
     currentOrderUserFeed: null
 }
 
-export const userFeedReducer = (state = initialStateUserFeed, action: TUserFeedActions) => {
+export const userFeedReducer = (state = initialUserFeedState, action: TUserFeedActions) => {
     switch (action.type) {
         case WS_USER_FEED_CONNECTION_SUCCESS: {
             return {...state, wsConnectedUserFeed: true, isErrorUserFeed: false};
