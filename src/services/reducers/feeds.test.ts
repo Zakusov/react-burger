@@ -1,11 +1,39 @@
 import {AnyAction} from "redux";
 import {feedReducer, initialFeedState} from "./feeds";
 import {
+    SET_CURRENT_WS_FEED,
     WS_FEED_CONNECTION_CLOSED,
     WS_FEED_CONNECTION_ERROR,
     WS_FEED_CONNECTION_SUCCESS,
     WS_FEED_GET_MESSAGE
 } from "../constants";
+
+const pendingBurger = {
+    "_id": "6474fa088a4b62001c84d051",
+    "ingredients": ["643d69a5c3f7b9001cfa093c", "643d69a5c3f7b9001cfa0941", "643d69a5c3f7b9001cfa093e", "643d69a5c3f7b9001cfa093c"],
+    "status": "pending",
+    "name": "Био-марсианский люминесцентный краторный бургер",
+    "createdAt": "2023-05-29T19:16:24.637Z",
+    "updatedAt": "2023-05-29T19:16:24.817Z",
+    "number": 6027
+};
+
+const doneBurger = {
+    "_id": "6474ee828a4b62001c84d02a",
+    "ingredients": ["643d69a5c3f7b9001cfa093c", "643d69a5c3f7b9001cfa0946", "643d69a5c3f7b9001cfa093c"],
+    "status": "done",
+    "name": "Минеральный краторный бургер",
+    "createdAt": "2023-05-29T18:27:14.693Z",
+    "updatedAt": "2023-05-29T18:27:14.761Z",
+    "number": 6026
+};
+
+const feedResponse = {
+    "success": true,
+    "orders": [pendingBurger, doneBurger],
+    "total": 5653,
+    "totalToday": 2
+}
 
 describe('Feed reducer', () => {
     it('should return the initial state', () => {
@@ -37,30 +65,6 @@ describe('Feed reducer', () => {
     })
 
     it('should handle WS_FEED_GET_MESSAGE', () => {
-        const pendingBurger = {
-            "_id": "6474fa088a4b62001c84d051",
-            "ingredients": ["643d69a5c3f7b9001cfa093c", "643d69a5c3f7b9001cfa0941", "643d69a5c3f7b9001cfa093e", "643d69a5c3f7b9001cfa093c"],
-            "status": "pending",
-            "name": "Био-марсианский люминесцентный краторный бургер",
-            "createdAt": "2023-05-29T19:16:24.637Z",
-            "updatedAt": "2023-05-29T19:16:24.817Z",
-            "number": 6027
-        };
-        const doneBurger = {
-            "_id": "6474ee828a4b62001c84d02a",
-            "ingredients": ["643d69a5c3f7b9001cfa093c", "643d69a5c3f7b9001cfa0946", "643d69a5c3f7b9001cfa093c"],
-            "status": "done",
-            "name": "Минеральный краторный бургер",
-            "createdAt": "2023-05-29T18:27:14.693Z",
-            "updatedAt": "2023-05-29T18:27:14.761Z",
-            "number": 6026
-        };
-        const feedResponse = {
-            "success": true,
-            "orders": [pendingBurger, doneBurger],
-            "total": 5653,
-            "totalToday": 2
-        }
         expect(
             feedReducer(initialFeedState, {
                 type: WS_FEED_GET_MESSAGE,
@@ -72,7 +76,26 @@ describe('Feed reducer', () => {
             ordersDone: [null, 6026],
             ordersPending: [6027, null],
             ordersTotal: 5653,
-            totalToday: 2,
+            totalToday: 2
         })
+    })
+
+    it('should handle SET_CURRENT_WS_FEED', () => {
+        const state = {...initialFeedState, orders: [pendingBurger, doneBurger]};
+        expect(
+            feedReducer(state, {
+                type: SET_CURRENT_WS_FEED,
+                payload: "6474fa088a4b62001c84d051"
+            })
+        ).toEqual({...state, currentOrder: pendingBurger})
+    })
+
+    it('should handle REMOVE_CURRENT_WS_FEED', () => {
+        expect(
+            feedReducer({...initialFeedState, currentOrder: pendingBurger}, {
+                type: SET_CURRENT_WS_FEED,
+                payload: "6474fa088a4b62001c84d051"
+            })
+        ).toEqual({...initialFeedState, currentOrder: undefined})
     })
 })
