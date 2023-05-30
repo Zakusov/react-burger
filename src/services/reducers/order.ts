@@ -57,7 +57,7 @@ export const orderReducer = (state: TOrderState = initialOrderState, action: TOr
             return {
                 ...state,
                 filling: filling,
-                cost: calculatePrice(state.bun, filling)
+                price: calculatePrice(state.bun, filling)
             };
         }
         case DELETE_ALL: {
