@@ -34,10 +34,12 @@ export const registerUser = (form: UserType): AppThunkAction => {
                 setCookie(ACCESS_TOKEN, getToken(res.accessToken));
                 localStorage.setItem(REFRESH_TOKEN, res.refreshToken);
                 dispatch(registerSuccessAction({...res.user}));
+            } else {
+                dispatch(registerFailedAction(getErrorMessage(res)));
             }
         }).catch(err => {
             console.log(err);
-            dispatch(registerFailedAction());
+            dispatch(registerFailedAction(getErrorMessage(err)));
         })
     }
 };
@@ -50,10 +52,12 @@ export const signIn = (form: LoginType): AppThunkAction => {
                 setCookie(ACCESS_TOKEN, getToken(res.accessToken));
                 localStorage.setItem(REFRESH_TOKEN, res.refreshToken);
                 dispatch(authSuccessAction({...res.user}));
+            } else {
+                dispatch(authFailedAction(getErrorMessage(res)));
             }
         }).catch(err => {
             console.log(err)
-            dispatch(authFailedAction(getErrorMessage(err)))
+            dispatch(authFailedAction(getErrorMessage(err)));
         })
     }
 };

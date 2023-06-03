@@ -7,7 +7,6 @@ import {
     GET_REGISTER_SUCCESS,
     GET_USER,
     SIGN_OUT,
-    UPDATE_USER,
     UPDATE_USER_FAILED,
     UPDATE_USER_REQUEST,
     UPDATE_USER_SUCCESS
@@ -16,12 +15,12 @@ import {TUserActions} from "../actions";
 
 export interface IUserState {
     registerRequest: boolean;
-    registerFailed: boolean;
     registerSuccess: boolean;
-    loggedIn: boolean;
+    registerFailMessage: string | null;
     authRequest: boolean;
-    authFailMessage: string | null;
     authSuccess: boolean;
+    authFailMessage: string | null;
+    loggedIn: boolean;
     updateUserRequest: boolean;
     updateUserSuccess: boolean;
     updateUserFailed: boolean;
@@ -33,7 +32,7 @@ export interface IUserState {
 
 export const initialUserState: IUserState = {
     registerRequest: false,
-    registerFailed: false,
+    registerFailMessage: null,
     registerSuccess: false,
     loggedIn: false,
     authRequest: false,
@@ -51,6 +50,9 @@ export const userReducer = (state = initialUserState, action: TUserActions): IUs
             return {
                 ...state,
                 registerRequest: true,
+                registerSuccess: false,
+                registerFailMessage: null,
+                loggedIn: false
             };
         }
         case GET_REGISTER_SUCCESS: {
@@ -70,13 +72,17 @@ export const userReducer = (state = initialUserState, action: TUserActions): IUs
         case GET_REGISTER_FAILED: {
             return {
                 ...state,
-                authRequest: false
+                registerRequest: false,
+                registerFailMessage: action.payload
             };
         }
         case GET_AUTH_REQUEST: {
             return {
                 ...state,
                 authRequest: true,
+                authSuccess: false,
+                authFailMessage: null,
+                loggedIn: false
             };
         }
         case GET_AUTH_SUCCESS: {
@@ -85,7 +91,6 @@ export const userReducer = (state = initialUserState, action: TUserActions): IUs
                 authRequest: false,
                 authSuccess: true,
                 loggedIn: true,
-
                 user: {
                     ...state.user,
                     name: action.payload.name,
@@ -104,17 +109,6 @@ export const userReducer = (state = initialUserState, action: TUserActions): IUs
             return {
                 ...state,
                 loggedIn: true,
-                user: {
-                    ...state.user,
-                    name: action.payload.name,
-                    email: action.payload.email || ''
-                }
-            };
-        }
-        case UPDATE_USER: {
-            return {
-                ...state,
-
                 user: {
                     ...state.user,
                     name: action.payload.name,

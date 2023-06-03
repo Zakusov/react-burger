@@ -9,7 +9,6 @@ import {
     GET_USER,
     RESET_PASSWORD,
     SIGN_OUT,
-    UPDATE_USER,
     UPDATE_USER_FAILED,
     UPDATE_USER_REQUEST,
     UPDATE_USER_SUCCESS
@@ -27,11 +26,7 @@ export interface IRegisterSuccessAction {
 
 export interface IRegisterFailedAction {
     readonly type: typeof GET_REGISTER_FAILED;
-}
-
-export interface IUpdateUserAction {
-    readonly type: typeof UPDATE_USER;
-    readonly payload: UserType;
+    readonly payload: string
 }
 
 export interface IUpdateUserRequestAction {
@@ -89,7 +84,6 @@ export type TUserActions =
     | IUpdateUserSuccessAction
     | IUpdateUserFailedAction
     | IGetUserAction
-    | IUpdateUserAction
     | ISignOutAction
     | IForgotPassword
     | IResetPassword;
@@ -101,8 +95,9 @@ export const registerSuccessAction = (user: UserType): IRegisterSuccessAction =>
     type: GET_REGISTER_SUCCESS,
     payload: user
 });
-export const registerFailedAction = (): IRegisterFailedAction => ({
-    type: GET_REGISTER_FAILED
+export const registerFailedAction = (message: string): IRegisterFailedAction => ({
+    type: GET_REGISTER_FAILED,
+    payload: message
 });
 
 export const authRequestAction = (): IAuthRequestAction => ({
@@ -133,10 +128,6 @@ export const updateUserFailedAction = (): IUpdateUserFailedAction => ({
     type: UPDATE_USER_FAILED
 });
 
-export const updateUserAction = (user: UserType): IUpdateUserAction => ({
-    type: UPDATE_USER,
-    payload: user
-});
 export const signOutAction = (): ISignOutAction => ({
     type: SIGN_OUT
 });
