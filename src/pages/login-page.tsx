@@ -24,7 +24,7 @@ export const LoginPage = () => {
 
     return (
         <form className={styles.wrapper} onSubmit={onSubmit}>
-            {authFailMessage && <p className={`text text_color_error ${styles.error}`}>{authFailMessage}</p>}
+            {authFailMessage && <p className={styles.error}>{authFailMessage}</p>}
 
             <p className={`text text_type_main-medium ${styles.title}`}>Вход</p>
 
