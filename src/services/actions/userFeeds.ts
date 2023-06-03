@@ -20,7 +20,6 @@ export interface IUserFeedConnectionSuccessAction {
 
 export interface IUserFeedConnectionErrorAction {
     readonly type: typeof WS_USER_FEED_CONNECTION_ERROR;
-    readonly payload: Event;
 }
 
 export interface IUserFeedConnectionClosedAction {

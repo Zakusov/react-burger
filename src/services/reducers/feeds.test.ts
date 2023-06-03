@@ -1,6 +1,7 @@
 import {AnyAction} from "redux";
 import {feedReducer, initialFeedState} from "./feeds";
 import {
+    REMOVE_CURRENT_WS_FEED,
     SET_CURRENT_WS_FEED,
     WS_FEED_CONNECTION_CLOSED,
     WS_FEED_CONNECTION_ERROR,
@@ -93,9 +94,8 @@ describe('Feed reducer', () => {
     it('should handle REMOVE_CURRENT_WS_FEED', () => {
         expect(
             feedReducer({...initialFeedState, currentOrder: pendingBurger}, {
-                type: SET_CURRENT_WS_FEED,
-                payload: "6474fa088a4b62001c84d051"
+                type: REMOVE_CURRENT_WS_FEED
             })
-        ).toEqual({...initialFeedState, currentOrder: undefined})
+        ).toEqual({...initialFeedState, currentOrder: null})
     })
 })
