@@ -4,7 +4,7 @@ import {useDrag} from "react-dnd";
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 
 import {useSelector} from "../../services/hooks"
-import {IngredientType} from "../../services/types/data";
+import {IngredientType} from "../../services/types";
 import styles from './card.module.css';
 
 interface ICardProps {
@@ -45,7 +45,7 @@ const Card = ({item}: ICardProps) => {
 
     return (
         <>
-            <div className={`${styles.main} ml-4 mb-8`} style={{opacity}} onClick={onCardClick} ref={dragRef}>
+            <div className={styles.main} style={{opacity}} onClick={onCardClick} ref={dragRef} data-id={item._id}>
                 {count > 0 &&
                     <div className={styles.counter}>
                         <Counter count={count} size="default"/>

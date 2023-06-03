@@ -69,7 +69,6 @@ function updateAccessTokenAndSignIn(dispatch: AppDispatch) {
             updateTokens(res.accessToken, res.refreshToken);
             getUserRequest().then(res => {
                 if (res.success) {
-                    updateTokens(res.accessToken, res.refreshToken);
                     dispatch(signInAction({...res.user}));
                 }
             })
@@ -86,7 +85,6 @@ export function checkAuthorization() {
     return function (dispatch: AppDispatch) {
         getUserRequest().then(res => {
             if (res.success) {
-                updateTokens(res.accessToken, res.refreshToken);
                 dispatch(signInAction({...res.user}));
             } else if (getErrorMessage(res) === 'jwt expired') {
                 updateAccessTokenAndSignIn(dispatch);
