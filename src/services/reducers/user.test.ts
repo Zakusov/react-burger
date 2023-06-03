@@ -7,7 +7,10 @@ import {
     GET_REGISTER_FAILED,
     GET_REGISTER_REQUEST,
     GET_REGISTER_SUCCESS,
-    GET_USER
+    LOG_OUT,
+    UPDATE_USER_FAILED,
+    UPDATE_USER_REQUEST,
+    UPDATE_USER_SUCCESS
 } from "../constants";
 
 const testUser = {
@@ -30,23 +33,19 @@ describe('User reducer', () => {
             ...initialUserState,
             registerRequest: true,
             registerSuccess: false,
-            registerFailMessage: null,
-            loggedIn: false
+            registerFailMessage: null
         })
     })
 
     it('should handle GET_REGISTER_SUCCESS', () => {
         expect(
             userReducer({...initialUserState}, {
-                type: GET_REGISTER_SUCCESS,
-                payload: testUser
+                type: GET_REGISTER_SUCCESS
             })
         ).toEqual({
             ...initialUserState,
             registerRequest: false,
-            registerSuccess: true,
-            loggedIn: true,
-            user: {name: "Ivan", email: "ivan@pupkin.ru"}
+            registerSuccess: true
         })
     })
 
@@ -72,23 +71,19 @@ describe('User reducer', () => {
             ...initialUserState,
             authRequest: true,
             authSuccess: false,
-            authFailMessage: null,
-            loggedIn: false
+            authFailMessage: null
         })
     })
 
     it('should handle GET_AUTH_SUCCESS', () => {
         expect(
             userReducer({...initialUserState}, {
-                type: GET_AUTH_SUCCESS,
-                payload: testUser
+                type: GET_AUTH_SUCCESS
             })
         ).toEqual({
             ...initialUserState,
             authRequest: false,
-            authSuccess: true,
-            loggedIn: true,
-            user: {name: "Ivan", email: "ivan@pupkin.ru"}
+            authSuccess: true
         })
     })
 
@@ -105,16 +100,52 @@ describe('User reducer', () => {
         })
     })
 
-    it('should handle GET_USER', () => {
+    it('should handle UPDATE_USER_REQUEST', () => {
         expect(
             userReducer({...initialUserState}, {
-                type: GET_USER,
-                payload: testUser
+                type: UPDATE_USER_REQUEST
             })
         ).toEqual({
             ...initialUserState,
-            loggedIn: true,
-            user: {name: "Ivan", email: "ivan@pupkin.ru"}
+            updateUserRequest: true,
+            updateUserSuccess: false,
+            updateFailMessage: null
+        })
+    })
+
+    it('should handle UPDATE_USER_SUCCESS', () => {
+        expect(
+            userReducer({...initialUserState}, {
+                type: UPDATE_USER_SUCCESS
+            })
+        ).toEqual({
+            ...initialUserState,
+            updateUserRequest: false,
+            updateUserSuccess: true
+        })
+    })
+
+    it('should handle UPDATE_USER_FAILED', () => {
+        expect(
+            userReducer({...initialUserState}, {
+                type: UPDATE_USER_FAILED,
+                payload: "Ошибка обновления данных пользователя"
+            })
+        ).toEqual({
+            ...initialUserState,
+            updateUserRequest: false,
+            updateFailMessage: "Ошибка обновления данных пользователя"
+        })
+    })
+
+    it('should handle LOG_OUT', () => {
+        expect(
+            userReducer({...initialUserState, user: testUser}, {
+                type: LOG_OUT
+            })
+        ).toEqual({
+            ...initialUserState,
+            user: null
         })
     })
 })

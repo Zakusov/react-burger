@@ -1,7 +1,7 @@
 import {Navigate, useLocation} from 'react-router-dom';
 import {FC, HTMLAttributes, useEffect} from 'react';
 import {useDispatch, useSelector} from "../../services/hooks";
-import {getUser} from "../../services/thunks";
+import {checkAuthorization} from "../../services/thunks";
 
 type TProtectedRouteProps = {
     anonymous?: boolean;
@@ -17,9 +17,9 @@ export const ProtectedRoute: FC<TProtectedRouteProps> = ({children, anonymous = 
 
     useEffect(() => {
         if (!user) {
-            dispatch(getUser());
+            dispatch(checkAuthorization());
         }
-    }, []);
+    }, [user, dispatch]);
 
     const location = useLocation();
     if (anonymous && user) {

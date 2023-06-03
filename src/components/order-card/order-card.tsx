@@ -22,7 +22,7 @@ const OrderCard = ({order, setCurrOrder}: TOrderCardProps) => {
         setIngredientsOrder(order.ingredients.map((itemId) => {
             return ingredients.filter(item => item._id === itemId)[0]
         }))
-    }, [ingredients]);
+    }, [order.ingredients, ingredients]);
 
     useEffect(() => {
         if (orderIngredients.length !== 0) {

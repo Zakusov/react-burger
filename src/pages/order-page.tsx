@@ -25,7 +25,7 @@ const OrderPage = () => {
                 }
             }
         },
-        [ordersUserFeed]
+        [ordersUserFeed, id, dispatch]
     );
 
     useEffect(

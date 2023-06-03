@@ -22,7 +22,7 @@ const OrdersPage = () => {
     const state = location.state;
     const setCurrentOrder = useCallback((id: string) => {
         navigate(`/profile/orders/${id}`, {state: {...state, background: location}});
-    }, [navigate, location]);
+    }, [navigate, location, state]);
 
     return (
         !ordersUserFeed

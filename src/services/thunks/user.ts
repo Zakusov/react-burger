@@ -4,10 +4,10 @@ import {
     authFailedAction,
     authRequestAction,
     authSuccessAction,
-    getUserAction,
     registerFailedAction,
     registerRequestAction,
     registerSuccessAction,
+    signInAction,
     signOutAction,
     updateUserFailedAction,
     updateUserRequestAction,
@@ -31,9 +31,9 @@ export const registerUser = (form: UserType): AppThunkAction => {
         dispatch(registerRequestAction());
         registerRequest(form).then((res) => {
             if (res.success) {
-                setCookie(ACCESS_TOKEN, getToken(res.accessToken));
-                localStorage.setItem(REFRESH_TOKEN, res.refreshToken);
-                dispatch(registerSuccessAction({...res.user}));
+                updateTokens(res.accessToken, res.refreshToken);
+                dispatch(signInAction({...res.user}));
+                dispatch(registerSuccessAction());
             } else {
                 dispatch(registerFailedAction(getErrorMessage(res)));
             }
@@ -44,14 +44,14 @@ export const registerUser = (form: UserType): AppThunkAction => {
     }
 };
 
-export const signIn = (form: LoginType): AppThunkAction => {
+export const login = (form: LoginType): AppThunkAction => {
     return function (dispatch: AppDispatch) {
         dispatch(authRequestAction());
         loginRequest(form).then(res => {
             if (res.success) {
-                setCookie(ACCESS_TOKEN, getToken(res.accessToken));
-                localStorage.setItem(REFRESH_TOKEN, res.refreshToken);
-                dispatch(authSuccessAction({...res.user}));
+                updateTokens(res.accessToken, res.refreshToken);
+                dispatch(signInAction({...res.user}));
+                dispatch(authSuccessAction());
             } else {
                 dispatch(authFailedAction(getErrorMessage(res)));
             }
@@ -62,35 +62,50 @@ export const signIn = (form: LoginType): AppThunkAction => {
     }
 };
 
-export function getUser() {
+function updateAccessTokenAndSignIn(dispatch: AppDispatch) {
+    updateTokenRequest().then(res => {
+        if (res && res.success) {
+            console.log('token updated')
+            updateTokens(res.accessToken, res.refreshToken);
+            getUserRequest().then(res => {
+                if (res.success) {
+                    updateTokens(res.accessToken, res.refreshToken);
+                    dispatch(signInAction({...res.user}));
+                }
+            })
+        }
+    }).catch(err => {
+        console.log(err)
+    })
+}
+
+/**
+ * Проверяет авторизацию пользователя.
+ */
+export function checkAuthorization() {
     return function (dispatch: AppDispatch) {
         getUserRequest().then(res => {
             if (res.success) {
-                setCookie(ACCESS_TOKEN, getToken(res.accessToken));
-                localStorage.setItem(REFRESH_TOKEN, res.refreshToken);
-                dispatch(getUserAction({...res.user}));
+                updateTokens(res.accessToken, res.refreshToken);
+                dispatch(signInAction({...res.user}));
+            } else if (getErrorMessage(res) === 'jwt expired') {
+                updateAccessTokenAndSignIn(dispatch);
+            } else {
+                dispatch(signOut());
             }
         }).catch(err => {
             if (getErrorMessage(err) === 'jwt expired') {
-                updateTokenRequest().then(res => {
-                    if (res && res.success) {
-                        console.log('token updated')
-                        setCookie('accessToken', getToken(res.accessToken));
-                        setCookie('refreshToken', res.refreshToken);
-                        getUserRequest().then(res => {
-                            if (res.success) {
-                                setCookie(ACCESS_TOKEN, getToken(res.accessToken));
-                                localStorage.setItem(REFRESH_TOKEN, res.refreshToken);
-                                dispatch(getUserAction({...res.user}));
-                            }
-                        })
-                    }
-                }).catch(err => {
-                    console.log(err)
-                })
+                updateAccessTokenAndSignIn(dispatch);
+            } else {
+                dispatch(signOut());
             }
         });
     }
+}
+
+function updateTokens(accessToken: string, refreshToken: string) {
+    setCookie(ACCESS_TOKEN, getTokenFromString(accessToken));
+    localStorage.setItem(REFRESH_TOKEN, refreshToken);
 }
 
 export function updateUser(form: UserType) {
@@ -98,25 +113,26 @@ export function updateUser(form: UserType) {
         dispatch(updateUserRequestAction());
         updateUserRequest(form).then((res) => {
             if (res.success) {
-                setCookie(ACCESS_TOKEN, getToken(res.accessToken));
-                localStorage.setItem(REFRESH_TOKEN, res.refreshToken);
-                dispatch(updateUserSuccessAction({...res.user}));
+                updateTokens(res.accessToken, res.refreshToken);
+                dispatch(signInAction({...res.user}));
+                dispatch(updateUserSuccessAction());
+            } else {
+                dispatch(updateUserFailedAction(getErrorMessage(res)));
             }
         }).catch(err => {
             console.log(err);
-            dispatch(updateUserFailedAction());
+            dispatch(updateUserFailedAction(getErrorMessage(err)));
         })
     }
 }
 
 export function signOut() {
     return function (dispatch: AppDispatch) {
-        const token = localStorage.getItem(REFRESH_TOKEN)!;
-        logoutRequest(token).then(() => {
-            dispatch(signOutAction());
-        }).catch(err => {
-            console.log(err)
-        });
+        const token = localStorage.getItem(REFRESH_TOKEN);
+        if (token) {
+            logoutRequest(token).catch(err => console.log(err));
+        }
+        dispatch(signOutAction());
     }
 }
 
@@ -136,8 +152,8 @@ export function resetPassword(password: string, token: string) {
     });
 }
 
-function getToken(accessToken: string) {
-    return accessToken.split('Bearer ')[1];
+function getTokenFromString(accessTokenString: string) {
+    return accessTokenString.split('Bearer ')[1];
 }
 
 function getErrorMessage(error: any) {

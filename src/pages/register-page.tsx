@@ -17,7 +17,7 @@ export const RegisterPage = () => {
             e.preventDefault();
             dispatch(registerUser(values));
         },
-        [values]
+        [values, dispatch]
     );
 
     if (user) {
