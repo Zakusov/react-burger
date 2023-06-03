@@ -68,3 +68,10 @@
 .input__textfield {
     color: #8585ad;
 }
+
+.error {
+    composes: text from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+    composes: text_color_error from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+    text-align: center;
+    margin-bottom: 24px;
+}
