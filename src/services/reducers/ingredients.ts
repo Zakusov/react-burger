@@ -1,6 +1,6 @@
-import {GET_INGREDIENTS, GET_INGREDIENTS_FAILED, GET_INGREDIENTS_SUCCESS} from "../constants/ingredients";
-import {IngredientType} from "../types/data";
-import {TIngredientsActions} from "../actions/ingredients";
+import {GET_INGREDIENTS, GET_INGREDIENTS_FAILED, GET_INGREDIENTS_SUCCESS} from "../constants";
+import {IngredientType} from "../types";
+import {TIngredientsActions} from "../actions";
 
 type TIngredientsState = {
     ingredients: Array<IngredientType>;
@@ -8,13 +8,13 @@ type TIngredientsState = {
     isFailed: boolean;
 };
 
-const initialState: TIngredientsState = {
+export const initialIngredientsState: TIngredientsState = {
     ingredients: [],
     isLoading: false,
     isFailed: false
 };
 
-export const ingredientsReducer = (state: TIngredientsState = initialState, action: TIngredientsActions) => {
+export const ingredientsReducer = (state: TIngredientsState = initialIngredientsState, action: TIngredientsActions) => {
     switch (action.type) {
         case GET_INGREDIENTS: {
             return {...state, isLoading: true};

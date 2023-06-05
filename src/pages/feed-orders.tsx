@@ -18,14 +18,14 @@ const FeedOrdersPage = () => {
         return () => {
             dispatch({type: WS_FEED_CONNECTION_CLOSED});
         }
-    }, []);
+    }, [dispatch]);
 
     const navigate = useNavigate();
     const location = useLocation();
     const state = location.state;
     const setCurrentOrder = useCallback((id: string) => {
         navigate(`/feed/${id}`, {state: {...state, background: location}});
-    }, [dispatch, navigate, location]);
+    }, [navigate, location, state]);
 
     const allOrders = orders as Array<IOrder>;
     const doneOrders = ordersDone as Array<number>;

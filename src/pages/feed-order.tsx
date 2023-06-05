@@ -26,7 +26,7 @@ const FeedOrderPage = () => {
                 }
             }
         },
-        [orders]
+        [orders, id, dispatch]
     );
 
     useEffect(
@@ -41,7 +41,7 @@ const FeedOrderPage = () => {
                 }
             }
         },
-        [currentOrder]
+        [currentOrder, ingredients]
     );
 
     return (

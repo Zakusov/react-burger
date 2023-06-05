@@ -6,10 +6,9 @@ import {
     GET_REGISTER_FAILED,
     GET_REGISTER_REQUEST,
     GET_REGISTER_SUCCESS,
-    GET_USER,
+    LOG_IN,
+    LOG_OUT,
     RESET_PASSWORD,
-    SIGN_OUT,
-    UPDATE_USER,
     UPDATE_USER_FAILED,
     UPDATE_USER_REQUEST,
     UPDATE_USER_SUCCESS
@@ -22,16 +21,11 @@ export interface IRegisterRequestAction {
 
 export interface IRegisterSuccessAction {
     readonly type: typeof GET_REGISTER_SUCCESS;
-    readonly payload: UserType;
 }
 
 export interface IRegisterFailedAction {
     readonly type: typeof GET_REGISTER_FAILED;
-}
-
-export interface IUpdateUserAction {
-    readonly type: typeof UPDATE_USER;
-    readonly payload: UserType;
+    readonly payload: string
 }
 
 export interface IUpdateUserRequestAction {
@@ -40,11 +34,11 @@ export interface IUpdateUserRequestAction {
 
 export interface IUpdateUserSuccessAction {
     readonly type: typeof UPDATE_USER_SUCCESS;
-    readonly payload: UserType;
 }
 
 export interface IUpdateUserFailedAction {
     readonly type: typeof UPDATE_USER_FAILED;
+    readonly payload: string
 }
 
 export interface IAuthRequestAction {
@@ -53,7 +47,6 @@ export interface IAuthRequestAction {
 
 export interface IAuthSuccessAction {
     readonly type: typeof GET_AUTH_SUCCESS;
-    readonly payload: UserType;
 }
 
 export interface IAuthFailedAction {
@@ -61,13 +54,13 @@ export interface IAuthFailedAction {
     readonly payload: string;
 }
 
-export interface IGetUserAction {
-    readonly type: typeof GET_USER;
+export interface ILogInAction {
+    readonly type: typeof LOG_IN;
     readonly payload: UserType;
 }
 
-export interface ISignOutAction {
-    readonly type: typeof SIGN_OUT;
+export interface ILogOutAction {
+    readonly type: typeof LOG_OUT;
 }
 
 export interface IForgotPassword {
@@ -88,55 +81,48 @@ export type TUserActions =
     | IUpdateUserRequestAction
     | IUpdateUserSuccessAction
     | IUpdateUserFailedAction
-    | IGetUserAction
-    | IUpdateUserAction
-    | ISignOutAction
+    | ILogInAction
+    | ILogOutAction
     | IForgotPassword
     | IResetPassword;
 
 export const registerRequestAction = (): IRegisterRequestAction => ({
     type: GET_REGISTER_REQUEST
 });
-export const registerSuccessAction = (user: UserType): IRegisterSuccessAction => ({
-    type: GET_REGISTER_SUCCESS,
-    payload: user
+export const registerSuccessAction = (): IRegisterSuccessAction => ({
+    type: GET_REGISTER_SUCCESS
 });
-export const registerFailedAction = (): IRegisterFailedAction => ({
-    type: GET_REGISTER_FAILED
+export const registerFailedAction = (message: string): IRegisterFailedAction => ({
+    type: GET_REGISTER_FAILED,
+    payload: message
 });
 
 export const authRequestAction = (): IAuthRequestAction => ({
     type: GET_AUTH_REQUEST
 });
-export const authSuccessAction = (user: UserType): IAuthSuccessAction => ({
-    type: GET_AUTH_SUCCESS,
-    payload: user
+export const authSuccessAction = (): IAuthSuccessAction => ({
+    type: GET_AUTH_SUCCESS
 });
 export const authFailedAction = (message: string): IAuthFailedAction => ({
     type: GET_AUTH_FAILED,
     payload: message
 });
 
-export const getUserAction = (user: UserType): IGetUserAction => ({
-    type: GET_USER,
-    payload: user
-});
-
 export const updateUserRequestAction = (): IUpdateUserRequestAction => ({
     type: UPDATE_USER_REQUEST
 });
-export const updateUserSuccessAction = (user: UserType): IUpdateUserSuccessAction => ({
-    type: UPDATE_USER_SUCCESS,
-    payload: user
+export const updateUserSuccessAction = (): IUpdateUserSuccessAction => ({
+    type: UPDATE_USER_SUCCESS
 });
-export const updateUserFailedAction = (): IUpdateUserFailedAction => ({
-    type: UPDATE_USER_FAILED
+export const updateUserFailedAction = (message: string): IUpdateUserFailedAction => ({
+    type: UPDATE_USER_FAILED,
+    payload: message
 });
 
-export const updateUserAction = (user: UserType): IUpdateUserAction => ({
-    type: UPDATE_USER,
+export const signInAction = (user: UserType): ILogInAction => ({
+    type: LOG_IN,
     payload: user
 });
-export const signOutAction = (): ISignOutAction => ({
-    type: SIGN_OUT
+export const signOutAction = (): ILogOutAction => ({
+    type: LOG_OUT
 });

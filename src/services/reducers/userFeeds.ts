@@ -12,18 +12,18 @@ import {TUserFeedActions} from "../actions";
 type TUserFeedState = {
     wsConnectedUserFeed: boolean;
     isErrorUserFeed: boolean;
-    ordersUserFeed: Array<IOrder>;
-    currentOrderUserFeed: IOrder | null;
+    orders: Array<IOrder>;
+    currentOrder: IOrder | null;
 };
 
-const initialStateUserFeed: TUserFeedState = {
+export const initialUserFeedState: TUserFeedState = {
     wsConnectedUserFeed: false,
     isErrorUserFeed: false,
-    ordersUserFeed: [],
-    currentOrderUserFeed: null
+    orders: [],
+    currentOrder: null
 }
 
-export const userFeedReducer = (state = initialStateUserFeed, action: TUserFeedActions) => {
+export const userFeedReducer = (state = initialUserFeedState, action: TUserFeedActions) => {
     switch (action.type) {
         case WS_USER_FEED_CONNECTION_SUCCESS: {
             return {...state, wsConnectedUserFeed: true, isErrorUserFeed: false};
@@ -37,17 +37,17 @@ export const userFeedReducer = (state = initialStateUserFeed, action: TUserFeedA
         case WS_USER_FEED_GET_MESSAGE: {
             return {
                 ...state,
-                ordersUserFeed: action.payload.orders
+                orders: action.payload.orders
             };
         }
         case SET_CURRENT_WS_USER_FEED: {
             return {
                 ...state,
-                currentOrderUserFeed: [...state.ordersUserFeed].filter(item => item._id === action.payload)[0]
+                currentOrder: [...state.orders].filter(item => item._id === action.payload)[0]
             };
         }
         case REMOVE_CURRENT_WS_USER_FEED: {
-            return {...state, currentOrderUserFeed: null};
+            return {...state, currentOrder: null};
         }
         default: {
             return state

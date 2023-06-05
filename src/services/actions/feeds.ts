@@ -20,7 +20,6 @@ export interface IFeedConnectionSuccessAction {
 
 export interface IFeedConnectionErrorAction {
     readonly type: typeof WS_FEED_CONNECTION_ERROR;
-    readonly payload: Event;
 }
 
 export interface IFeedConnectionClosedAction {

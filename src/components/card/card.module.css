@@ -1,4 +1,7 @@
 .main {
+    composes: ml-4 from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
+    composes: mb-8 from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
+
     width: 265px;
 }
 

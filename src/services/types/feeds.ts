@@ -28,7 +28,7 @@ export interface IFeedResponse {
     orders: Array<IOrder>;
     total: number;
     totalToday: number;
-    message: string;
+    message?: string;
 }
 
 export type TWSFeedActions = {

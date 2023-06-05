@@ -7,7 +7,7 @@ import {WS_USER_FEED_CONNECTION_CLOSED, WS_USER_FEED_CONNECTION_START} from "../
 import styles from "./orders-page.module.css"
 
 const OrdersPage = () => {
-    const {ordersUserFeed} = useSelector(state => state.userFeeds);
+    const {orders} = useSelector(state => state.userFeeds);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -22,14 +22,14 @@ const OrdersPage = () => {
     const state = location.state;
     const setCurrentOrder = useCallback((id: string) => {
         navigate(`/profile/orders/${id}`, {state: {...state, background: location}});
-    }, [navigate, location]);
+    }, [navigate, location, state]);
 
     return (
-        !ordersUserFeed
+        !orders
             ? <p className="text text_type_main-medium">Идет загрузка...</p>
             : <div className={styles.container}>
                 <ul className={styles.orderCards}>
-                    {ordersUserFeed.map(order => {
+                    {orders.map(order => {
                         return <OrderCard order={order} key={order.number} setCurrOrder={setCurrentOrder}/>
                     })}
                 </ul>

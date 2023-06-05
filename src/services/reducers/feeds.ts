@@ -20,18 +20,18 @@ type TFeedState = {
   ordersPending: Array<number>;
 };
 
-const initialStateFeed: TFeedState = {
-  wsConnected: false,
-  isError: false,
-  orders: [],
-  ordersTotal: 0,
-  totalToday: 0,
-  currentOrder: null,
-  ordersDone: [],
-  ordersPending: []
+export const initialFeedState: TFeedState = {
+    wsConnected: false,
+    isError: false,
+    orders: [],
+    ordersTotal: 0,
+    totalToday: 0,
+    currentOrder: null,
+    ordersDone: [],
+    ordersPending: []
 }
 
-export const feedReducer = (state: TFeedState = initialStateFeed, action: TFeedActions) => {
+export const feedReducer = (state: TFeedState = initialFeedState, action: TFeedActions) => {
     switch (action.type) {
         case WS_FEED_CONNECTION_SUCCESS: {
             return {...state, wsConnected: true, isError: false};

@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDrop} from "react-dnd";
 import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
@@ -9,7 +9,7 @@ import OrderItem from "../order-item/order-item";
 import {addIngredient, deleteAll, replaceFilling} from "../../services/actions";
 import {useDispatch, useSelector} from "../../services/hooks";
 import {IngredientType, SelectedIngredientType} from "../../services/types";
-import {createOrder} from "../../services/thunks";
+import {checkAuthorization, createOrder} from "../../services/thunks";
 import styles from "./burger-constructor.module.css";
 
 const BurgerConstructor = () => {
@@ -45,6 +45,12 @@ const BurgerConstructor = () => {
     const {user} = useSelector(state => state.user);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (!user) {
+            dispatch(checkAuthorization());
+        }
+    }, [user, dispatch]);
+
     const onCreateOrder = () => {
         if (user) {
             dispatch(createOrder(bun!, filling));
@@ -64,7 +70,7 @@ const BurgerConstructor = () => {
                     <OrderDetails orderId={orderId} error={isFailed}/>
                 </Modal>
             }
-            <div className={`${styles.container} pt-15`} ref={dropTargetRef}>
+            <div className={`${styles.container} pt-15`} ref={dropTargetRef} data-id="burger-constructor">
                 {!bun &&
                     <div>Пожалуйста, перенесите сюда булку и ингредиенты для создания заказа</div>
                 }
@@ -104,10 +110,11 @@ const BurgerConstructor = () => {
                     </ul>
                 }
                 <section className={styles.bottomBoxContainer}>
-                    <p className="text text_type_digits-medium">{price}</p>
+                    <p className="text text_type_digits-medium" data-id="price">{price}</p>
                     <CurrencyIcon type="primary"/>
                     <div className='ml-10'>
-                        <Button htmlType="button" type="primary" size="large" onClick={onCreateOrder} disabled={!bun}>
+                        <Button htmlType="button" type="primary" size="large" onClick={onCreateOrder} disabled={!bun}
+                                data-id="order-button">
                             Оформить заказ
                         </Button>
                     </div>
